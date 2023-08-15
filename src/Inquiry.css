@@ -1,0 +1,95 @@
+@font-face {
+    font-family: '노토5';
+    src : url(../font/NotoSans-Medium.woff);
+  }
+@font-face {
+    font-family: '노토6';
+    src : url(../font/NotoSans-Bold.woff);
+  }
+
+.font5 {
+    font-family: '노토5';
+    font-weight: 500;
+  }
+.font6 {
+    font-family: '노토6';
+    font-weight: 700;
+  }
+
+.board_wrap{
+  width: 1000px;
+  text-align: left;
+}
+
+.board_title{
+  margin-bottom: 30px;
+}
+
+.board > div.top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #F4F4F4;
+  border-top: 2px solid #242D34;
+  border-bottom: 1px solid #242D34;
+  font-weight: 600;
+}
+
+.board > div.list,
+.board > div.content > div.list {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #242D34;
+  justify-content: space-between;
+}
+
+.board > div.top > div,
+.board > div.list > div,
+.board > div.content > div.list > div {
+  font-size: 18px;
+}
+
+.board > div.content > div.list > div.num,
+.board > div.content > div.list > div.writer,
+.board > div.content > div.list > div.count,
+.board > div.list > div.num,
+.board > div.list > div.writer,
+.board > div.list > div.count,
+.board > div.top > div.num,
+.board > div.top > div.writer,
+.board > div.top > div.count{
+  width: 10%;
+  padding: 15px 0;
+  text-align: center;
+  border-right: 1px solid #A0A0A0;
+}
+
+.board > div.content > div.list > div.date,
+.board > div.list > div.date,
+.board > div.top > div.date{
+  width: 15%;
+  text-align: center;
+  padding: 15px 0;
+}
+
+.board > div.top > div.title{
+  width: 55%;
+  text-align: center;
+  padding: 15px 0;
+  border-right: 1px solid #A0A0A0;
+}
+
+.board > div.content > div.list > div.title,
+.board > div.list > div.title{
+  width: 55%;
+  text-align: left;
+  
+  padding: 15px 15px;
+  border-right: 1px solid #A0A0A0;
+}
+
+.upload-button {
+  text-align: right;
+  margin-top: 30px;
+}
+

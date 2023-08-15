@@ -1,0 +1,458 @@
+class gray-background{
+  background: darkgray;
+}
+
+.board_wrap{
+  text-align: left;
+  margin-top: -3.6vh;
+}
+
+.board_title{
+  margin-bottom: 30px;
+}
+
+.board_all,
+.board_all > div > div{
+  padding: 15px 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.board_all > div.column-3 > div {
+  position: relative;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.board_all > div.column-2 > div {
+  border-bottom: 1px solid #242D34;
+  border-right: 1px solid #242D34;
+}
+
+.board_all > div.column-1 > div {
+  background-color: #F4F4F4;
+  border-left: 2px solid #242D34;
+  border-bottom: 1px solid #242D34;
+  border-right: 1px solid #242D34;
+}
+
+.board_top{
+  border-bottom: 1px solid #242D34;
+}
+
+@font-face {
+  font-family: '노토1';
+  src : url(../font/NotoSans-Thin.woff);
+}
+@font-face {
+  font-family: '노토2';
+  src : url(../font/NotoSans-Light.woff);
+}
+@font-face {
+  font-family: '노토3';
+  src : url(../font/NotoSans-DemiLight.woff);
+}
+@font-face {
+  font-family: '노토4';
+  src : url(../font/NotoSans-Regular.woff);
+}
+@font-face {
+  font-family: '노토5';
+  src : url(../font/NotoSans-Medium.woff);
+}
+@font-face {
+  font-family: '노토6';
+  src : url(../font/NotoSans-Bold.woff);
+}
+@font-face {
+  font-family: '노토7';
+  src : url(../font/NotoSans-Black.woff);
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-image:url("./assets/HansolHealthLogo.png"); */
+  background-size: 500px 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #242D34;
+}
+
+.basebackground{
+  background-color: #F4F4F4;
+}
+
+.form-container {
+  width: 350px;
+  height: 500px;
+  background-color: #F4F4F4;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 높이 가운데정렬 */
+  justify-content: center; /* 너비 가운데정렬 */
+  border-radius: 5%;
+}
+
+.App {
+  text-align: center;
+}
+.font1 {
+  font-family: '노토1';
+}
+.font2 {
+  font-family: '노토2';
+  font-weight: 300; 
+}
+.font3 {
+  font-family: '노토3';
+}
+.font4 {
+  font-family: '노토4';
+  font-weight: 400; 
+}
+.font5 {
+  font-family: '노토5';
+  font-weight: 500;
+}
+.font6 {
+  font-family: '노토6';
+  font-weight: 700;
+}
+.font7 {
+  font-family: '노토7';
+  font-weight: 900;
+}
+
+
+.nav-container {
+  position: fixed;
+  top: -13px;
+  bottom: 0;
+  }
+  
+.content-section {
+    margin-left: 350px; /* Change the margin-left value based on your needs */
+    width: calc(100% - 350px); /* Change the width calculation based on your needs */
+    height: 100%;
+}
+
+.nav-left{
+  margin-top: -50px;
+  margin-left: 10px;
+}
+
+.nav-pills {
+  margin-top: 100px; /* 원하는 간격으로 조정할 수 있습니다 */
+}
+
+/* 상단 회색 메뉴바 */
+.navbar {
+    background-color: white;
+    width: 100%;
+    min-height: 8.6vh;
+    /* min-width: 1900px; */
+}
+
+.first-link,
+.second-link,
+.dropdown-link {
+  margin-top: -50px;
+}
+
+.navbar-link {
+  color: #242D34; 
+  font-size: 20px; 
+}
+
+/* 왼쪽 메뉴바의 가로길이 */
+#navbar-example3 {
+  margin-right: 20px;
+}
+
+/* 상단 메뉴바 _ Navbar */
+.navbar-brand {
+  position: relative;
+  left: 63px;
+  transform: translateY(-50%);
+  top: 50%;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* .thumbnail 와 .content-section 는 350x350 이미지 관련 설정 */
+.thumbnail {
+  width: 60%;
+  margin-top: 20%;
+  padding-bottom: 60%;
+  margin-left: auto; 
+  margin-right: auto;
+
+  background-size: cover;
+  background-position: center center;
+  border-radius: 50%;
+}
+
+.small-thumbnail {
+  cursor: pointer;
+  position: absolute;
+  width: 11%; /* 좌우로 줄이고 */
+  padding-bottom: 11%; /* 위아래 줄이고 */
+  left: 62%;
+  bottom: 68%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0); /* 상위div 색상이 적용되서 투명색으로 적용 */
+  background-size: cover;
+  background-position: center center;
+  border-radius: 50%;
+}
+
+.wordname {
+  font-size: 22px;
+  margin-top: 20%;
+  height: 60px;
+  right: 100%;
+  width: 100%;
+  color: #242D34;
+  border-bottom: 1px solid #E0E0E0;
+  text-align: center;
+}
+
+.wordmenu1{
+  text-align: left;
+  font-size: 20px;
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #242D34;
+}
+
+.wordmenu2{
+  text-align: left;
+  font-size: 17px;
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #A0A0A0;
+}
+
+/* Item 1 내용 위치 */
+.content-section h4 {
+  margin-left: 100px;
+}
+
+
+.item {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.item2 {
+  width: 185px;
+  border-radius: 5%;
+}
+
+.item3 {
+  margin-top: 20px;
+  top: 20px;
+}
+
+.edit-image
+ {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(-70%);
+}
+
+.transparent-button {
+  cursor: pointer;
+  border: none;
+  outline: none; /* 새로고침 눌렀을때 outline 보이지않게 */
+  background: transparent;
+}
+
+.test{
+  text-align: left;
+  margin-top: 30px;
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.selected-item {
+  color: #F5782A;
+}
+
+.hidden2{
+  width: 85px;
+  height: 35px;
+  border-radius: 5%;
+}
+
+.tableall{
+  font-size: 25px;
+  font-family: '노토6';
+  width: 90%;
+}
+
+.tableall th {
+  padding: 10px;
+}
+
+.tableall td {
+  padding: 10px;
+}
+
+.inquiry-link {
+  height: 50%;
+  color: #242D34; 
+  font-size: 20px; 
+}
+
+@media (max-width: 1400px) {
+  .nav .dropdown {
+    display: none;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 250px; /* 원하는 사이드바 너비 */
+  height: 100%;
+  background-color: #F4F4F4;
+  padding: 20px;
+  transition: transform 0.3s ease; /* transition : 애니메이션 효과, 0.3초안에 느리게빠르게느리게(ease) 전환시킨다. */
+  transform: translateX(100%); 
+}
+
+.sidebar.show {
+  transform: translateX(0); /* 원래 자리로 복귀 */
+}
+
+.backimg{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin: 20px;
+}
+
+.test1 {
+  width: 200px;
+  height: 200px;
+  background-color: pink;
+  position: relative;
+}
+
+.test2 {
+  width: 100px;
+  height: 100px;
+  left: 50px;
+  background-color: red;
+  position: absolute;
+}
+
+/* opacity : 투명도 , ease-out : 미끄러지듯 부드럽게 도착 */
+@keyframes slide {
+  from{
+    left:-100px;
+    opacity: 0;
+  }
+  to{
+    left: 400px;
+    opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  from{
+    left: 400px;
+    opacity: 1;
+  }
+  to{
+    left:-100px;
+    opacity: 0;
+  }
+}
+
+.seedetail{
+  left: 400px;
+  top:80px;
+  position: relative;
+  margin-top:40px;
+  background-color: rgba(255, 255, 255, 0);
+  color: #F4F4F4;
+  width: 180px;
+  font-size: 1.5rem;
+  border-color: #F4F4F4;
+  border-radius: 15px;
+  outline: 0;
+  padding: 10px 20px; /* 위아래 10px, 좌우 20px 패딩 */
+  border-radius: 5px; /* border-radius 추가 */
+  border: 2px solid #F4F4F4;
+}
+
+.seedetail:hover{
+  background-color: #F4F4F4;
+  border-color: #242D34;
+  color: #242D34;
+}
+
+.sixs {
+  /* background-color: rgba(255, 255, 255, 0); */
+  width: 429px;
+  height: 250px;
+  border: none;
+  position: relative;
+  opacity: 0;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.bravoimg{
+  width: 456px;
+  height: 305px;
+  background-color: rgba(255, 255, 255, 0);
+  left: 1160px;
+  border:none;
+  top:267px;
+  position: relative;
+  opacity: 0;
+}
+
+/* .bravofont{
+  width: 429px;
+  height: 250px;
+  background-color: rgba(255, 255, 255, 0);
+  left: -162px;
+  border:1px solid;
+  top:173px;
+  position: relative;
+} */
