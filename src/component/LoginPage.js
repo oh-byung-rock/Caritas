@@ -75,31 +75,41 @@ const resetFields = () => {
     setOpen(false);
   };
 
-  // 로그인 기능
+  // 로그인 기능 (서버용)
+  // const handleLogin = async () => {
+  //   const auth = getAuth();
+  //     signInWithEmailAndPassword(auth, email, password)
+  //       .then(async (userCredential) => {
+  //          const userdata= await api.login(userCredential.user.uid)
+  //          console.log(userdata);
+  //          if(userdata.code==0){
+  //           alert("Thanks for coming!");
+  //           handleClose();
+  //           navigate("/customer");
+  //          }else{
+  //           alert("실패 "+userdata.code);
+  //          }
+  //       })
+  //       .catch((error) => {
+  //         alert("로그인 정보를 확인해주세요");
+  //       });
+  // };
+  // 로그인 기능 (일반용)
   const handleLogin = async () => {
     const auth = getAuth();
-      signInWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-           const userdata= await api.login(userCredential.user.uid)
-           console.log(userdata);
-           if(userdata.code==0){
-            alert("Thanks for coming!");
-            handleClose();
-            navigate("/customer");
-           }else{
-            alert("실패 "+userdata.code);
-           }
-        /*
-          alert("Thanks for coming!");
-          handleClose();
-          navigate("/customer");
-        */
-        })
-        .catch((error) => {
-          alert("로그인 정보를 확인해주세요");
-        });
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // 회원 정보가 있는 경우
+        alert("Thanks for coming!");
+        handleClose();
+        navigate("/customer");
+      })
+      .catch((error) => {
+        // 로그인 정보가 잘못된 경우
+        alert("로그인 정보를 확인해주세요");
+      });
   };
-
+  
   // 회원가입 기능
   const handleSignUp = async () => {
     if (!fileName) {

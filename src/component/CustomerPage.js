@@ -18,7 +18,7 @@ import Navbar from './Navbar';
 
 function CustomerPage() {
   
-  const [selectedItem, setSelectedItem] = useState('item-1');
+  const [selectedItem, setSelectedItem] = useState('item-0');
   const [name, setName] = useState('사용자 이름');
   const [photoURL, setPhotoURL] = useState(anany);
 
@@ -80,6 +80,7 @@ function CustomerPage() {
     }
   };
   
+  
 
   const handleLogout = async () => {
     try {
@@ -102,6 +103,10 @@ function CustomerPage() {
       alert('로그아웃 실패');
       console.log('로그아웃 에러:', error);
     }
+    window.addEventListener('beforeunload', handleLogout);
+    return () => {
+        window.removeEventListener('beforeunload', handleLogout);
+    };
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -134,16 +139,13 @@ function CustomerPage() {
     const auth = getAuth();
     // onAuthStateChanged 는 기본적으로 firebase로부터 user값을 받아온다
     const unsubscribe = onAuthStateChanged(auth,async (user) => {
-      const info = JSON.parse(window.sessionStorage.getItem("kol"));
         setCurrentUser(user);
           if (user) {
-            if (!info) {//#################일로 들갔는데 아래 navigate('/') 비회원일때 이걸로 이동있는거 있길래 추가함
-              await handleLogout(); 
-              // navigate('/');
-            }else{
-              fetchUserInfo(user);
-            }
+            fetchUserInfo(user);
+            console.log('고객정보있음')
           } else {
+
+            console.log('고객정보없음')
         }
       setIsLoading(false);
     });
@@ -249,6 +251,12 @@ function CustomerPage() {
 
   const displayContent = () => {
     switch (selectedItem) {
+      case 'item-0':
+        return (
+         <div >
+          <Item1NonCustomer/ >
+         </div> )
+
       case 'item-1':
         return (
         <div >
