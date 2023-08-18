@@ -102,7 +102,8 @@ const resetFields = () => {
         // 회원 정보가 있는 경우
         alert("Thanks for coming!");
         handleClose();
-        navigate("/customer");
+        // navigate("/customer");
+        navigate("/");
       })
       .catch((error) => {
         // 로그인 정보가 잘못된 경우

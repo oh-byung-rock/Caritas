@@ -12,6 +12,7 @@ import Item11Customer from './Item11Customer';
 import Item11NonCustomer from './Item11NonCustomer';
 import Inquiry from './Inquiry';
 import Question from './Question';
+import Servertest from './servertest';
 import Col2 from './Col2';
 import Navbar from './Navbar';
 
@@ -338,6 +339,13 @@ function CustomerPage() {
         return(
           <Question 
           authorName={name}/>
+        );
+      
+      case 'item-1-5' :
+        return(
+          <div >
+          <Servertest/>
+          </div>
         );
 
       default:

@@ -5,14 +5,14 @@ import logo from '../assets/logo.png';
 import menuimg from '../assets/navmenu.png'
 import backimg from '../assets/backimg.png'
 
-
 function Navbar({windowWidth, setSelectedItem}) {
   const [showSidebar, setShowSidebar] = useState(false);
   const menuItems = [
     { id: 'item-1-3', label: '공지사항', href: '#scrollspyHeading3' },
     { id: 'item-1-4', label: '문의하기', href: '#scrollspyHeading4' },
+    { id: 'item-1-5', label: '서버테스트', href: '#scrollspyHeading5' }
   ];
-
+  
   return (
     <div
       id="navbar-example2 "
@@ -49,17 +49,15 @@ function Navbar({windowWidth, setSelectedItem}) {
                   className="dropdown-item"
                   href={item.href}
                   onClick={(event) => {
-                    event.preventDefault();
+                    event.preventDefault(); 
                     setSelectedItem(item.id);
+                    // window.history.pushState({}, item.label , item.href); // 페이지 url 변경 기능 
                   }}
                 >
                   {item.label}
                 </a>
               ))}
-              <hr className="dropdown-divider" />
-              <a className="dropdown-item" href="#scrollspyHeading5">
-                세번째 목록
-              </a>
+              {/* <hr className="dropdown-divider" /> */}
             </div>
           </div>
         )}
@@ -93,7 +91,7 @@ function Navbar({windowWidth, setSelectedItem}) {
               안녕
             </h2>
             {menuItems.map((item) => (
-              <a
+              <button
                 key={item.id}
                 className="dropdown-item"
                 href={item.href}
@@ -101,7 +99,7 @@ function Navbar({windowWidth, setSelectedItem}) {
                 onClick={() => setSelectedItem(item.id)}
               >
                 {item.label}
-              </a>
+              </button>
             ))}
             <button className="transparent-button backimg" style={{ textAlign: 'left' }} onClick={() => setShowSidebar(false)}>
               <img src={backimg} height={'50px'} />
