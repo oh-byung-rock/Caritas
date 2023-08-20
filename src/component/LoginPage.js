@@ -20,7 +20,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import logo from '../assets/reallogo.png';
-const api =require('../server/api.js')
+// const api =require('../server/api.js')
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -34,6 +34,8 @@ function LoginPage() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [imagepoket, setImagePoket] = useState(null);
+  const [state, setState] = useState({ loginid: '', loginpw: '' });
+  const [signup, setsignup] = useState({ signupid: '', signuppw: '',signupname:'', signupgender:'', signupage:'',signupweight:'', signupheight:'' });
 
   const getDefaultImageUrl = async () => {
     const storage = getStorage();
@@ -41,6 +43,42 @@ function LoginPage() {
     const url = await getDownloadURL(imageRef);
     return url;
   }  
+  // https://loy124.tistory.com/246
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(state)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        console.log('status 200');
+        return response.json();
+      } else {
+        console.log(response.status);
+        return response.json();
+      }
+    })
+    .then(data => {
+      console.log(`Data from server: ${JSON.stringify(data)}`);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -177,22 +215,26 @@ const resetFields = () => {
       className="item"
       type="text"
       placeholder="아이디"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)} />
+      name="loginid"
+      value={state.loginid}
+      onChange={handleChange}
+    />
 
     <input
       className="item"
       type="password"
+      name="loginpw"
       placeholder="비밀번호"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)} />
+      value={state.loginpw}
+      onChange={handleChange}
+    />
     <div>
     <Button 
       className="item2"
       type="button"
       variant="contained"
       style={{ fontFamily: "노토5" , fontSize: 16, backgroundColor: '#F5782A'}}
-      onClick={handleLogin}> 로그인 
+      onClick={handleSubmit}> 로그인 
     </Button>
     </div>
     <Button
@@ -208,7 +250,7 @@ const resetFields = () => {
         <DialogTitle><img src={logo} style={{ marginLeft: '30px' }} width="180" height="90" /></DialogTitle>
         <DialogContent className="dialog" >
         
-        <FormControl>
+        {/* <FormControl>
         <Input
          id="file-input"
          type="file"
@@ -216,7 +258,7 @@ const resetFields = () => {
          onChange={handleFileChange}
          aria-describedby="file-input-helper" />
         <FormHelperText id="file-input-helper" style={{ fontFamily: "노토5", marginBottom:'10px'}}>이미지 파일만 업로드할 수 있습니다.</FormHelperText>
-        </FormControl>
+        </FormControl> */}
 
           <br/>
            <TextField
