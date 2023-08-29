@@ -70,6 +70,13 @@ app.post('/add', async (req, res) => {
     res.status(400).json({ message: '처리 도중 문제가 발생했습니다.' });
   }
 });
+
+app.post('/add2', (req, res) => {
+  const { email, password, name, gender, age, weight, height } = req.body;
+  console.log('Received data: ', email, password, name, gender, age, weight, height);
+  res.status(200).json({ message: 'Data received successfully!' });
+});
+
 // ------------------------ post -----------------------------------
 
 app.use(express.urlencoded({ extended: true })); // 서버 측에 데이터를 보낼 때 사용되는 요청 분석 미들웨어

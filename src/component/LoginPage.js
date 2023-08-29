@@ -35,14 +35,7 @@ function LoginPage() {
   const [height, setHeight] = useState("");
   const [imagepoket, setImagePoket] = useState(null);
   const [state, setState] = useState({ loginid: '', loginpw: '' });
-  const [signup, setsignup] = useState({ signupid: '', signuppw: '',signupname:'', signupgender:'', signupage:'',signupweight:'', signupheight:'' });
 
-  const getDefaultImageUrl = async () => {
-    const storage = getStorage();
-    const imageRef = ref(storage, 'anany2.png');
-    const url = await getDownloadURL(imageRef);
-    return url;
-  }  
   // https://loy124.tistory.com/246
 
   const handleSubmit = (event) => {
@@ -70,6 +63,46 @@ function LoginPage() {
     .catch(error => {
       console.error('Error:', error);
     });
+  };
+
+  const handleSubmit2 = (event) => {
+    event.preventDefault();
+  
+    // Create a new object to send all necessary data
+    const dataToSend = {
+      ...state,
+      email,
+      password,
+      name,
+      gender,
+      age,
+      weight,
+      height
+    };
+  
+    fetch('/add2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        if (response.status === 200) {
+          console.log('status 200');
+          return response.json();
+        } else {
+          console.log(response.status);
+          return response.json();
+        }
+     })
+     .then(data => {
+       console.log(`Data from server: ${JSON.stringify(data)}`);
+       console.log(`Data sent to server: ${JSON.stringify(dataToSend)}`); // Add this line to log the data you sent.
+     })
+     .catch(error => {
+       console.error('Error:', error);
+     });
   };
 
   const handleChange = (e) => {
@@ -112,100 +145,62 @@ const resetFields = () => {
     resetFields();
     setOpen(false);
   };
-
-  // 로그인 기능 (서버용)
-  // const handleLogin = async () => {
+  
+  // // 회원가입 기능
+  // const handleSignUp = async () => {
+  //   if (!fileName) {
+  //     const isDefaultImageConfirmed = window.confirm(
+  //       "프로필 이미지가 선택되지 않았습니다. 기본 이미지로 지정하시겠습니까?"
+  //     );
+  
+  //     if (!isDefaultImageConfirmed) {
+  //       alert("프로필 이미지를 선택해주세요.");
+  //       return;
+  //     }
+  //   }
+  
   //   const auth = getAuth();
-  //     signInWithEmailAndPassword(auth, email, password)
-  //       .then(async (userCredential) => {
-  //          const userdata= await api.login(userCredential.user.uid)
-  //          console.log(userdata);
-  //          if(userdata.code==0){
-  //           alert("Thanks for coming!");
-  //           handleClose();
-  //           navigate("/customer");
-  //          }else{
-  //           alert("실패 "+userdata.code);
-  //          }
-  //       })
-  //       .catch((error) => {
-  //         alert("로그인 정보를 확인해주세요");
-  //       });
-  // };
-  // 로그인 기능 (일반용)
-  const handleLogin = async () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        // 회원 정보가 있는 경우
-        alert("Thanks for coming!");
-        handleClose();
-        // navigate("/customer");
-        navigate("/");
-      })
-      .catch((error) => {
-        // 로그인 정보가 잘못된 경우
-        alert("로그인 정보를 확인해주세요");
-      });
-  };
-  
-  // 회원가입 기능
-  const handleSignUp = async () => {
-    if (!fileName) {
-      const isDefaultImageConfirmed = window.confirm(
-        "프로필 이미지가 선택되지 않았습니다. 기본 이미지로 지정하시겠습니까?"
-      );
-  
-      if (!isDefaultImageConfirmed) {
-        alert("프로필 이미지를 선택해주세요.");
-        return;
-      }
-    }
-  
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // 입력 데이터 검증
-        if (name && gender && age && weight && height) {
-          // 회원 가입 성공
-          const user = userCredential.user;
+  //   createUserWithEmailAndPassword(auth, email, password)
+  //     .then(async (userCredential) => {
+  //       // 입력 데이터 검증
+  //       if (name && gender && age && weight && height) {
+  //         // 회원 가입 성공
+  //         const user = userCredential.user;
           
-        if (fileName) { 
-          const storage = getStorage();
-          // 코드 변경: 이미지 파일 이름을 user.uid로 구분하여 저장합니다.
-          const imageRef = ref(storage, `images/${user.uid}`);
-          await uploadBytes(imageRef, imagepoket);
-        }
-          const firestore = getFirestore();
-          const customerDocRef = doc(firestore, 'customer', userCredential.user.uid);
+  //       if (fileName) { 
+  //         const storage = getStorage();
+  //         // 코드 변경: 이미지 파일 이름을 user.uid로 구분하여 저장합니다.
+  //         const imageRef = ref(storage, `images/${user.uid}`);
+  //         await uploadBytes(imageRef, imagepoket);
+  //       }
+  //         const firestore = getFirestore();
+  //         const customerDocRef = doc(firestore, 'customer', userCredential.user.uid);
   
-          const parsedAge = parseInt(age);
-          const parsedWeight = parseInt(weight);
-          const parsedHeight = parseInt(height);
+  //         const parsedAge = parseInt(age);
+  //         const parsedWeight = parseInt(weight);
+  //         const parsedHeight = parseInt(height);
   
-          await setDoc(customerDocRef, {
-            이름: name,
-            성별: gender,
-            나이: parsedAge,
-            체중: parsedWeight,
-            신장: parsedHeight
-          });
-          alert("회원 가입 성공");
-          resetFields();
-          handleClose();
-        } else {
-          alert("모든 필드를 입력해주세요.");
-        }
-      })
-      .catch((error) => {
-        alert(error);
-        console.log(error.code);
-        console.log(error.message);
-      });
-  };
+  //         await setDoc(customerDocRef, {
+  //           이름: name,
+  //           성별: gender,
+  //           나이: parsedAge,
+  //           체중: parsedWeight,
+  //           신장: parsedHeight
+  //         });
+  //         alert("회원 가입 성공");
+  //         resetFields();
+  //         handleClose();
+  //       } else {
+  //         alert("모든 필드를 입력해주세요.");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //       console.log(error.code);
+  //       console.log(error.message);
+  //     });
+  // };
   
-  
-
   return (
     <div className="background">
     {/* <div className="login-container"> */}
@@ -336,7 +331,7 @@ const resetFields = () => {
               onChange={(e) => setHeight(e.target.value)}
             />
         </DialogContent>
-        <Button style={{ color: "#242D34" , fontFamily: "노토5", marginBottom:'10px'}} onClick={handleSignUp}>가입하기</Button>
+        <Button style={{ color: "#242D34" , fontFamily: "노토5", marginBottom:'10px'}} onClick={handleSubmit2}>가입하기</Button>
         <Button style={{ color: "#242D34" , fontFamily: "노토5",marginBottom:'20px' }} type="button" onClick={handleClose}> 닫기 </Button>
       </Dialog>
     </div>
