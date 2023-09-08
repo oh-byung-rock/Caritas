@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -22,7 +22,7 @@ import '../App.css';
 import logo from '../assets/reallogo.png';
 // const api =require('../server/api.js')
 
-function LoginPage() {
+function LoginPage({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -40,7 +40,7 @@ function LoginPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -48,22 +48,29 @@ function LoginPage() {
       },
       body: JSON.stringify(state)
     })
-    .then(response => {
-      if (response.status === 200) {
-        console.log('status 200');
-        return response.json();
-      } else {
-        console.log(response.status);
-        return response.json();
-      }
-    })
+    .then(response => response.json())
     .then(data => {
       console.log(`Data from server: ${JSON.stringify(data)}`);
+      
+      if (data.message === '로그인 성공!') {
+        console.log('status 200');
+        alert("Thanks for coming!");
+        handleClose();
+        setCurrentUser(data.user);
+        console.log('이렇게 변함', data.user)
+        navigate("/");
+      } else {
+        console.log('Login failed:', data.message);
+      }
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
+
+  useEffect(() => {
+    console.log('currentUser has changed:', currentUser);
+  }, [currentUser]);
 
   const handleSubmit2 = (event) => {
     event.preventDefault();
@@ -210,17 +217,17 @@ const resetFields = () => {
       className="item"
       type="text"
       placeholder="아이디"
-      name="loginid"
-      value={state.loginid}
+      name="email" 
+      value={state.email} 
       onChange={handleChange}
     />
 
     <input
       className="item"
       type="password"
-      name="loginpw"
+      name="password" 
       placeholder="비밀번호"
-      value={state.loginpw}
+      value={state.password} 
       onChange={handleChange}
     />
     <div>

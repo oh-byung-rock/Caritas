@@ -56,7 +56,7 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
 
               <div>
                 {currentUser ? (
-                  <h2 className="wordname">'{name}'님, 환영합니다!</h2>
+                  <h2 className="wordname">'{currentUser.name}'님, 환영합니다!</h2>
                 ) : (
                   <Button
                   className="item2"

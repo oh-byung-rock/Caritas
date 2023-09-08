@@ -17,7 +17,7 @@ import Col2 from './Col2';
 import Navbar from './Navbar';
 
 
-function CustomerPage() {
+function CustomerPage({ currentUser, setCurrentUser }) {
   
   const [selectedItem, setSelectedItem] = useState('item-0');
   const [name, setName] = useState('사용자 이름');
@@ -38,7 +38,7 @@ function CustomerPage() {
   const [newBenchPressWeight, setNewBenchPressWeight] = useState(BenchPressWeight);
   const [newBenchPressTimes, setNewBenchPressTimes] = useState(BenchPressTimes);
   const [exp1rm, setexp1rm] = useState(0);
-  const [currentUser, setCurrentUser] = useState(null);
+
 
   // 스쿼트 관련 상태변수
   const [isEditingSquatWeight, setIsEditingSquatWeight] = useState(false);
@@ -134,7 +134,7 @@ function CustomerPage() {
     //##############이부분이
   }, []); 
 
-  useEffect(() => {
+ /* useEffect(() => {
     console.log('두배')
     console.trace('d')
     const auth = getAuth();
@@ -151,6 +151,11 @@ function CustomerPage() {
       setIsLoading(false);
     });
     return () => unsubscribe();
+  }, []);*/
+  useEffect(() => {
+    console.log('두배')
+    fetchUserInfo_mongo(currentUser);
+    setIsLoading(false);
   }, []);
   // 이벤트 : 사용자 인증 상태 감지(onAuthStateChanged함수) → 구독해제 (해제안할시 계속 사용자 인증 상태 감지가 작동해서 메모리 낭비)
   // → 그러면 사용자 인증 값 (ex) 세션)이 바뀌면 어떻게 감지할까 → []가 비어있음에도 onAuthStateChanged함수 기본 기능 중 하나인 사용자 인증 관련 변화를 감지가 작동되서 그때 useeffect 작동
@@ -228,6 +233,40 @@ function CustomerPage() {
     } else {
       console.log('No such document!');
     }
+  };
+
+  const fetchUserInfo_mongo = async (user) => {
+    console.log('현재 user 정보 : ', user)
+    setName(user.name);
+    setGender(user.gender);
+  /*  if (customerDoc.exists()) {
+      const userInfo = customerDoc.data();
+      setName(userInfo.이름);
+      setGender(userInfo.성별);
+      setAge(userInfo.나이);
+      setHeight(userInfo.신장);
+      setWeight(userInfo.체중);
+      setBenchPressWeight(userInfo.벤치프레스중량);
+      setBenchPressTimes(userInfo.벤치프레스횟수);
+      setSquatWeight(userInfo.스쿼트중량);
+      setSquatTimes(userInfo.스쿼트횟수);
+
+      const storage = getStorage();
+      const imagePath = `images/${user.uid}`;
+      const imageRef = ref(storage, imagePath);
+      
+      try {
+        const imageURL = await getDownloadURL(imageRef);
+        setPhotoURL(imageURL);
+        console.log("a2")
+        console.log(imageURL)
+      } catch (error) {
+        console.log('이미지를 가져오는데 실패하였습니다.', error);
+        setPhotoURL(anany); 
+      }
+    } else {
+      console.log('No such document!');
+    }*/
   };
 
 
@@ -337,7 +376,8 @@ function CustomerPage() {
         
       case 'item-1-4' :
         return(
-          <Question 
+          <Question
+          currentUser={currentUser} 
           authorName={name}/>
         );
       

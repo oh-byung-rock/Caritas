@@ -11,7 +11,7 @@ import { getFirestore, collection, query, doc, setDoc,addDoc, getDoc ,getDocs,wh
 import { getAuth } from 'firebase/auth';
 import { filledInputClasses } from '@mui/material';
 
-function Question(authorName) {
+function Question({ currentUser, authorName }) {
   const [titleopen, settitleOpen] = useState(false);
   const [postopen, setpostOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -94,31 +94,6 @@ function Question(authorName) {
     const getData = async () => {
       const firestore = getFirestore();
       const col = collection(firestore, "noti_quetion_test");
-  
-      // 기존 코드의 수정된 부분
-      const info = JSON.parse(window.sessionStorage.getItem("kol"));
-      console.log('세션값2 : ', info)
-      if (info && info.uid) {
-        const q = query(
-          col,
-          orderBy("timestamp", "desc"),
-          where("timestamp", ">=", Timestamp.fromDate(new Date(0))), //이게 0이랑 같을거임
-          where("uid", "==", info.uid),
-          limit(5)
-        );
-  
-        const querySnapshot = await getDocs(q);
-
-        let allPosts = [];
-        querySnapshot.forEach((doc) => {
-          allPosts.push(doc.data());
-        });
-        setPosts(allPosts);
-        
-        console.log('테이블 정보', allPosts)
-      } else {
-        console.log('해당 데이터 없음')
-      }
       
     };
       getData();
@@ -154,7 +129,7 @@ function Question(authorName) {
           ))}
         </div>
         <div className="upload-button">
-        {currentUserUid ? (
+        {currentUser ? (
           <Button
             href="#"
             style={{

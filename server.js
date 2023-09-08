@@ -25,6 +25,21 @@ const postSchema = new mongoose.Schema(
 
 const Post = mongoose.model('Post', postSchema);
 
+const infoSchema = new mongoose.Schema(
+  {
+    email: String,
+    password: String,
+    name: String,
+    gender: String,
+    age: Number,
+    weight: Number,
+    height: Number
+  },
+  { collection: 'info' },
+);
+
+const Info = mongoose.model('Info', infoSchema);
+
 mongoose
   .connect(
     'mongodb+srv://withcaritas0911:aldksfo384@healthgem.sylpzld.mongodb.net/?retryWrites=true&w=majority',
@@ -71,10 +86,27 @@ app.post('/add', async (req, res) => {
   }
 });
 
-app.post('/add2', (req, res) => {
+app.post('/add2', async (req, res) => {
   const { email, password, name, gender, age, weight, height } = req.body;
-  console.log('Received data: ', email, password, name, gender, age, weight, height);
-  res.status(200).json({ message: 'Data received successfully!' });
+  
+  console.log('Received data:', email, password, name, gender, age, weight,height);
+
+  const newInfo = new Info({
+      email: email,
+      password: password,
+      name:name ,
+      gender :gender ,
+      age :age ,
+      weight :weight ,
+      height :height 
+  });
+
+ try {
+     const result = await newInfo.save();
+     res.status(200).json({ message:'성공적으로 저장되었습니다!',email,password,name ,gender ,age ,weight ,height });
+ } catch (error) {
+     res.status(500).json({ message:'데이터 저장 중에 오류가 발생했습니다.', error:error });
+ }
 });
 
 // ------------------------ post -----------------------------------
@@ -134,19 +166,20 @@ app.use(express.static(__dirname + '/src'));
 // ---------------- session 관련 ----------------------
 
 app.post('/login', async (req, res) => {
-  const { loginid, loginpw } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await Post.findOne({ id: loginid });
+    const user = await Info.findOne({ email: email });
 
     if (!user) {
-      return res.status(400).json({ message: '아이디를 찾을 수 없습니다.', loginid });
+      return res.status(400).json({ message: '이메일을 찾을 수 없습니다.', email });
     }
 
-    const passwordOK = (loginpw === user.pw);
+    const passwordOK = (password === user.password);
 
     if (passwordOK) {
-      return res.status(200).json({ message: '로그인 성공!' });
+      const { password, ...userWithoutPassword } = user.toObject();
+      return res.status(200).json({ message: '로그인 성공!', user: userWithoutPassword });
     } else {
       return res.status(400).json({ message: '비밀번호가 일치하지 않습니다.' });
     }
