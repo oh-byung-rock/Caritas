@@ -77,12 +77,33 @@ function LoginPage({ currentUser, setCurrentUser }) {
   useEffect(() => {
     const naverLoginObj = new window.naver.LoginWithNaverId({
       clientId: "8823YaHRIRRXCm6paIqu",
+      clientSecret : "9zVonIUhEn",
       callbackUrl: "http://localhost:3000/login",
-      isPopup: false
+      isPopup: false,
+      loginButton: {color: "green", type: 2, height: 45}
     });
+    // ▼ 네이버 정보 초기화
     naverLoginObj.init();
-    console.log(naverLoginObj)
-    // console.log(naverLoginObj.accessToken.accessToken)
+    
+    if(naverLoginObj.accessToken && naverLoginObj.accessToken.accessToken){
+      console.log('클라 토큰',naverLoginObj.accessToken.accessToken);
+      console.log('지우',naverLoginObj)
+      // 백엔드 서버를 통한 사용자 정보 요청
+      fetch('http://localhost:3000/api/naver/userinfo', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${naverLoginObj.accessToken.accessToken}`
+        }
+      })
+      .then(response => response.json())
+      .then(responseData => {
+        console.log('사용자정보',responseData);
+      })
+      .catch(error => {
+        console.error('에러1',error);
+      });
+    }
+  
     setNaverLogin(naverLoginObj);
   }, []);
 
@@ -106,7 +127,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
       weight,
       height
     };
-  
+
     fetch('/add2', {
         method: 'POST',
         headers: {
@@ -272,9 +293,7 @@ const resetFields = () => {
       id="naverIdLogin"
       style={{ color: "#242D34" , fontFamily: "노토5" , top:"50px" }}
       onClick={handleLogin}
-      > 네이버로그인
-      
-    </Button>
+      > </Button>
 
     </div>
 

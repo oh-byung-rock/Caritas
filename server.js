@@ -165,6 +165,25 @@ app.use(express.static(__dirname + '/src'));
 // });
 // ---------------- session 관련 ----------------------
 
+app.get('/api/naver/userinfo', (req, res) => {
+  const token = req.headers.authorization;
+  console.log('서버 토큰',token);
+  fetch('https://openapi.naver.com/v1/nid/me', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token}`
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    res.send(data);
+  })
+  .catch(error => {
+    console.error('사용자의정보',error);
+    res.status(500).send(error);
+  });
+});
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
