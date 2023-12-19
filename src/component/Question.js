@@ -19,6 +19,9 @@ function Question({ currentUser, authorName }) {
   const [selectedPostContent, setSelectedPostContent] = useState(null);
   const [currentUserUid, setCurrentUserUid] = useState(null);
   const [testing, settesting] = useState(false);
+  const [qtitle, setQtitle] = useState("");
+  const [qcontent, setQcontent] = useState("");
+  const [state, setState] = useState("");
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -27,6 +30,14 @@ function Question({ currentUser, authorName }) {
   const handleClose = () => {
     setpostOpen(false);
     settitleOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleAddPost = async (title, content) => {
@@ -56,6 +67,28 @@ function Question({ currentUser, authorName }) {
     
     handleClose();
   };
+
+  const handleAddPost_mongo = async (title, content) => {
+    fetch('/addq', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        qtitle: title,
+        qcontent: content
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(`Response from server: ${JSON.stringify(data)}`);
+      
+      handleClose();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+};
 
   const handleTitleClick = async (post) => {
     setSelectedPost(post);
@@ -94,7 +127,6 @@ function Question({ currentUser, authorName }) {
     const getData = async () => {
       const firestore = getFirestore();
       const col = collection(firestore, "noti_quetion_test");
-      
     };
       getData();
       settesting(false)
@@ -153,19 +185,26 @@ function Question({ currentUser, authorName }) {
           <DialogTitle>새로운 게시물</DialogTitle>
           <DialogContent>
             <DialogContentText>제목, 글쓴이, 내용을 입력하세요</DialogContentText>
-            <TextField autoFocus margin="dense" id="title" label="제목" type="text" fullWidth />
-            <TextField margin="dense" id="content" label="내용" type="text" fullWidth />
+            <TextField autoFocus margin="dense" 
+              label="제목"
+              name="qtitle" 
+              value={state.qtitle}
+              onChange={handleChange}
+              type="text" fullWidth />
+
+            <TextField margin="dense" 
+              label="내용"
+              name="qcontent" 
+              value={state.qcontent}
+              onChange={handleChange}
+              type="text" fullWidth />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>취소</Button>
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                const title = document.getElementById('title').value;
-                const content = document.getElementById('content').value;
-                handleAddPost(title, content);
-                settesting(true);
-                setpostOpen(false);
+                handleAddPost_mongo(state.qtitle, state.qcontent);
               }}
             >
               확인

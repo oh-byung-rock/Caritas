@@ -20,21 +20,23 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import logo from '../assets/reallogo.png';
+
 // const api =require('../server/api.js')
 
 function LoginPage({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)  
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("");;
+  const [naverLogin, setNaverLogin] = useState(null);
   const [fileName, setFileName] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState("testname");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [imagepoket, setImagePoket] = useState(null);
-  const [state, setState] = useState({ loginid: '', loginpw: '' });
+  const [state, setState] = useState("");
 
   // https://loy124.tistory.com/246
 
@@ -71,6 +73,24 @@ function LoginPage({ currentUser, setCurrentUser }) {
   useEffect(() => {
     console.log('currentUser has changed:', currentUser);
   }, [currentUser]);
+
+  useEffect(() => {
+    const naverLoginObj = new window.naver.LoginWithNaverId({
+      clientId: "8823YaHRIRRXCm6paIqu",
+      callbackUrl: "http://localhost:3000/login",
+      isPopup: false
+    });
+    naverLoginObj.init();
+    console.log(naverLoginObj)
+    // console.log(naverLoginObj.accessToken.accessToken)
+    setNaverLogin(naverLoginObj);
+  }, []);
+
+  const handleLogin = () => {
+    if (naverLogin) {
+      naverLogin.authorize();
+    }
+  };
 
   const handleSubmit2 = (event) => {
     event.preventDefault();
@@ -246,6 +266,16 @@ const resetFields = () => {
       onClick={handleClickOpen}
       > 회원가입
     </Button>
+    <Button
+      className="item2"
+      type="button"
+      id="naverIdLogin"
+      style={{ color: "#242D34" , fontFamily: "노토5" , top:"50px" }}
+      onClick={handleLogin}
+      > 네이버로그인
+      
+    </Button>
+
     </div>
 
         <Dialog open={open} onClose={handleClose} className="dialog-overlay">

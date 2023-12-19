@@ -187,3 +187,11 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: '로그인 처리 중에 오류가 발생했습니다.', error: error });
   }
 });
+
+app.post('/addq', async (req, res) => {
+  const { qcontent, qtitle } = req.body;
+  
+  console.log('Received data:', qcontent, qtitle);
+  
+  res.status(200).json({ message: 'Data received successfully' });
+});
