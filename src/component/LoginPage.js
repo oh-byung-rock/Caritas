@@ -40,6 +40,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
 
   // https://loy124.tistory.com/246
 
+  // ▼ 로그인 성공시 처리
   const handleSubmit = (event) => {
     event.preventDefault();
   
@@ -74,6 +75,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
     console.log('currentUser has changed:', currentUser);
   }, [currentUser]);
 
+  // ▼ 네이버 로그인 관련 
   useEffect(() => {
     const naverLoginObj = new window.naver.LoginWithNaverId({
       clientId: "8823YaHRIRRXCm6paIqu",
@@ -87,7 +89,6 @@ function LoginPage({ currentUser, setCurrentUser }) {
     
     if(naverLoginObj.accessToken && naverLoginObj.accessToken.accessToken){
       console.log('클라 토큰',naverLoginObj.accessToken.accessToken);
-      console.log('지우',naverLoginObj)
       // 백엔드 서버를 통한 사용자 정보 요청
       fetch('http://localhost:3000/api/naver/userinfo', {
         method: 'GET',
@@ -97,11 +98,14 @@ function LoginPage({ currentUser, setCurrentUser }) {
       })
       .then(response => response.json())
       .then(responseData => {
-        console.log('사용자정보',responseData);
+        console.log('사용자 전체 정보',responseData);
+        console.log('사용자 uid',responseData.response.id);
+        console.log('사용자 이름',responseData.response.name);
       })
       .catch(error => {
         console.error('에러1',error);
       });
+    navigate("/");  
     }
   
     setNaverLogin(naverLoginObj);
@@ -112,7 +116,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
       naverLogin.authorize();
     }
   };
-
+  // ▼ 회원가입 관련 
   const handleSubmit2 = (event) => {
     event.preventDefault();
   

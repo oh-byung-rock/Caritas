@@ -15,6 +15,7 @@ app.use(cors());
 // ------------------------ 몽고 -----------------------------------
 const mongoose = require('mongoose');
 
+// ▼ 문자열 타입의 id 와 pw 라는 필드를 갖는 문서구조를 정의 = 스키마 선언 , 그리고 이걸 Post라는 모델로 사용해서 링크
 const postSchema = new mongoose.Schema(
   {
     id: String,
@@ -25,6 +26,7 @@ const postSchema = new mongoose.Schema(
 
 const Post = mongoose.model('Post', postSchema);
 
+// ▼ 위와 동일
 const infoSchema = new mongoose.Schema(
   {
     email: String,
@@ -39,6 +41,17 @@ const infoSchema = new mongoose.Schema(
 );
 
 const Info = mongoose.model('Info', infoSchema);
+
+// ▼ 위와 동일
+const infonaver = new mongoose.Schema(
+  {
+    uid: String,
+    name: String
+  },
+  { collection: 'info' },
+);
+
+const Info2 = mongoose.model('Info2', infonaver);
 
 mongoose
   .connect(
@@ -86,6 +99,7 @@ app.post('/add', async (req, res) => {
   }
 });
 
+// ▼ 회원가입 백엔드 서버
 app.post('/add2', async (req, res) => {
   const { email, password, name, gender, age, weight, height } = req.body;
   
@@ -108,6 +122,7 @@ app.post('/add2', async (req, res) => {
      res.status(500).json({ message:'데이터 저장 중에 오류가 발생했습니다.', error:error });
  }
 });
+// ▲ 회원가입 백엔드 서버
 
 // ------------------------ post -----------------------------------
 
@@ -166,6 +181,9 @@ app.use(express.static(__dirname + '/src'));
 // ---------------- session 관련 ----------------------
 
 app.get('/api/naver/userinfo', (req, res) => {
+  const { uid, name } = req.body;
+  console.log('Received naver data:', uid, name );
+  
   const token = req.headers.authorization;
   console.log('서버 토큰',token);
   fetch('https://openapi.naver.com/v1/nid/me', {
@@ -176,6 +194,9 @@ app.get('/api/naver/userinfo', (req, res) => {
   })
   .then(response => response.json())
   .then(data => {
+    console.log('사용자 전체 정보', data);
+    console.log('사용자 uid', data.response.id);
+    console.log('사용자 이름', data.response.name);
     res.send(data);
   })
   .catch(error => {
@@ -183,6 +204,7 @@ app.get('/api/naver/userinfo', (req, res) => {
     res.status(500).send(error);
   });
 });
+
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
