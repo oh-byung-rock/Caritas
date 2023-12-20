@@ -237,8 +237,10 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
   const fetchUserInfo_mongo = async (user) => {
     console.log('현재 user 정보 : ', user)
-    setName(user.name);
-    setGender(user.gender);
+    if(user){
+      setName(user.name);
+      setGender(user.gender);
+    }
   /*  if (customerDoc.exists()) {
       const userInfo = customerDoc.data();
       setName(userInfo.이름);

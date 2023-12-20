@@ -29,6 +29,7 @@ const Post = mongoose.model('Post', postSchema);
 // ▼ 위와 동일
 const infoSchema = new mongoose.Schema(
   {
+    uid: String,
     email: String,
     password: String,
     name: String,
@@ -181,8 +182,6 @@ app.use(express.static(__dirname + '/src'));
 // ---------------- session 관련 ----------------------
 
 app.get('/api/naver/userinfo', (req, res) => {
-  const { uid, name } = req.body;
-  console.log('Received naver data:', uid, name );
   
   const token = req.headers.authorization;
   console.log('서버 토큰',token);
@@ -193,10 +192,26 @@ app.get('/api/naver/userinfo', (req, res) => {
     }
   })
   .then(response => response.json())
-  .then(data => {
+  .then(async data => {
     console.log('사용자 전체 정보', data);
     console.log('사용자 uid', data.response.id);
     console.log('사용자 이름', data.response.name);
+    
+    // ▼ INFO컬렉션에 해당 uid가 있는지 중복여부판단
+    const user = await Info.findOne({uid: data.response.id});
+
+    if (!user) {
+      const newInfo = new Info({
+        uid: data.response.id,
+        name: data.response.name
+      });
+      try {
+        const result = await newInfo.save();
+        console.log('사용자 정보가 성공적으로 저장되었습니다.');
+      } catch (error) {
+        console.error('데이터 저장 중에 오류가 발생했습니다.', error);
+      }
+    }
     res.send(data);
   })
   .catch(error => {

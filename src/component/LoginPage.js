@@ -43,7 +43,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
   // ▼ 로그인 성공시 처리
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -101,6 +101,8 @@ function LoginPage({ currentUser, setCurrentUser }) {
         console.log('사용자 전체 정보',responseData);
         console.log('사용자 uid',responseData.response.id);
         console.log('사용자 이름',responseData.response.name);
+        setCurrentUser(responseData.response);
+ 
       })
       .catch(error => {
         console.error('에러1',error);
