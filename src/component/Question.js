@@ -22,6 +22,21 @@ function Question({ currentUser, authorName }) {
   const [qtitle, setQtitle] = useState("");
   const [qcontent, setQcontent] = useState("");
   const [state, setState] = useState("");
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch('/api/questions');
+        const data = await response.json();
+        setQuestions(data);
+      } catch (error) {
+        console.error('Failed to fetch questions:', error);
+      }
+    };
+  
+    fetchQuestions();
+  }, []);
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -68,37 +83,20 @@ function Question({ currentUser, authorName }) {
     handleClose();
   };
 
-  var result = new Date().getTime();
-  const mydate = new Date(result);
-  console.log(result)
-  const month = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ][mydate.getMonth()];
-  var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][mydate.getDay()];
+  const createdtime = new Date().getTime();
+  const mydate = new Date(createdtime);
+  const monthNames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   
-  console.log('Day: ', day);
+  // 년, 월, 일, 시, 분 추출
+  const year = mydate.getFullYear();
+  const month = monthNames[mydate.getMonth()];
+  const date = mydate.getDate(); // 이 부분을 수정했습니다.
+  const hours = mydate.getHours();
+  const minutes = mydate.getMinutes();
   
-  console.log('Month: ', month);
-  
-  console.log('Year: ', mydate.getFullYear());
-  
-  console.log("Hours: ", mydate.getHours());
-  
-  console.log("Mitutes: ", mydate.getMinutes());
-  
-
-  // 현재 날짜와 시간을 가져오기
-  const now = new Date();
-
-  // 월, 일, 시간, 분이 한 자리수일 경우 앞에 0을 붙이기
-  const formatNumber = (number) => number < 10 ? '0' + number : number;
-
-  // 원하는 형식으로 날짜와 시간을 포맷팅
-  const formattedDate = now.getFullYear() + '년-' 
-    + formatNumber(now.getMonth() + 1) + '월-' 
-    + formatNumber(now.getDate()) + '일-' 
-    + formatNumber(now.getHours()) + '시-' 
-    + formatNumber(now.getMinutes()) + '분';
+  // 출력 형식에 맞게 문자열 생성
+  const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
+  console.log(dateString);
 
   const handleAddPost_mongo = async (title, content) => {
     fetch('/addq', {
@@ -110,7 +108,7 @@ function Question({ currentUser, authorName }) {
         qtitle: title,
         qcontent: content,
         writer: currentUser ? currentUser.name : '익명',
-        created: formattedDate
+        created: createdtime
       })
     })
     .then(response => response.json())
@@ -125,18 +123,9 @@ function Question({ currentUser, authorName }) {
 };
 
   const handleTitleClick = async (post) => {
-    setSelectedPost(post);
     settitleOpen(true);
-
-    const firestore = getFirestore();
-    const noti_question_re_test_info = doc(firestore, "noti_question_re_test", post.aid);
-    const postContentDoc = await getDoc(noti_question_re_test_info);
-
-    if (postContentDoc.exists()) {
-      setSelectedPostContent(postContentDoc.data().content);
-    } else {
-      console.log("No such document!");
-    }
+    setSelectedPost(post);
+    console.log('상자열림')
     // if (currentUserUid === null) {
     //   alert("비회원은 사용할 수 없습니다.");
     // } else if (currentUserUid === post.uid) {
@@ -157,14 +146,14 @@ function Question({ currentUser, authorName }) {
   }
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      const firestore = getFirestore();
-      const col = collection(firestore, "noti_quetion_test");
-    };
-      getData();
-      settesting(false)
-  }, [testing]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const firestore = getFirestore();
+  //     const col = collection(firestore, "noti_quetion_test");
+  //   };
+  //     getData();
+  //     settesting(false)
+  // }, [testing]);
   
   // []안에 요소가 변경될 때마다 실행, []안이 공란이면 한 번만 실행
 
@@ -184,14 +173,28 @@ function Question({ currentUser, authorName }) {
           <div className="date" style={{width:'17.5%'}} > 등록일 </div>
         </div>
         <div className="content">
-          {/* index만큼 post를 나타내서 게시물을 차례대로 나타낸다. */}
-          {posts.map((post, index) => (
-            <div key={index} className="list">
-              <div className="num">{index + 1}</div>
-              <div className="title" onClick={() => handleTitleClick(post)}>{post.title}</div>
-              <div className="writer"style={{width:'17.5%'}} >{authorName.authorName}</div>
-              <div className="date" style={{width:'17.5%'}}>{post.timestamp.toDate().toLocaleDateString()}</div>
-            </div>
+          {/* index만큼 post로 배열을 구분한다. 즉 배열 하나하나를 post로 나눈다. */}
+          {questions.map((post, index) => (
+            // const createdtime = new Date(post.created).getTime();
+            // const mydate = new Date(createdtime);
+            // const monthNames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+            
+            // // 년, 월, 일, 시, 분 추출
+            // const year = mydate.getFullYear();
+            // const month = monthNames[mydate.getMonth()];
+            // const date = mydate.getDate();
+            // const hours = mydate.getHours();
+            // const minutes = mydate.getMinutes();
+            
+            // // 출력 형식에 맞게 문자열 생성
+            // const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
+
+           <div key={index} className="list">
+            <div className="num">{index + 1}</div>
+            <div className="title" onClick={() => handleTitleClick(post)}>{post.qtitle}</div>
+            <div className="writer" style={{width:'17.5%'}} >{post.writer}</div>
+            <div className="date" style={{width:'17.5%'}}>{post.created}</div>
+          </div>
           ))}
         </div>
         <div className="upload-button">
@@ -250,8 +253,7 @@ function Question({ currentUser, authorName }) {
           <Dialog open={titleopen} onClose={handleClose}>
             <DialogTitle>여기는 제목</DialogTitle>
             <DialogContent>
-              <h2>{selectedPost.title}</h2>
-              <h2>{selectedPostContent}</h2>
+              <h2>{selectedPost.qcontent}</h2>
             </DialogContent>
             <Button onClick={handleClose}>취소</Button>
           </Dialog>

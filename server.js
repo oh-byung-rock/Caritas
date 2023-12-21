@@ -14,6 +14,7 @@ app.use(cors());
 // ---------------- 기능검색 ----------------------
 // ------------------------ 몽고 -----------------------------------
 const mongoose = require('mongoose');
+const { Int32 } = require('mongodb');
 
 // ▼ 문자열 타입의 id 와 pw 라는 필드를 갖는 문서구조를 정의 = 스키마 선언 , 그리고 이걸 Post라는 모델로 사용해서 링크
 const postSchema = new mongoose.Schema(
@@ -248,8 +249,10 @@ app.post('/login', async (req, res) => {
 
 const addqSchema = new mongoose.Schema(
   {
-    uid: String,
-    email: String,
+    qtitle: String,
+    qcontent: String,
+    writer: String,
+    created: String
   },
   { collection: 'question' },
 );
@@ -258,9 +261,36 @@ const AddQ = mongoose.model('Question', addqSchema);
 
 app.post('/addq', async (req, res) => {
   const { qcontent, qtitle, writer,created } = req.body;
-  
-  console.log('Received data:', qcontent, qtitle, writer,created);
+  console.log('서버 문의', qtitle, qcontent, writer,created)
+
+  const newInfo = new AddQ({
+      qtitle : qtitle,
+      qcontent : qcontent,
+      writer : writer,
+      created : created
+    }); 
+
+  try {
+    const result = await newInfo.save(); // 저장 작업이 완료될 때까지 다음 코드로 넘어가지 않도록 하기 위해
+    res.status(200).json({ message: '문의하기가 성공적으로 처리되었습니다!' }); 
+  } catch (error) {
+    res.status(500).json({ message: '데이터 저장 중에 오류가 발생했습니다.', error: error });
+  }
+
+  console.log('Received data:', qtitle, qcontent, writer,created);
   // res.send(data); _ data 형식의 응답
   // res.status(200).json _ JSON 형식의 응답
-  res.status(200).json({ message: 'Data received successfully' });
+
+});
+
+// ▼ 문의사항 db 받아오기
+
+app.get('/api/questions', async (req, res) => {
+  try {
+    const questions = await AddQ.find();
+    res.json(questions);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error occurred while fetching questions');
+  }
 });
