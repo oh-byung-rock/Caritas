@@ -68,6 +68,38 @@ function Question({ currentUser, authorName }) {
     handleClose();
   };
 
+  var result = new Date().getTime();
+  const mydate = new Date(result);
+  console.log(result)
+  const month = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ][mydate.getMonth()];
+  var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][mydate.getDay()];
+  
+  console.log('Day: ', day);
+  
+  console.log('Month: ', month);
+  
+  console.log('Year: ', mydate.getFullYear());
+  
+  console.log("Hours: ", mydate.getHours());
+  
+  console.log("Mitutes: ", mydate.getMinutes());
+  
+
+  // 현재 날짜와 시간을 가져오기
+  const now = new Date();
+
+  // 월, 일, 시간, 분이 한 자리수일 경우 앞에 0을 붙이기
+  const formatNumber = (number) => number < 10 ? '0' + number : number;
+
+  // 원하는 형식으로 날짜와 시간을 포맷팅
+  const formattedDate = now.getFullYear() + '년-' 
+    + formatNumber(now.getMonth() + 1) + '월-' 
+    + formatNumber(now.getDate()) + '일-' 
+    + formatNumber(now.getHours()) + '시-' 
+    + formatNumber(now.getMinutes()) + '분';
+
   const handleAddPost_mongo = async (title, content) => {
     fetch('/addq', {
       method: 'POST',
@@ -76,7 +108,9 @@ function Question({ currentUser, authorName }) {
       },
       body: JSON.stringify({
         qtitle: title,
-        qcontent: content
+        qcontent: content,
+        writer: currentUser ? currentUser.name : '익명',
+        created: formattedDate
       })
     })
     .then(response => response.json())

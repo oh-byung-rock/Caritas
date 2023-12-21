@@ -43,16 +43,16 @@ const infoSchema = new mongoose.Schema(
 
 const Info = mongoose.model('Info', infoSchema);
 
-// ▼ 위와 동일
-const infonaver = new mongoose.Schema(
-  {
-    uid: String,
-    name: String
-  },
-  { collection: 'info' },
-);
+// // ▼ 위와 동일
+// const infonaver = new mongoose.Schema(
+//   {
+//     uid: String,
+//     name: String
+//   },
+//   { collection: 'info' },
+// );
 
-const Info2 = mongoose.model('Info2', infonaver);
+// const Info2 = mongoose.model('Info2', infonaver);
 
 mongoose
   .connect(
@@ -244,10 +244,23 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// ▼ 문의사항 관련
+
+const addqSchema = new mongoose.Schema(
+  {
+    uid: String,
+    email: String,
+  },
+  { collection: 'question' },
+);
+
+const AddQ = mongoose.model('Question', addqSchema);
+
 app.post('/addq', async (req, res) => {
-  const { qcontent, qtitle } = req.body;
+  const { qcontent, qtitle, writer,created } = req.body;
   
-  console.log('Received data:', qcontent, qtitle);
-  
+  console.log('Received data:', qcontent, qtitle, writer,created);
+  // res.send(data); _ data 형식의 응답
+  // res.status(200).json _ JSON 형식의 응답
   res.status(200).json({ message: 'Data received successfully' });
 });
