@@ -252,7 +252,8 @@ const addqSchema = new mongoose.Schema(
     qtitle: String,
     qcontent: String,
     writer: String,
-    created: String
+    created: String,
+    uid:String,
   },
   { collection: 'question' },
 );
@@ -260,14 +261,15 @@ const addqSchema = new mongoose.Schema(
 const AddQ = mongoose.model('Question', addqSchema);
 
 app.post('/addq', async (req, res) => {
-  const { qcontent, qtitle, writer,created } = req.body;
-  console.log('서버 문의', qtitle, qcontent, writer,created)
+  const { qcontent, qtitle, writer,created,uid } = req.body;
+  console.log('서버 문의', qtitle, qcontent, writer,created, uid)
 
   const newInfo = new AddQ({
       qtitle : qtitle,
       qcontent : qcontent,
       writer : writer,
-      created : created
+      created : created,
+      uid : uid,
     }); 
 
   try {

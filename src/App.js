@@ -2,6 +2,7 @@ import './App.css';
 import React,  {useState} from 'react';
 import CustomerPage from './component/CustomerPage';
 import LoginPage from './component/LoginPage';
+import Item1Customer from './component/Item1Customer';
 import Servertest from './component/servertest';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 

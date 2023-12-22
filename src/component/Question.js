@@ -99,6 +99,16 @@ function Question({ currentUser, authorName }) {
   console.log(dateString);
 
   const handleAddPost_mongo = async (title, content) => {
+    //여기부터
+    var uid=''
+    if(currentUser.platform){
+      if(currentUser.platform=='naver'){
+        uid=currentUser.id
+      }
+    }else{
+      uid=currentUser._id
+    }
+    //여기까지
     fetch('/addq', {
       method: 'POST',
       headers: {
@@ -107,8 +117,9 @@ function Question({ currentUser, authorName }) {
       body: JSON.stringify({
         qtitle: title,
         qcontent: content,
-        writer: currentUser ? currentUser.name : '익명',
-        created: createdtime
+        writer: currentUser.name,
+        created: createdtime,
+        uid: uid//여긴 추가로
       })
     })
     .then(response => response.json())
@@ -123,12 +134,34 @@ function Question({ currentUser, authorName }) {
 };
 
   const handleTitleClick = async (post) => {
-    settitleOpen(true);
-    setSelectedPost(post);
-    console.log('상자열림')
+    console.log('게시글uid',post.uid);
+    console.log('네이버uid',currentUser.id);
+    console.log('웹uid',currentUser._id);
+    if(post.uid === currentUser.id) {
+      // 네이버uid가 있으면서 게시글uid와 일치하는경우
+          settitleOpen(true);
+          setSelectedPost(post);
+          console.log('상자열림');
+        } else if(post.uid === currentUser._id) {
+      // 네이버uid가 없으면서 게시글uid와 웹uid가 일치하는경우
+          settitleOpen(true);
+          setSelectedPost(post);
+          console.log('상자열림');
+        } else {
+          console.log('권한이 없습니다.');
+        }
+    // settitleOpen(true);
+    // setSelectedPost(post);
+    // console.log(selectedPost)
+    // console.log('상자열림')
+    // console.log('게시글 uid 값 확인', post.uid)
+    // // ▲ 상태값 콜백 변환문제때문에 currentuser가 아닌 post로 uid를 받음
+    // console.log('게시글 접근자 uid 네이버', currentUser.id )
+    // console.log('게시글 접근자 uid 일반', currentUser._id )
+ 
     // if (currentUserUid === null) {
     //   alert("비회원은 사용할 수 없습니다.");
-    // } else if (currentUserUid === post.uid) {
+    // } else if (currentUserUid === post.uid)이거 {
     //   setSelectedPost(post);
     //   settitleOpen(true);
     // } else {
@@ -225,14 +258,14 @@ function Question({ currentUser, authorName }) {
             <TextField autoFocus margin="dense" 
               label="제목"
               name="qtitle" 
-              value={state.qtitle}
+              value={state.qtitle||""}
               onChange={handleChange}
               type="text" fullWidth />
 
             <TextField margin="dense" 
               label="내용"
               name="qcontent" 
-              value={state.qcontent}
+              value={state.qcontent||""}
               onChange={handleChange}
               type="text" fullWidth />
           </DialogContent>

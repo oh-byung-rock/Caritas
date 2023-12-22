@@ -20,7 +20,7 @@ import Navbar from './Navbar';
 function CustomerPage({ currentUser, setCurrentUser }) {
   
   const [selectedItem, setSelectedItem] = useState('item-0');
-  const [name, setName] = useState('사용자 이름');
+  const [name, setName] = useState('이름없음');
   const [photoURL, setPhotoURL] = useState(anany);
 
   const [gender, setGender] = useState('성별');
@@ -153,7 +153,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     return () => unsubscribe();
   }, []);*/
   useEffect(() => {
-    console.log('두배')
+    console.log('두배', currentUser)
     fetchUserInfo_mongo(currentUser);
     setIsLoading(false);
   }, []);
@@ -236,10 +236,11 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   };
 
   const fetchUserInfo_mongo = async (user) => {
-    console.log('현재 user 정보 : ', user)
+    console.log('현재 일반로그인 user 정보 : ', user)
     if(user){
       setName(user.name);
       setGender(user.gender);
+      setAge(user.age);
     }
   /*  if (customerDoc.exists()) {
       const userInfo = customerDoc.data();
@@ -310,10 +311,11 @@ function CustomerPage({ currentUser, setCurrentUser }) {
                           height={height} 
                           weight={weight} 
                           isEditingHeight={isEditingHeight} 
-                          newHeight={newHeight} 
+                          newHeight={newHeight}
                           setIsEditingHeight={setIsEditingHeight} 
                           handleSubmitHeight={handleSubmitHeight} 
                           setNewHeight = {setNewHeight}
+                          currentUser={currentUser}
                         />
                     ) : (
                     <Item1NonCustomer/ >

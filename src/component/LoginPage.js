@@ -20,6 +20,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import logo from '../assets/reallogo.png';
+import Item1Customer from './Item1Customer';
+import Item1NonCustomer from './Item1NonCustomer';
 
 // const api =require('../server/api.js')
 
@@ -32,7 +34,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("testname");
   const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
+  const [age, setAge] = useState("00");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [imagepoket, setImagePoket] = useState(null);
@@ -98,11 +100,12 @@ function LoginPage({ currentUser, setCurrentUser }) {
       })
       .then(response => response.json())
       .then(responseData => {
-        console.log('사용자 전체 정보',responseData);
+        console.log('사용자 전체 정보 웹',responseData);
         console.log('사용자 uid',responseData.response.id);
         console.log('사용자 이름',responseData.response.name);
+        responseData.response.platform='naver'
         setCurrentUser(responseData.response);
- 
+        console.log('txt', responseData.response)
       })
       .catch(error => {
         console.error('에러1',error);
@@ -256,6 +259,7 @@ const resetFields = () => {
   // };
   
   return (
+
     <div className="background">
     {/* <div className="login-container"> */}
     <div className="form-container font5">
@@ -398,6 +402,7 @@ const resetFields = () => {
       </Dialog>
     </div>
   );
+
 }
 
 export default LoginPage;

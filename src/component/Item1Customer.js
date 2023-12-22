@@ -12,8 +12,11 @@ function Item1Customer({
   newHeight,
   setNewHeight,
   setIsEditingHeight,
-  handleSubmitHeight
-}) {
+  handleSubmitHeight,
+  currentUser,
+}) 
+{
+  console.log('마이페이지', currentUser);
   return (
     <div className='board_wrap font6' style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
       <div className="board_title" style={{width:'70%'}}>
@@ -31,7 +34,9 @@ function Item1Customer({
           <div><strong>체중</strong></div>
         </div>
         <div className='column-2' style={{ width: '20%' }}>
-          <div style={{borderTop:'1px solid #242D34'}}>{name}</div>
+          <div style={{borderTop:'1px solid #242D34'}}>
+            {name === '이름없음' ? currentUser.name : name}
+          </div>
           <div>{gender}</div>
           <div>{age}</div>
           <div>{height} cm</div>
