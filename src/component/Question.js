@@ -47,6 +47,11 @@ function Question({ currentUser, authorName }) {
     settitleOpen(false);
   };
 
+  const handleBackClick = () => {
+    setSelectedPost(null);
+    console.log('뒤로가기')
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState(prevState => ({
@@ -134,9 +139,6 @@ function Question({ currentUser, authorName }) {
 };
 
   const handleTitleClick = async (post) => {
-    console.log('게시글uid',post.uid);
-    console.log('네이버uid',currentUser.id);
-    console.log('웹uid',currentUser._id);
     if(post.uid === currentUser.id) {
       // 네이버uid가 있으면서 게시글uid와 일치하는경우
           settitleOpen(true);
@@ -198,6 +200,13 @@ function Question({ currentUser, authorName }) {
         </h2>
         <h2 style={{ marginTop: '5px', fontSize: '24px' }}>문의사항을 빠르고 정확하게 안내해드립니다.</h2>
       </div>
+      {selectedPost ? ( // 선택된 게시글이 있으면 선택된 게시글의 내용을 출력합니다.
+        <div className="board" style={{width:'70%'}}>
+            <h2>{selectedPost.qtitle}</h2>
+            <p>{selectedPost.qcontent}</p>
+            <Button onClick={handleBackClick}>뒤로가기</Button>
+        </div>
+      ) : (
       <div className="board" style={{width:'70%'}}>
         <div className="top">
           <div className="num"  >번호</div>
@@ -230,6 +239,8 @@ function Question({ currentUser, authorName }) {
           </div>
           ))}
         </div>
+        
+
         <div className="upload-button">
         {currentUser ? (
           <Button
@@ -282,7 +293,7 @@ function Question({ currentUser, authorName }) {
           </DialogActions>
         </Dialog>
 
-        {selectedPost && (
+        {/* {selectedPost && (
           <Dialog open={titleopen} onClose={handleClose}>
             <DialogTitle>여기는 제목</DialogTitle>
             <DialogContent>
@@ -290,8 +301,11 @@ function Question({ currentUser, authorName }) {
             </DialogContent>
             <Button onClick={handleClose}>취소</Button>
           </Dialog>
-        )}
-      </div>
+        )} */}
+
+      </div>)} 
+      {/* className="board" div 종료*/}
+
     </div>
   );
 }
