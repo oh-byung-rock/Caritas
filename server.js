@@ -288,11 +288,36 @@ app.post('/addq', async (req, res) => {
 // ▼ 문의사항 db 받아오기
 
 app.get('/api/questions', async (req, res) => {
+
   try {
     const questions = await AddQ.find();
     res.json(questions);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error occurred while fetching questions');
+  }
+});
+
+// ▼ 문의사항 수정 기능
+app.patch('/api/questions/:uid', async (req, res) => {
+  const { uid } = req.params;
+  // req.params :  URL 경로의 일부로 전달되는 변수
+  const { qcontent } = req.body;
+  console.log('req.params',uid)
+  console.log('req.body',qcontent)
+
+  try {
+    const post = await AddQ.findById(uid);
+
+    if (post) {
+      post.qcontent = qcontent;
+      const updatedPost = await post.save();
+      res.status(200).json(updatedPost);
+    } else {
+
+      res.status(404).json({ message: 'No such post found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post', error: error });
   }
 });

@@ -11,7 +11,7 @@ import { getFirestore, collection, query, doc, setDoc,addDoc, getDoc ,getDocs,wh
 import { getAuth } from 'firebase/auth';
 import { filledInputClasses } from '@mui/material';
 
-function Question({ currentUser, authorName }) {
+function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
   const [postopen, setpostOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -23,7 +23,10 @@ function Question({ currentUser, authorName }) {
   const [qcontent, setQcontent] = useState("");
   const [state, setState] = useState("");
   const [questions, setQuestions] = useState([]);
-
+// ▼ 수정 및 저장 기능을 위한 상태값
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState('');
+  
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -60,33 +63,33 @@ function Question({ currentUser, authorName }) {
     }));
   };
 
-  const handleAddPost = async (title, content) => {
-   /* doc(firestore, 'collection1', 'document1')
-    collection(firestore, 'collection1') */
-    const firestore = getFirestore();
-    const noti_question_testRef = collection(firestore, "noti_quetion_test");
+  // const handleAddPost = async (title, content) => {
+  //  /* doc(firestore, 'collection1', 'document1')
+  //   collection(firestore, 'collection1') */
+  //   const firestore = getFirestore();
+  //   const noti_question_testRef = collection(firestore, "noti_quetion_test");
 
-    var a=await addDoc(noti_question_testRef, {
-      uid: currentUserUid,
-      name: authorName.authorName,
-      timestamp: Timestamp.fromDate(new Date()),
-      title: title,
-      count : 0,
-      grade: 0,
-    })
+  //   var a=await addDoc(noti_question_testRef, {
+  //     uid: currentUserUid,
+  //     name: authorName.authorName,
+  //     timestamp: Timestamp.fromDate(new Date()),
+  //     title: title,
+  //     count : 0,
+  //     grade: 0,
+  //   })
 
-    const noti_question_re_testRef = doc(firestore, "noti_question_re_test",a.id);
+  //   const noti_question_re_testRef = doc(firestore, "noti_question_re_test",a.id);
 
-     await updateDoc(doc(firestore, "noti_quetion_test", a.id), {
-      aid: a.id
-    });
+  //    await updateDoc(doc(firestore, "noti_quetion_test", a.id), {
+  //     aid: a.id
+  //   });
 
-    await setDoc(noti_question_re_testRef, {
-      content: content
-    });
+  //   await setDoc(noti_question_re_testRef, {
+  //     content: content
+  //   });
     
-    handleClose();
-  };
+  //   handleClose();
+  // };
 
   const createdtime = new Date().getTime();
   const mydate = new Date(createdtime);
@@ -139,7 +142,10 @@ function Question({ currentUser, authorName }) {
 };
 
   const handleTitleClick = async (post) => {
-    if(post.uid === currentUser.id) {
+    if(currentUser == null) { // currentUser가 null인 경우에 대한 조건문을 추가
+      console.log('로그인이 필요합니다');
+  } else {
+    if(post.uid === currentUser.id) {//이거 의미없는게 그냥 코드 살짝 바꾸면 아무나 접근가능한데 아 보안때매? ㅇㅇ
       // 네이버uid가 있으면서 게시글uid와 일치하는경우
           settitleOpen(true);
           setSelectedPost(post);
@@ -152,6 +158,7 @@ function Question({ currentUser, authorName }) {
         } else {
           console.log('권한이 없습니다.');
         }
+      }
     // settitleOpen(true);
     // setSelectedPost(post);
     // console.log(selectedPost)
@@ -192,6 +199,39 @@ function Question({ currentUser, authorName }) {
   
   // []안에 요소가 변경될 때마다 실행, []안이 공란이면 한 번만 실행
 
+  // ▼ 몽고db 수정하기 
+  // POST : 새로운 생성 || PATCH : 수정
+  const handleSave = async () => {
+    //var uid=''
+    // if(currentUser.platform){
+    //   if(currentUser.platform=='naver'){
+    //     uid=currentUser.id
+    //   }
+    // }else{
+    //   uid=currentUser._id
+    // }
+
+    try {
+      const response = await fetch(`/api/questions/${selectedPost._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ qcontent: editedContent })
+      });
+  
+      if (response) {
+        const updatedPost = await response.json();
+        setSelectedPost(updatedPost);
+        setIsEditing(false);
+        console.log('mongodb edited', response);
+      } else {
+        console.error('Failed to save the post');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+
   return (  
     <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
       <div className="board_title" style={{width:'70%'}}>
@@ -201,10 +241,32 @@ function Question({ currentUser, authorName }) {
         <h2 style={{ marginTop: '5px', fontSize: '24px' }}>문의사항을 빠르고 정확하게 안내해드립니다.</h2>
       </div>
       {selectedPost ? ( // 선택된 게시글이 있으면 선택된 게시글의 내용을 출력합니다.
-        <div className="board" style={{width:'70%'}}>
-            <h2>{selectedPost.qtitle}</h2>
-            <p>{selectedPost.qcontent}</p>
+        <div className="board" style={{ width: '70%' }}>
+          <h2>{selectedPost.qtitle}</h2>
+        <hr style={{ border: '2px solid #555' }} />
+        {isEditing ? (
+          <div>
+            <TextField 
+              value={editedContent} 
+              onChange={e => setEditedContent(e.target.value)} 
+            />
+            <div>
+              <Button onClick={handleSave}>저장</Button>
+              <Button onClick={() => setIsEditing(false)}>취소</Button>
+              <Button onClick={handleBackClick}>뒤로가기</Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h3>{selectedPost.qcontent}</h3>
+            <Button onClick={() => {
+              setIsEditing(true);
+              setEditedContent(selectedPost.qcontent);
+            }}>수정</Button>
             <Button onClick={handleBackClick}>뒤로가기</Button>
+          </div>
+        )}
+
         </div>
       ) : (
       <div className="board" style={{width:'70%'}}>

@@ -380,9 +380,9 @@ function CustomerPage({ currentUser, setCurrentUser }) {
         
       case 'item-1-4' :
         return(
+          // navigate('/question')
           <Question
-          currentUser={currentUser} 
-          authorName={name}/>
+          currentUser={currentUser}/>
         );
       
       case 'item-1-5' :
