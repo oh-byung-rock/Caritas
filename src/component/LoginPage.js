@@ -105,7 +105,6 @@ function LoginPage({ currentUser, setCurrentUser }) {
         console.log('사용자 이름',responseData.response.name);
         responseData.response.platform='naver'
         setCurrentUser(responseData.response);
-        console.log('txt', responseData.response)
       })
       .catch(error => {
         console.error('에러1',error);

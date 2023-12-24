@@ -10,6 +10,9 @@ import TextField from '@mui/material/TextField';
 import { getFirestore, collection, query, doc, setDoc,addDoc, getDoc ,getDocs,where,orderBy,limit,Timestamp, updateDoc } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 import { filledInputClasses } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { error } from 'jquery';
+import Page from './Page';
 
 function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
@@ -26,7 +29,14 @@ function Question({ currentUser }) {
 // ▼ 수정 및 저장 기능을 위한 상태값
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
-  
+// ▼ 페이징 기능을 위한 상태값  
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const postsPerPage = 5;
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -39,7 +49,7 @@ function Question({ currentUser }) {
     };
   
     fetchQuestions();
-  }, []);
+  }, [selectedPost]);
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -141,42 +151,38 @@ function Question({ currentUser }) {
     });
 };
 
-  const handleTitleClick = async (post) => {
-    if(currentUser == null) { // currentUser가 null인 경우에 대한 조건문을 추가
-      console.log('로그인이 필요합니다');
-  } else {
-    if(post.uid === currentUser.id) {//이거 의미없는게 그냥 코드 살짝 바꾸면 아무나 접근가능한데 아 보안때매? ㅇㅇ
-      // 네이버uid가 있으면서 게시글uid와 일치하는경우
-          settitleOpen(true);
-          setSelectedPost(post);
-          console.log('상자열림');
-        } else if(post.uid === currentUser._id) {
-      // 네이버uid가 없으면서 게시글uid와 웹uid가 일치하는경우
-          settitleOpen(true);
-          setSelectedPost(post);
-          console.log('상자열림');
-        } else {
-          console.log('권한이 없습니다.');
-        }
+// ▼ 게시글 열람 권한
+const handleTitleClick = async (post) => {
+  var uid=''
+    if(currentUser.platform){
+      if(currentUser.platform=='naver'){
+        uid=currentUser.id
       }
-    // settitleOpen(true);
-    // setSelectedPost(post);
-    // console.log(selectedPost)
-    // console.log('상자열림')
-    // console.log('게시글 uid 값 확인', post.uid)
-    // // ▲ 상태값 콜백 변환문제때문에 currentuser가 아닌 post로 uid를 받음
-    // console.log('게시글 접근자 uid 네이버', currentUser.id )
-    // console.log('게시글 접근자 uid 일반', currentUser._id )
- 
-    // if (currentUserUid === null) {
-    //   alert("비회원은 사용할 수 없습니다.");
-    // } else if (currentUserUid === post.uid)이거 {
-    //   setSelectedPost(post);
-    //   settitleOpen(true);
-    // } else {
-    //   alert("작성자와 일치하지 않습니다.");
-    // }
-  };
+    }else{
+      uid=currentUser._id
+    }
+
+  try {
+    const response = await fetch(`/api/question/see/${post._id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: uid }), // 사용자 ID를 함께 보냅니다
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      settitleOpen(true);
+      setSelectedPost(data.post);
+    } else {
+      console.log('권한이 없습니다.', response);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 
 
   /* 현재 사용자의 user.uid 설정 */
@@ -199,20 +205,11 @@ function Question({ currentUser }) {
   
   // []안에 요소가 변경될 때마다 실행, []안이 공란이면 한 번만 실행
 
-  // ▼ 몽고db 수정하기 
+  // ▼ 몽고db 수정기능
   // POST : 새로운 생성 || PATCH : 수정
   const handleSave = async () => {
-    //var uid=''
-    // if(currentUser.platform){
-    //   if(currentUser.platform=='naver'){
-    //     uid=currentUser.id
-    //   }
-    // }else{
-    //   uid=currentUser._id
-    // }
-
     try {
-      const response = await fetch(`/api/questions/${selectedPost._id}`, {
+      const response = await fetch(`/api/question/edit/${selectedPost._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ qcontent: editedContent })
@@ -223,6 +220,7 @@ function Question({ currentUser }) {
         setSelectedPost(updatedPost);
         setIsEditing(false);
         console.log('mongodb edited', response);
+        setSelectedPost(null);
       } else {
         console.error('Failed to save the post');
       }
@@ -231,6 +229,24 @@ function Question({ currentUser }) {
     }
   };
   
+  // ▼ 몽고db 삭제기능
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/question/delete/${selectedPost._id}`, {
+        method: 'DELETE',
+      });
+  
+      if (response.ok) {
+        console.log('Post deleted',response);
+        setSelectedPost(null);
+      } else {
+        console.error('Failed to delete the post');
+        console.log('deleted1',error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (  
     <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
@@ -241,29 +257,40 @@ function Question({ currentUser }) {
         <h2 style={{ marginTop: '5px', fontSize: '24px' }}>문의사항을 빠르고 정확하게 안내해드립니다.</h2>
       </div>
       {selectedPost ? ( // 선택된 게시글이 있으면 선택된 게시글의 내용을 출력합니다.
-        <div className="board" style={{ width: '70%' }}>
-          <h2>{selectedPost.qtitle}</h2>
-        <hr style={{ border: '2px solid #555' }} />
+        <div className="board" style={{ width: '70%'}}>
+          {/* 제목 */}
+          <h2 className="font6" style={{fontSize: '36px', padding: '30px 0',borderTop: '2px solid #434343', borderBottom: '2px solid lightgray'}} >{selectedPost.qtitle}</h2>
         {isEditing ? (
           <div>
-            <TextField 
+            <TextField
+              style={{ width: '100%', height:'20rem'}}
               value={editedContent} 
               onChange={e => setEditedContent(e.target.value)} 
             />
             <div>
-              <Button onClick={handleSave}>저장</Button>
+              <Button 
+                style={{ backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'15px', marginBottom: '5px'}}
+                onClick={handleSave}> 저장</Button>
               <Button onClick={() => setIsEditing(false)}>취소</Button>
               <Button onClick={handleBackClick}>뒤로가기</Button>
             </div>
           </div>
         ) : (
           <div>
-            <h3>{selectedPost.qcontent}</h3>
-            <Button onClick={() => {
-              setIsEditing(true);
-              setEditedContent(selectedPost.qcontent);
-            }}>수정</Button>
-            <Button onClick={handleBackClick}>뒤로가기</Button>
+            {/* 내용 */}
+            <h3 style={{  marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }} >{selectedPost.qcontent}</h3>
+            <Button 
+              style={{ float: 'right', backgroundColor: '#434343', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
+              onClick={handleDelete}>삭제</Button>
+            <Button 
+              style={{ float: 'right', backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px', marginLeft:'20px'}}
+              onClick={() => {
+                setIsEditing(true);
+                setEditedContent(selectedPost.qcontent);
+            }}>수정</Button>  
+            <Button 
+              style={{ backgroundColor: '#434343', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
+              onClick={handleBackClick}>뒤로가기</Button>
           </div>
         )}
 
@@ -302,6 +329,12 @@ function Question({ currentUser }) {
           ))}
         </div>
         
+        <Page
+        totalPosts={questions.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+        />
 
         <div className="upload-button">
         {currentUser ? (

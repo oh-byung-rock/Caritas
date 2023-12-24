@@ -299,7 +299,7 @@ app.get('/api/questions', async (req, res) => {
 });
 
 // ▼ 문의사항 수정 기능
-app.patch('/api/questions/:uid', async (req, res) => {
+app.patch('/api/question/edit/:uid', async (req, res) => {
   const { uid } = req.params;
   // req.params :  URL 경로의 일부로 전달되는 변수
   const { qcontent } = req.body;
@@ -319,5 +319,51 @@ app.patch('/api/questions/:uid', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error updating post', error: error });
+  }
+});
+
+// ▼ 문의사항 삭제 기능
+app.delete('/api/question/delete/:uid', async (req, res) => {
+  const { uid } = req.params;
+  console.log('delete params',uid)
+
+  try {
+    const post = await AddQ.findById(uid);
+
+    if (post) {
+      await post.deleteOne();
+      console.log('1');
+      res.status(200).json({ message: 'Server to Post deleted' });
+    } else {
+      console.log('2');
+      res.status(404).json({ message: 'No such post found' });
+    }
+  } catch (error) {
+    console.log('3',error);
+    res.status(500).json({ message: 'Error deleting post', error: error });
+  }
+});
+
+// ▼ 게시글 열람 권한
+app.post('/api/question/see/:id', async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  try {
+    const post = await AddQ.findById(id);
+
+    if (!post) {
+      res.status(404).json({ message: 'No such post found' });
+      return;
+    }
+
+    if (post.uid !== userId) {
+      res.status(403).json({ message: '권한이 없습니다.' }); // 사용자 ID가 게시글의 uid와 일치하지 않는 경우 403 오류를 반환합니다
+      return;
+    }
+
+    res.status(200).json({ post });
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting post', error: error });
   }
 });
