@@ -12,7 +12,7 @@ import { getAuth } from 'firebase/auth';
 import { filledInputClasses } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { error } from 'jquery';
-import Page from './Page';
+import searchimg from '../assets/searchimg.png';
 
 function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
@@ -115,8 +115,8 @@ function Question({ currentUser }) {
   const minutes = mydate.getMinutes();
   
   // 출력 형식에 맞게 문자열 생성
-  const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
-  console.log(dateString);
+  const dateString = `${year}.${month}.${date}`;
+  console.log('저장시간',dateString);
 
   const handleAddPost_mongo = async (title, content) => {
     //여기부터
@@ -140,7 +140,7 @@ function Question({ currentUser }) {
         qtitle: title,
         qcontent: content,
         writer: currentUser.name,
-        created: createdtime,
+        created: dateString,
         uid: uid//여긴 추가로
       })
     })
@@ -190,8 +190,6 @@ const handleTitleClick = async (post) => {
     console.error('Error:', error);
   }
 };
-
-
 
   /* 현재 사용자의 user.uid 설정 */
   useEffect(() => {
@@ -282,16 +280,18 @@ const handleTitleClick = async (post) => {
         {isEditing ? (
           <div>
             <TextField
-              style={{ width: '100%', height:'20rem'}}
+              style={{ width: '100%'}}
+              inputProps={{ style: { height:'20rem' } }}
               value={editedContent} 
               onChange={e => setEditedContent(e.target.value)} 
             />
-            <div>
+            <div style={{marginTop: '25px'}}>
+            <Button 
+                style={{  float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px',marginBottom: '5px'}}
+                onClick={() => setIsEditing(false)}>취소</Button>
               <Button 
-                style={{ backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'15px', marginBottom: '5px'}}
+                style={{ float: 'right', backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'15px', marginBottom: '5px'}}
                 onClick={handleSave}> 저장</Button>
-              <Button onClick={() => setIsEditing(false)}>취소</Button>
-              <Button onClick={handleBackClick}>뒤로가기</Button>
             </div>
           </div>
         ) : (
@@ -299,7 +299,7 @@ const handleTitleClick = async (post) => {
             {/* 내용 */}
             <h3 style={{  marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }} >{selectedPost.qcontent}</h3>
             <Button 
-              style={{ float: 'right', backgroundColor: '#434343', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
+              style={{ float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
               onClick={handleDelete}>삭제</Button>
             <Button 
               style={{ float: 'right', backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px', marginLeft:'20px'}}
@@ -308,7 +308,7 @@ const handleTitleClick = async (post) => {
                 setEditedContent(selectedPost.qcontent);
             }}>수정</Button>  
             <Button 
-              style={{ backgroundColor: '#434343', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
+              style={{  background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
               onClick={handleBackClick}>뒤로가기</Button>
           </div>
         )}
@@ -347,10 +347,13 @@ const handleTitleClick = async (post) => {
           </div>
           ))}
         </div>
-        
-        <TextField value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-        <Button onClick={searchNew}>검색</Button>
-
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'20px'}}>
+          <TextField 
+            inputProps={{ style: { height: "10px" } }} 
+            value={searchTerm} 
+            onChange={e => setSearchTerm(e.target.value)} />
+          <Button onClick={searchNew}><img src={searchimg} alt="검색" className="searchimg"/></Button>
+        </div>
         {/* <Page
         totalPosts={questions.length}
         postsPerPage={postsPerPage}
@@ -365,7 +368,7 @@ const handleTitleClick = async (post) => {
             style={{
               background: '#242D34',
               color: '#E0E0E0',
-              fontFamily: '노토5',
+              fontFamily: '노토6',
               fontSize: '1.2rem',
               width: '102px',
               height: '40px',

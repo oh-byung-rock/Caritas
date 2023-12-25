@@ -379,6 +379,7 @@ app.get('/api/question/search/:searchTerm', async (req, res) => {
     if (searchTerm) {
       questions = await AddQ.find({
         qtitle: new RegExp(searchTerm, 'i'),
+        // RegExp : search기능
       });
     } else {
       questions = await AddQ.find();
