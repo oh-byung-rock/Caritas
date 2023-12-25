@@ -32,6 +32,8 @@ function Question({ currentUser }) {
 // ▼ 페이징 기능을 위한 상태값  
   const [currentPage, setCurrentPage] = React.useState(1);
   const postsPerPage = 5;
+// ▼ 검색창 상태값
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -47,7 +49,7 @@ function Question({ currentUser }) {
         console.error('Failed to fetch questions:', error);
       }
     };
-  
+
     fetchQuestions();
   }, [selectedPost]);
 
@@ -119,6 +121,7 @@ function Question({ currentUser }) {
   const handleAddPost_mongo = async (title, content) => {
     //여기부터
     var uid=''
+
     if(currentUser.platform){
       if(currentUser.platform=='naver'){
         uid=currentUser.id
@@ -126,6 +129,7 @@ function Question({ currentUser }) {
     }else{
       uid=currentUser._id
     }
+
     //여기까지
     fetch('/addq', {
       method: 'POST',
@@ -154,12 +158,16 @@ function Question({ currentUser }) {
 // ▼ 게시글 열람 권한
 const handleTitleClick = async (post) => {
   var uid=''
+
+  if(currentUser){
     if(currentUser.platform){
       if(currentUser.platform=='naver'){
         uid=currentUser.id
       }
     }else{
       uid=currentUser._id
+    }} else{
+      uid='1'
     }
 
   try {
@@ -248,6 +256,17 @@ const handleTitleClick = async (post) => {
     }
   };
 
+  // ▼ 검색 기능
+  const searchNew = async () => {
+    try {
+      const response = await fetch(`/api/question/search/${searchTerm}`);
+      const data = await response.json();
+      setQuestions(data);
+    } catch (error) {
+      console.error('Failed to fetch questions:', error);
+    }
+  };
+
   return (  
     <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
       <div className="board_title" style={{width:'70%'}}>
@@ -329,12 +348,15 @@ const handleTitleClick = async (post) => {
           ))}
         </div>
         
-        <Page
+        <TextField value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+        <Button onClick={searchNew}>검색</Button>
+
+        {/* <Page
         totalPosts={questions.length}
         postsPerPage={postsPerPage}
         currentPage={currentPage}
         handlePageChange={handlePageChange}
-        />
+        /> */}
 
         <div className="upload-button">
         {currentUser ? (

@@ -367,3 +367,25 @@ app.post('/api/question/see/:id', async (req, res) => {
     res.status(500).json({ message: 'Error getting post', error: error });
   }
 });
+
+// ▼ 검색 기능
+app.get('/api/question/search/:searchTerm', async (req, res) => {
+  const { searchTerm } = req.params;
+  console.log('검색어', searchTerm)
+
+  let questions;
+
+  try {
+    if (searchTerm) {
+      questions = await AddQ.find({
+        qtitle: new RegExp(searchTerm, 'i'),
+      });
+    } else {
+      questions = await AddQ.find();
+    }
+    res.status(200).json(questions);
+  } catch (error) {
+    res.status(500).json({ message: '데이터 검색 중에 오류가 발생했습니다.', error: error });
+    console.log('검색에러', error)
+  }
+});
