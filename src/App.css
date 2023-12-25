@@ -452,12 +452,66 @@ class gray-background{
   opacity: 0;
 }
 
-/* .bravofont{
-  width: 429px;
-  height: 250px;
-  background-color: rgba(255, 255, 255, 0);
-  left: -162px;
-  border:1px solid;
-  top:173px;
-  position: relative;
-} */
+/* 페이지내이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul.pagination li {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #242D34;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+ul.pagination li:first-child{
+  border-radius: 5px 0 0 5px;
+}
+
+ul.pagination li:last-child{
+  border-radius: 0 5px 5px 0;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: #242D34;
+  font-size: 1rem;
+  
+}
+
+ul.pagination li:nth-child(1) a,
+ul.pagination li:nth-child(2) a,
+ul.pagination li:nth-child(8) a,
+ul.pagination li:nth-child(9) a {
+  font-size: 30px;
+}
+
+ul.pagination li.active a {
+  color: #E0E0E0;
+}
+
+ul.pagination li.active {
+  background-color: #242D34;
+}
+
+ul.pagination li a:hover,
+ul.pagination li a.active {
+  color: #242D34;
+}
+
+.page-selection {
+  width: 48px;
+  height: 30px;
+  color: #242D34;
+}

@@ -15,6 +15,7 @@ import Question from './Question';
 import Servertest from './servertest';
 import Col2 from './Col2';
 import Navbar from './Navbar';
+import Paging from './Paging';
 
 
 function CustomerPage({ currentUser, setCurrentUser }) {
@@ -388,7 +389,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
       case 'item-1-5' :
         return(
           <div >
-          <Servertest/>
+          <Paging/>
           </div>
         );
 

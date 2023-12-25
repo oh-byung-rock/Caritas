@@ -13,6 +13,7 @@ import { filledInputClasses } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { error } from 'jquery';
 import searchimg from '../assets/searchimg.png';
+import Paging from './Paging';
 
 function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
@@ -354,12 +355,7 @@ const handleTitleClick = async (post) => {
             onChange={e => setSearchTerm(e.target.value)} />
           <Button onClick={searchNew}><img src={searchimg} alt="검색" className="searchimg"/></Button>
         </div>
-        {/* <Page
-        totalPosts={questions.length}
-        postsPerPage={postsPerPage}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-        /> */}
+        <Paging/>
 
         <div className="upload-button">
         {currentUser ? (
