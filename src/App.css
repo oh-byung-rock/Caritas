@@ -456,6 +456,7 @@ class gray-background{
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 15px;
 }
 
@@ -484,6 +485,7 @@ ul.pagination li:last-child{
 }
 
 ul.pagination li a {
+  font-family: '노토6';
   text-decoration: none;
   color: #242D34;
   font-size: 1rem;

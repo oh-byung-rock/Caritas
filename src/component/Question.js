@@ -30,29 +30,25 @@ function Question({ currentUser }) {
 // ▼ 수정 및 저장 기능을 위한 상태값
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
-// ▼ 페이징 기능을 위한 상태값  
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const postsPerPage = 5;
 // ▼ 검색창 상태값
   const [searchTerm, setSearchTerm] = React.useState("");
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // ▼ 페이지내이션 관련
+  const [page, setPage] = useState(1);
+  const [totaldbcount, setTotaldbcount] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('/api/questions');
+        const response = await fetch(`/api/questions?page=${page}&perPage=5`);
         const data = await response.json();
-        setQuestions(data);
+        setQuestions(data.questions);
+        setTotaldbcount(data.totaldbcount);
       } catch (error) {
         console.error('Failed to fetch questions:', error);
       }
     };
-
     fetchQuestions();
-  }, [selectedPost]);
+  }, [page, selectedPost]);
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -341,21 +337,35 @@ const handleTitleClick = async (post) => {
             // const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
 
            <div key={index} className="list">
-            <div className="num">{index + 1}</div>
+            <div className="num">{(page - 1) * 5 + index + 1}</div>
             <div className="title" onClick={() => handleTitleClick(post)}>{post.qtitle}</div>
             <div className="writer" style={{width:'17.5%'}} >{post.writer}</div>
             <div className="date" style={{width:'17.5%'}}>{post.created}</div>
           </div>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'20px'}}>
-          <TextField 
-            inputProps={{ style: { height: "10px" } }} 
-            value={searchTerm} 
-            onChange={e => setSearchTerm(e.target.value)} />
-          <Button onClick={searchNew}><img src={searchimg} alt="검색" className="searchimg"/></Button>
-        </div>
-        <Paging/>
+
+        {currentUser ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'20px', marginLeft:'15px', marginBottom:'20px'}}>
+            <TextField 
+              inputProps={{ style: { height: "10px" } }} 
+              value={searchTerm} 
+              onChange={e => setSearchTerm(e.target.value)} />
+            <Button onClick={searchNew}><img src={searchimg} alt="검색" className="searchimg"/></Button>
+          </div>
+          ) : (
+          <div>&nbsp;</div>
+          )}
+
+        {currentUser ? (
+                <Paging
+                  totaldbcount = {totaldbcount}
+                  page = {page}
+                  setPage = {setPage}
+                />
+          ) : (
+          <div>&nbsp;</div>
+          )}
 
         <div className="upload-button">
         {currentUser ? (
@@ -402,6 +412,8 @@ const handleTitleClick = async (post) => {
               onClick={(event) => {
                 event.preventDefault();
                 handleAddPost_mongo(state.qtitle, state.qcontent);
+                setState({ ...state, qtitle: "", qcontent: "" });
+                // ...`변수명`란? 해당 객체 (배열아님) 전체선택
               }}
             >
               확인

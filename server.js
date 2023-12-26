@@ -286,17 +286,21 @@ app.post('/addq', async (req, res) => {
 });
 
 // ▼ 문의사항 db 받아오기
-
 app.get('/api/questions', async (req, res) => {
+  const page = Number(req.query.page) || 1; // 현재 페이지 번호. 기본값은 1.
+  const perPage = Number(req.query.perPage) || 5; // 한 페이지당 보여줄 아이템의 개수. 기본값은 5.
 
   try {
-    const questions = await AddQ.find();
-    res.json(questions);
+    const questions = await AddQ.find().skip((page - 1) * perPage).limit(perPage);
+    const totaldbcount = await AddQ.countDocuments();
+    console.log('페이지수',totaldbcount)
+    res.json({questions, totaldbcount});
   } catch (error) {
     console.error(error);
     res.status(500).send('Error occurred while fetching questions');
   }
 });
+
 
 // ▼ 문의사항 수정 기능
 app.patch('/api/question/edit/:uid', async (req, res) => {
