@@ -35,8 +35,8 @@ function LoginPage({ currentUser, setCurrentUser }) {
   const [name, setName] = useState("testname");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("00");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("0");
+  const [height, setHeight] = useState("0");
   const [imagepoket, setImagePoket] = useState(null);
   const [state, setState] = useState("");
 
@@ -46,7 +46,7 @@ function LoginPage({ currentUser, setCurrentUser }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch('/login', {
+    fetch('/login?weight=0&height=0', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

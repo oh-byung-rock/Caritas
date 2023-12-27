@@ -101,7 +101,7 @@ app.post('/add', async (req, res) => {
   }
 });
 
-// ▼ 회원가입 백엔드 서버
+// ▼ 회원가입
 app.post('/add2', async (req, res) => {
   const { email, password, name, gender, age, weight, height } = req.body;
   
@@ -118,10 +118,12 @@ app.post('/add2', async (req, res) => {
   });
 
  try {
-     const result = await newInfo.save();
-     res.status(200).json({ message:'성공적으로 저장되었습니다!',email,password,name ,gender ,age ,weight ,height });
+    const result = await newInfo.save();
+    result.uid = result._id;  
+    await result.save();  
+    res.status(200).json({ message:'성공적으로 저장되었습니다!',email,password,name ,gender ,age ,weight ,height });
  } catch (error) {
-     res.status(500).json({ message:'데이터 저장 중에 오류가 발생했습니다.', error:error });
+    res.status(500).json({ message:'데이터 저장 중에 오류가 발생했습니다.', error:error });
  }
 });
 // ▲ 회원가입 백엔드 서버
@@ -183,8 +185,10 @@ app.use(express.static(__dirname + '/src'));
 // ---------------- session 관련 ----------------------
 
 app.get('/api/naver/userinfo', (req, res) => {
-  
   const token = req.headers.authorization;
+  const weight = req.query.weight;
+  const height = req.query.height;
+
   console.log('서버 토큰',token);
   fetch('https://openapi.naver.com/v1/nid/me', {
     method: 'GET',
@@ -194,17 +198,15 @@ app.get('/api/naver/userinfo', (req, res) => {
   })
   .then(response => response.json())
   .then(async data => {
-    console.log('사용자 전체 정보', data);
-    console.log('사용자 uid', data.response.id);
-    console.log('사용자 이름', data.response.name);
-    
     // ▼ INFO컬렉션에 해당 uid가 있는지 중복여부판단
     const user = await Info.findOne({uid: data.response.id});
 
     if (!user) {
       const newInfo = new Info({
         uid: data.response.id,
-        name: data.response.name
+        name: data.response.name,
+        weight: weight,
+        height: height
       });
       try {
         const result = await newInfo.save();
@@ -237,6 +239,7 @@ app.post('/login', async (req, res) => {
     if (passwordOK) {
       const { password, ...userWithoutPassword } = user.toObject();
       return res.status(200).json({ message: '로그인 성공!', user: userWithoutPassword });
+      
     } else {
       return res.status(400).json({ message: '비밀번호가 일치하지 않습니다.' });
     }
@@ -287,13 +290,15 @@ app.post('/addq', async (req, res) => {
 
 // ▼ 문의사항 db 받아오기
 app.get('/api/questions', async (req, res) => {
+  // ▼ 쿼리 파라미터(query)로 보냈(req)으니 req.query로 받기 , a || b 은 a가 false일때 b 실행
+  // 부연설명 : 쿼리 파라미터는 문자열이기 때문에 number로 숫자로 변형 
   const page = Number(req.query.page) || 1; // 현재 페이지 번호. 기본값은 1.
   const perPage = Number(req.query.perPage) || 5; // 한 페이지당 보여줄 아이템의 개수. 기본값은 5.
 
   try {
+    // ▼ 전체데이터(AddQ.find())중에서 n개 만큼 결과를 건너뛰고(skip(n)) 최대 m개 만큼 반환(limit(m))
     const questions = await AddQ.find().skip((page - 1) * perPage).limit(perPage);
-    const totaldbcount = await AddQ.countDocuments();
-    console.log('페이지수',totaldbcount)
+    const totaldbcount = await AddQ.countDocuments();   
     res.json({questions, totaldbcount});
   } catch (error) {
     console.error(error);
@@ -392,5 +397,37 @@ app.get('/api/question/search/:searchTerm', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: '데이터 검색 중에 오류가 발생했습니다.', error: error });
     console.log('검색에러', error)
+  }
+});
+
+// ▼ 마이페이지 신장,몸무게 값 조회
+app.get('/checkinfo/:uid', async (req, res) => {
+  const uid = req.params.uid;
+  const userInfo = await Info.findOne({ uid: uid });
+
+  if (!userInfo) {
+    res.status(404).json({ message: '사용자 정보를 찾을 수 없습니다.' });
+  } else {
+    res.status(200).json({ checkedweight: userInfo.weight, checkedheight: userInfo.height });
+  }
+});
+
+// ▼ 신장 값 수정
+app.patch('/api/info/edit/:uid', async (req, res) => {
+  const { uid } = req.params;
+  const { height } = req.body;//이건 왜 params랑 body랑 나눔? 
+
+  try {
+    const info = await Info.findOne({uid:uid});
+    if (info) {
+      info.height = height;
+      const updatedInfo = await info.save();
+      res.status(200).json(updatedInfo);
+    } else {
+      res.status(404).json({ message: 'No such info found' });
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Error updating info', error: error });
   }
 });

@@ -26,11 +26,13 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
   const [gender, setGender] = useState('성별');
   const [age, setAge] = useState('나이');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('체중');
+  const [height, setHeight] = useState('1');
+  const [weight, setWeight] = useState('1');
+  const [checkedheight, setCheckedheight] = useState('1');
+  const [checkedweight, setCheckedweight] = useState('2');
 
   const [isEditingHeight, setIsEditingHeight] = useState(false);
-  const [newHeight, setNewHeight] = useState(height);
+  const [newHeight, setNewHeight] = useState('');
 
   const [isEditingBenchPressWeight, setIsEditingBenchPressWeight] = useState(false);
   const [isEditingBenchPressTimes, setIsEditingBenchPressTimes] = useState(false);
@@ -61,26 +63,26 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
   const navigate = useNavigate();
 
-  const handleSubmitField = async (field, value, setOriginalValue, setIsEditing) => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+  // const handleSubmitField = async (field, value, setOriginalValue, setIsEditing) => {
+  //   const auth = getAuth();
+  //   const user = auth.currentUser;
   
-    if (user) {
-      try {
-        const firestore = getFirestore();
-        const customerDocRef = doc(firestore, "customer", user.uid);
+  //   if (user) {
+  //     try {
+  //       const firestore = getFirestore();
+  //       const customerDocRef = doc(firestore, "customer", user.uid);
   
-        await updateDoc(customerDocRef, {
-          [field]: value,
-        });
+  //       await updateDoc(customerDocRef, {
+  //         [field]: value,
+  //       });
 
-        setOriginalValue(value);
-        setIsEditing(false);
-      } catch (error) {
-        console.log(`${field} 업데이트에 실패하였습니다.`, error);
-      }
-    }
-  };
+  //       setOriginalValue(value);
+  //       setIsEditing(false);
+  //     } catch (error) {
+  //       console.log(`${field} 업데이트에 실패하였습니다.`, error);
+  //     }
+  //   }
+  // };
   
   
 
@@ -157,11 +159,41 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     console.log('두배', currentUser)
     fetchUserInfo_mongo(currentUser);
     setIsLoading(false);
-  }, []);
+  }, [currentUser]);
   // 이벤트 : 사용자 인증 상태 감지(onAuthStateChanged함수) → 구독해제 (해제안할시 계속 사용자 인증 상태 감지가 작동해서 메모리 낭비)
   // → 그러면 사용자 인증 값 (ex) 세션)이 바뀌면 어떻게 감지할까 → []가 비어있음에도 onAuthStateChanged함수 기본 기능 중 하나인 사용자 인증 관련 변화를 감지가 작동되서 그때 useeffect 작동
   // → 결론적으로 unsubscribe(); 가 아닌 return () => unsubscribe(); 를 쓴 이유가 된다.
 
+  useEffect(() => {
+    let uid = '';
+    if(currentUser){
+    if (currentUser.platform) {
+      if (currentUser.platform == 'naver') {
+        uid = currentUser.id;
+      }
+    } else {
+      uid = currentUser._id;
+    }} else { console.log('거울임') }
+  
+    // uid를 서버에 보내고 응답을 받습니다.
+    fetch(`/checkinfo/${uid}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('서버 응답 오류');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const { checkedweight, checkedheight } = data;
+      setCheckedweight(checkedweight);
+      setCheckedheight(checkedheight);
+      console.log('weight:', checkedweight, 'height:', checkedheight);
+    })
+    .catch(error => {
+      console.error('사용자 정보를 가져오는데 실패했습니다:', error);
+    });
+  }, [currentUser]);
+  
 
   useEffect(() => {
     const calculateExp1rm = () => {
@@ -242,6 +274,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
       setName(user.name);
       setGender(user.gender);
       setAge(user.age);
+
     }
   /*  if (customerDoc.exists()) {
       const userInfo = customerDoc.data();
@@ -275,23 +308,23 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
 
 
-  const handleSubmitHeight = () => {
-    handleSubmitField("신장", newHeight, setHeight, setIsEditingHeight);
-  };
+  // const handleSubmitHeight = () => {
+  //   handleSubmitField("신장", newHeight, setHeight, setIsEditingHeight);
+  // };
   
-  const handleSubmitBenchPressWeight = () => {
-    handleSubmitField("벤치프레스중량", newBenchPressWeight, setBenchPressWeight, setIsEditingBenchPressWeight);
-  };
-  const handleSubmitSquatWeight = () => {
-    handleSubmitField("스쿼트중량", newSquatWeight, setSquatWeight, setIsEditingSquatWeight);
-  };
+  // const handleSubmitBenchPressWeight = () => {
+  //   handleSubmitField("벤치프레스중량", newBenchPressWeight, setBenchPressWeight, setIsEditingBenchPressWeight);
+  // };
+  // const handleSubmitSquatWeight = () => {
+  //   handleSubmitField("스쿼트중량", newSquatWeight, setSquatWeight, setIsEditingSquatWeight);
+  // };
 
-  const handleSubmitBenchPressTimes = () => {
-    handleSubmitField("벤치프레스횟수", newBenchPressTimes, setBenchPressTimes, setIsEditingBenchPressTimes);
-  };
-  const handleSubmitSquatTimes = () => {
-    handleSubmitField("스쿼트횟수", newSquatTimes, setSquatTimes, setIsEditingSquatTimes);
-  };
+  // const handleSubmitBenchPressTimes = () => {
+  //   handleSubmitField("벤치프레스횟수", newBenchPressTimes, setBenchPressTimes, setIsEditingBenchPressTimes);
+  // };
+  // const handleSubmitSquatTimes = () => {
+  //   handleSubmitField("스쿼트횟수", newSquatTimes, setSquatTimes, setIsEditingSquatTimes);
+  // };
 
   const displayContent = () => {
     switch (selectedItem) {
@@ -314,9 +347,11 @@ function CustomerPage({ currentUser, setCurrentUser }) {
                           isEditingHeight={isEditingHeight} 
                           newHeight={newHeight}
                           setIsEditingHeight={setIsEditingHeight} 
-                          handleSubmitHeight={handleSubmitHeight} 
+                          // handleSubmitHeight={handleSubmitHeight} 
                           setNewHeight = {setNewHeight}
                           currentUser={currentUser}
+                          checkedheight={checkedheight}
+                          checkedweight={checkedweight}
                         />
                     ) : (
                     <Item1NonCustomer/ >
@@ -332,12 +367,12 @@ function CustomerPage({ currentUser, setCurrentUser }) {
           BenchPressWeight={BenchPressWeight}
           newBenchPressWeight={newBenchPressWeight}
           setIsEditingBenchPressWeight={setIsEditingBenchPressWeight}
-          handleSubmitBenchPressWeight={handleSubmitBenchPressWeight}
+          // handleSubmitBenchPressWeight={handleSubmitBenchPressWeight}
           isEditingBenchPressTimes={isEditingBenchPressTimes}
           BenchPressTimes={BenchPressTimes}
           newBenchPressTimes={newBenchPressTimes}
           setIsEditingBenchPressTimes={setIsEditingBenchPressTimes}
-          handleSubmitBenchPressTimes={handleSubmitBenchPressTimes}
+          // handleSubmitBenchPressTimes={handleSubmitBenchPressTimes}
           setNewBenchPressTimes = {setNewBenchPressTimes}
           setNewBenchPressWeight = {setNewBenchPressWeight}
           exp1rm={exp1rm}
@@ -350,8 +385,8 @@ function CustomerPage({ currentUser, setCurrentUser }) {
           newSquatTimes={newSquatTimes}
           setIsEditingSquatWeight={setIsEditingSquatWeight}
           setIsEditingSquatTimes={setIsEditingSquatTimes}
-          handleSubmitSquatWeight={handleSubmitSquatWeight}
-          handleSubmitSquatTimes={handleSubmitSquatTimes}
+          // handleSubmitSquatWeight={handleSubmitSquatWeight}
+          // handleSubmitSquatTimes={handleSubmitSquatTimes}
           SquatTimes={SquatTimes}
           squatExp1rm={squatExp1rm}
           setNewSquatWeight={setNewSquatWeight}

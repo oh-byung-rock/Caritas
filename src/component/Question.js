@@ -39,6 +39,7 @@ function Question({ currentUser }) {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
+        // ▼ /api/questions 에 쿼리파라미터로 page와 perpage 를 보내기
         const response = await fetch(`/api/questions?page=${page}&perPage=5`);
         const data = await response.json();
         setQuestions(data.questions);
