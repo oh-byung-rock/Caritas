@@ -52,24 +52,28 @@
 .board > div.content > div.list > div.num,
 .board > div.content > div.list > div.writer,
 .board > div.content > div.list > div.count,
+.board > div.content > div.list > div.date,
 .board > div.list > div.num,
 .board > div.list > div.writer,
 .board > div.list > div.count,
+.board > div.list > div.date,
 .board > div.top > div.num,
 .board > div.top > div.writer,
-.board > div.top > div.count{
+.board > div.top > div.count,
+.board > div.top > div.date{
   width: 10%;
   padding: 15px 0;
   text-align: center;
   border-right: 1px solid #A0A0A0;
 }
 
-.board > div.content > div.list > div.date,
-.board > div.list > div.date,
-.board > div.top > div.date{
+.board > div.content > div.list > div.comment,
+.board > div.list > div.comment,
+.board > div.top > div.comment{
   width: 15%;
   text-align: center;
   padding: 15px 0;
+  
 }
 
 .board > div.top > div.title{

@@ -257,6 +257,8 @@ const addqSchema = new mongoose.Schema(
     writer: String,
     created: String,
     uid:String,
+    comment: String, 
+    commentstate: Number,
   },
   { collection: 'question' },
 );
@@ -331,6 +333,28 @@ app.patch('/api/question/edit/:uid', async (req, res) => {
   }
 });
 
+// ▼ 댓글 추가
+app.post('/api/question/comment/:uid', async (req, res) => {
+  const { uid } = req.params;
+  const { comment, commentstate } = req.body; 
+
+  try {
+    const post = await AddQ.findById(uid);
+
+    if (post) {
+      post.comment = comment; 
+      post.commentstate = commentstate; 
+      const updatedPost = await post.save();
+      res.status(200).json(updatedPost);
+    } else {
+      res.status(404).json({ message: 'No such post found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post', error: error });
+  }
+});
+
+
 // ▼ 문의사항 삭제 기능
 app.delete('/api/question/delete/:uid', async (req, res) => {
   const { uid } = req.params;
@@ -356,8 +380,8 @@ app.delete('/api/question/delete/:uid', async (req, res) => {
 // ▼ 게시글 열람 권한
 app.post('/api/question/see/:id', async (req, res) => {
   const { id } = req.params;
-  const { userId } = req.body;
-
+  const { userId, userState } = req.body;
+  console.log('wlwl', userState)
   try {
     const post = await AddQ.findById(id);
 
@@ -366,11 +390,11 @@ app.post('/api/question/see/:id', async (req, res) => {
       return;
     }
 
-    if (post.uid !== userId) {
+    if (userState !== '1' && post.uid !== userId) {
       res.status(403).json({ message: '권한이 없습니다.' }); // 사용자 ID가 게시글의 uid와 일치하지 않는 경우 403 오류를 반환합니다
       return;
     }
-
+    
     res.status(200).json({ post });
   } catch (error) {
     res.status(500).json({ message: 'Error getting post', error: error });

@@ -32,9 +32,11 @@ function Question({ currentUser }) {
   const [editedContent, setEditedContent] = useState('');
 // ▼ 검색창 상태값
   const [searchTerm, setSearchTerm] = React.useState("");
-  // ▼ 페이지내이션 관련
+// ▼ 페이지내이션 관련
   const [page, setPage] = useState(1);
   const [totaldbcount, setTotaldbcount] = useState("");
+// ▼ 댓글
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -156,8 +158,9 @@ function Question({ currentUser }) {
 // ▼ 게시글 열람 권한
 const handleTitleClick = async (post) => {
   var uid=''
-
+  var state=''
   if(currentUser){
+    state=currentUser.state
     if(currentUser.platform){
       if(currentUser.platform=='naver'){
         uid=currentUser.id
@@ -174,7 +177,7 @@ const handleTitleClick = async (post) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: uid }), // 사용자 ID를 함께 보냅니다
+      body: JSON.stringify({ userId: uid , userState: state }), // 사용자 ID를 함께 보냅니다
     });
 
     if (response.ok) {
@@ -235,22 +238,25 @@ const handleTitleClick = async (post) => {
   
   // ▼ 몽고db 삭제기능
   const handleDelete = async () => {
-    try {
-      const response = await fetch(`/api/question/delete/${selectedPost._id}`, {
-        method: 'DELETE',
-      });
-  
-      if (response.ok) {
-        console.log('Post deleted',response);
-        setSelectedPost(null);
-      } else {
-        console.error('Failed to delete the post');
-        console.log('deleted1',error);
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      try {
+        const response = await fetch(`/api/question/delete/${selectedPost._id}`, {
+          method: 'DELETE',
+        });
+    
+        if (response.ok) {
+          console.log('Post deleted',response);
+          setSelectedPost(null);
+        } else {
+          console.error('Failed to delete the post');
+          console.log('deleted1',error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
     }
   };
+  
 
   // ▼ 검색 기능
   const searchNew = async () => {
@@ -262,6 +268,32 @@ const handleTitleClick = async (post) => {
       console.error('Failed to fetch questions:', error);
     }
   };
+
+  // ▼ 댓글달기
+  const commentadd = async () => {
+    console.log('댓글내용', comment)
+    try {
+      const response = await fetch(`/api/question/comment/${selectedPost._id}`, {
+        method: 'POST', // 메소드를 'POST'로 변경
+        headers: {
+          'Content-Type': 'application/json' // 데이터 형식을 JSON으로 명시
+        },
+        body: JSON.stringify({ // 서버에게 전송할 데이터
+          comment: comment,
+          commentstate: 1
+        })
+      });
+  
+      if (response.ok) {
+        console.log('Comment added', response);
+      } else {
+        console.error('Failed to add the comment');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
 
   return (  
     <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
@@ -278,13 +310,14 @@ const handleTitleClick = async (post) => {
         {isEditing ? (
           <div>
             <TextField
-              style={{ width: '100%'}}
+              multiline // 줄바꿈 속성
+              style={{ width: '100%', textAlign: 'left' }} 
               inputProps={{ style: { height:'20rem' } }}
               value={editedContent} 
               onChange={e => setEditedContent(e.target.value)} 
             />
             <div style={{marginTop: '25px'}}>
-            <Button 
+             <Button 
                 style={{  float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px',marginBottom: '5px'}}
                 onClick={() => setIsEditing(false)}>취소</Button>
               <Button 
@@ -296,18 +329,59 @@ const handleTitleClick = async (post) => {
           <div>
             {/* 내용 */}
             <h3 style={{  marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }} >{selectedPost.qcontent}</h3>
-            <Button 
-              style={{ float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
-              onClick={handleDelete}>삭제</Button>
-            <Button 
-              style={{ float: 'right', backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px', marginLeft:'20px'}}
-              onClick={() => {
-                setIsEditing(true);
-                setEditedContent(selectedPost.qcontent);
-            }}>수정</Button>  
-            <Button 
-              style={{  background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
-              onClick={handleBackClick}>뒤로가기</Button>
+            
+            {
+            currentUser.state == '1' ? (
+              selectedPost.comment ? (
+                <div style={{ borderBottom: '2px solid lightgray' }}>
+                  <h3 style={{ marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }}>
+                    {selectedPost.comment}
+                  </h3>
+                  <Button style={{ background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginBottom:'20px', marginTop: '15px'}}>
+                    댓글고치기
+                  </Button>
+                </div>
+              ) : (
+                <div style={{ borderBottom: '2px solid lightgray' }}>
+                  <TextField
+                    multiline
+                    style={{ width: '100%', textAlign: 'left' }}
+                    inputProps={{ style: { height:'5rem' } }}
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
+                  />
+                  <Button
+                    style={{ background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginBottom:'20px', marginTop: '15px'}}
+                    onClick={commentadd}>
+                    댓글달기
+                  </Button>
+                </div>
+              )
+            ) : (
+              selectedPost.comment ? (
+                <h3 style={{ marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }}>
+                  {selectedPost.comment}
+                </h3>
+              ) : (
+                <>&nbsp;</>
+              )
+            )
+          }
+
+            <div>
+              <Button 
+                style={{ float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
+                onClick={handleDelete}>삭제</Button>
+              <Button 
+                style={{ float: 'right', backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px', marginLeft:'20px'}}
+                onClick={() => {
+                  setIsEditing(true);
+                  setEditedContent(selectedPost.qcontent);
+              }}>수정</Button>  
+              <Button 
+                style={{  background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
+                onClick={handleBackClick}>뒤로가기</Button>
+            </div>
           </div>
         )}
 
@@ -315,10 +389,11 @@ const handleTitleClick = async (post) => {
       ) : (
       <div className="board" style={{width:'70%'}}>
         <div className="top">
-          <div className="num"  >번호</div>
-          <div className="title"  >제목</div>
+          <div className="num"  style={{width:'8.75%'}}>번호</div>
+          <div className="title"  style={{width:'52.8%'}} >제목</div>
           <div className="writer" style={{width:'17.5%'}} >글쓴이</div>
           <div className="date" style={{width:'17.5%'}} > 등록일 </div>
+          <div className="comment" style={{width:'17.5%'}} > 답변 </div>
         </div>
         <div className="content">
           {/* index만큼 post로 배열을 구분한다. 즉 배열 하나하나를 post로 나눈다. */}
@@ -338,10 +413,14 @@ const handleTitleClick = async (post) => {
             // const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
 
            <div key={index} className="list">
-            <div className="num">{(page - 1) * 5 + index + 1}</div>
-            <div className="title" onClick={() => handleTitleClick(post)}>{post.qtitle}</div>
+            <div className="num" style={{width:'8.75%'}}>{(page - 1) * 5 + index + 1}</div>
+            <div className="title" style={{width:'52.5%'}} onClick={() => handleTitleClick(post)}>{post.qtitle}</div>
             <div className="writer" style={{width:'17.5%'}} >{post.writer}</div>
             <div className="date" style={{width:'17.5%'}}>{post.created}</div>
+            <div className="comment" style={{width:'17.5%'}}>
+            {post.commentstate == 1 ? '완료' : '대기중'}
+          </div>
+
           </div>
           ))}
         </div>
