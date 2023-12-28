@@ -102,14 +102,19 @@ app.post('/add', async (req, res) => {
 });
 
 // ▼ 회원가입
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.post('/add2', async (req, res) => {
   const { email, password, name, gender, age, weight, height } = req.body;
   
   console.log('Received data:', email, password, name, gender, age, weight,height);
 
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  console.log('암호화 된 비밀번호', hashedPassword)
   const newInfo = new Info({
       email: email,
-      password: password,
+      password: hashedPassword,
       name:name ,
       gender :gender ,
       age :age ,
@@ -126,7 +131,6 @@ app.post('/add2', async (req, res) => {
     res.status(500).json({ message:'데이터 저장 중에 오류가 발생했습니다.', error:error });
  }
 });
-// ▲ 회원가입 백엔드 서버
 
 // ------------------------ post -----------------------------------
 
@@ -234,7 +238,7 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ message: '이메일을 찾을 수 없습니다.', email });
     }
 
-    const passwordOK = (password === user.password);
+    const passwordOK = await bcrypt.compare(password, user.password);
 
     if (passwordOK) {
       const { password, ...userWithoutPassword } = user.toObject();

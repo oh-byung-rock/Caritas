@@ -168,39 +168,39 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   // → 그러면 사용자 인증 값 (ex) 세션)이 바뀌면 어떻게 감지할까 → []가 비어있음에도 onAuthStateChanged함수 기본 기능 중 하나인 사용자 인증 관련 변화를 감지가 작동되서 그때 useeffect 작동
   // → 결론적으로 unsubscribe(); 가 아닌 return () => unsubscribe(); 를 쓴 이유가 된다.
 
-  const fetchF5 = async () => {
-    let uid = '';
-    if(currentUser){
-      if (currentUser.platform) {
-        if (currentUser.platform == 'naver') {
-          uid = currentUser.id;
-        }
-      } else {
-        uid = currentUser._id;
-      }
-    } else { 
-      console.log('거울임'); 
-
-    }
-  
-    try {
-      const response = await fetch(`/checkinfo/${uid}`);
-      if (!response.ok) {
-        throw new Error('서버 응답 오류');
-      }
-      const data = await response.json();
-      const { checkedweight, checkedheight } = data;
-      setCheckedweight(checkedweight);
-      setCheckedheight(checkedheight);
-      console.log('weight:', checkedweight, 'height:', checkedheight);
-    } catch (error) {
-      console.error('사용자 정보를 가져오는데 실패했습니다:', error);
-    }
-  };
-  
   useEffect(() => {
+    const fetchF5 = async () => {
+      let uid = '';
+      if(currentUser){
+        if (currentUser.platform) {
+          if (currentUser.platform == 'naver') {
+            uid = currentUser.id;
+          }
+        } else {
+          uid = currentUser._id;
+        }
+      } else { 
+        console.log('거울임'); 
+      }
+  
+      try {
+        const response = await fetch(`/checkinfo/${uid}`);
+        if (!response.ok) {
+          throw new Error('서버 응답 오류');
+        }
+        const data = await response.json();
+        const { checkedweight, checkedheight } = data;
+        setCheckedweight(checkedweight);
+        setCheckedheight(checkedheight);
+        console.log('weight:', checkedweight, 'height:', checkedheight);
+      } catch (error) {
+        console.error('사용자 정보를 가져오는데 실패했습니다:', error);
+      }
+    };
+  
     fetchF5();  // 사용자 정보를 갱신합니다.
-  }, [currentUser]);
+  }, [currentUser,checkedheight,checkedweight]);
+  
   
 
   useEffect(() => {
@@ -361,10 +361,11 @@ function CustomerPage({ currentUser, setCurrentUser }) {
                           setIsEditingHeight={setIsEditingHeight} 
                           setIsEditingWeight={setIsEditingWeight}
                           // handleSubmitHeight={handleSubmitHeight} 
-                          fetchF5={fetchF5}
                           currentUser={currentUser}
                           checkedheight={checkedheight}
                           checkedweight={checkedweight}
+                          setCheckedheight={setCheckedheight}
+                          setCheckedweight={setCheckedweight}
                         />
                     ) : (
                     <Item1NonCustomer/ >

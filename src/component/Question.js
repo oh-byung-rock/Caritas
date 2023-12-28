@@ -13,6 +13,8 @@ import { filledInputClasses } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { error } from 'jquery';
 import searchimg from '../assets/searchimg.png';
+import noncheck from '../assets/noncheck.png';
+import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
 
 function Question({ currentUser }) {
@@ -368,7 +370,7 @@ const handleTitleClick = async (post) => {
             )
           }
 
-            <div>
+            <div style={{ marginBottom: '20px'}}> 
               <Button 
                 style={{ float: 'right', background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginTop: '15px'}}
                 onClick={handleDelete}>삭제</Button>
@@ -418,7 +420,7 @@ const handleTitleClick = async (post) => {
             <div className="writer" style={{width:'17.5%'}} >{post.writer}</div>
             <div className="date" style={{width:'17.5%'}}>{post.created}</div>
             <div className="comment" style={{width:'17.5%'}}>
-            {post.commentstate == 1 ? '완료' : '대기중'}
+            {post.commentstate == 1 ? <img src={oncheck}  className="searchimg"/> : <img src={noncheck}  className="searchimg"/>}
           </div>
 
           </div>

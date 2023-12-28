@@ -19,7 +19,8 @@ function Item1Customer({
   currentUser,
   checkedweight,
   checkedheight,
-  fetchF5
+  setCheckedheight,
+  setCheckedweight
 }) 
 {
   let uid = '';
@@ -29,7 +30,8 @@ function Item1Customer({
       }
     } else {
       uid = currentUser._id;}
-      console.log('fsdfsd',uid)  
+      console.log('fsdfsd',uid)
+        
 // ▼ 신장(height)값 수정
     const handleChangeneight = async (field, value) => {
       try {
@@ -42,7 +44,10 @@ function Item1Customer({
         if (response.ok) {
           const updatedInfo = await response.json();
           console.log('Info updated', updatedInfo);
-          setIsEditingHeight(false);  // 필요하다면 이 부분도 수정해야 합니다.
+          setIsEditingHeight(false); 
+          setIsEditingWeight(false); 
+          setCheckedheight(null);
+          setCheckedweight(null);
         } else {
           console.error('Failed to update the info');
         }
@@ -65,14 +70,14 @@ function Item1Customer({
     console.log('일반로그인임')
   }
   return (
-    <div className='board_wrap font6' style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
-      <div className="board_title" style={{width:'70%'}}>
-        <h2 className="font6" style={{ fontSize: '36px' }}>
-          마이페이지
+    <div className='board_wrap font6' style={{ width: '100%', display: 'flex', flexDirection: 'column', margin: '10% 0 0 0'}}>
+      <div className="board_title" style={{width:'80%'}}>
+        <h2 className="font6" style={{ fontSize: '36px', paddingLeft: '50px' }}>
+          사용자 정보 수정
         </h2>
-        <h2 style={{ marginTop: '5px', fontSize: '24px' }}>고객님의 최근정보입니다.</h2>
+        {/* <h2 style={{ marginTop: '5px', fontSize: '24px',paddingLeft: '50px' }}>고객님의 최근정보입니다.</h2> */}
       </div>
-      <div className='board_all font5' style={{ display: 'flex', width:'70%' }}>
+      <div className='board_all font5' style={{ display: 'flex', width:'100%' }}>
         <div className='column-1' style={{ width: '20%' }}>
           <div style={{borderTop:'1px solid #242D34'}} ><strong>이름</strong></div>
           <div><strong>성별</strong></div>
@@ -80,24 +85,24 @@ function Item1Customer({
           <div><strong>신장</strong></div>
           <div><strong>체중</strong></div>
         </div>
-        <div className='column-2' style={{ width: '20%' }}>
-          <div style={{borderTop:'1px solid #242D34'}}>
+        <div className='column-2' style={{ width: '80%' }}>
+          <div style={{borderTop:'1px solid #242D34',textAlign: 'left', paddingLeft: '20px'}}>
             {currentUser.platform && currentUser.platform === 'naver' 
               ? currentUser.name
               : name}
           </div>
-          <div>
+          <div style={{textAlign: 'left', paddingLeft: '20px'}}>
             {currentUser.platform && currentUser.platform === 'naver' 
               ? (currentUser.gender === 'F' ? '여성' : '남성') 
               : gender}
           </div>
-          <div>
+          <div style={{textAlign: 'left', paddingLeft: '20px'}}>
             {currentUser.platform && currentUser.platform === 'naver' 
               ? year - currentUser.birthyear
               : age}
           </div>
-          <div>{checkedheight} cm</div>
-          <div>{checkedweight} kg</div>
+          <div style={{textAlign: 'left', paddingLeft: '20px'}}>{checkedheight} cm</div>
+          <div style={{textAlign: 'left', paddingLeft: '20px'}}>{checkedweight} kg</div>
         </div>
         <div className='column-3' style={{ width: '60%'}}>
           <div>&nbsp;</div>
