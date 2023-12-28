@@ -9,12 +9,17 @@ function Item1Customer({
   height,
   weight,
   isEditingHeight,
+  isEditingWeight,
   newHeight,
+  newWeight,
   setNewHeight,
+  setNewWeight,
   setIsEditingHeight,
+  setIsEditingWeight,
   currentUser,
   checkedweight,
-  checkedheight
+  checkedheight,
+  fetchF5
 }) 
 {
   let uid = '';
@@ -26,27 +31,28 @@ function Item1Customer({
       uid = currentUser._id;}
       console.log('fsdfsd',uid)  
 // ▼ 신장(height)값 수정
-  const handleSubmitHeight = async () => {
-    
-    try {
-      const response = await fetch(`/api/info/edit/${uid}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ height: newHeight })
-      });
-  
-      if (response.ok) {
-        const updatedInfo = await response.json();
-        console.log('Info updated', updatedInfo);
-        setIsEditingHeight(false);
-      } else {
-        console.error('Failed to update the info');
+    const handleChangeneight = async (field, value) => {
+      try {
+        const response = await fetch(`/api/info/edit/${uid}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ field : field , value: value })
+        });
+
+        if (response.ok) {
+          const updatedInfo = await response.json();
+          console.log('Info updated', updatedInfo);
+          setIsEditingHeight(false);  // 필요하다면 이 부분도 수정해야 합니다.
+        } else {
+          console.error('Failed to update the info');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        console.log(error)
       }
-    } catch (error) {
-      console.error('Error:', error);
-      console.log(error)
-    }
-  };
+    };
+
+
 
   const createdtime = new Date().getTime();
   const mydate = new Date(createdtime);
@@ -115,7 +121,7 @@ function Item1Customer({
                   <Button 
                   className='hidden2' 
                   style={{ backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'15px', marginBottom: '5px'}}
-                  onClick={handleSubmitHeight}>저장</Button>
+                  onClick={() => handleChangeneight('height',newHeight)}>저장</Button>
                 </div>
               </div>
             ) : (
@@ -127,7 +133,36 @@ function Item1Customer({
               </button>
             )}
           </div>
-          <div>&nbsp;</div>
+          <div>
+            {isEditingWeight ? (
+              <div style={{marginBottom:'-10px'}}>
+                <input
+                  type="text item2"
+                  value={newWeight}
+                  onChange={(e) => setNewWeight(e.target.value)}
+                />
+                <div style={{ display: "inline-block" }}> {/* 이미지클릭시 textfield 와 버튼을 inline 정렬 */}
+                  <Button 
+                  className='hidden2' 
+                  style={{ backgroundColor: '#434343', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'20px', marginBottom: '5px'}}
+                  onClick={() => setIsEditingWeight(!isEditingHeight)}>
+                    {isEditingHeight ? "취소" : "수정"}
+                  </Button>
+                  <Button 
+                  className='hidden2' 
+                  style={{ backgroundColor: '#F5782A', color: "#F4F4F4", border: "none", fontFamily: "노토6" , fontSize: 16, marginLeft:'15px', marginBottom: '5px'}}
+                  onClick={() => handleChangeneight('weight',newWeight)}>저장</Button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsEditingWeight(!isEditingWeight)}
+                className="transparent-button"
+              >
+                <img src={editPencil} alt="수정" className="edit-image" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

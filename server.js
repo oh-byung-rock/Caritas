@@ -439,12 +439,13 @@ app.get('/checkinfo/:uid', async (req, res) => {
 // ▼ 신장 값 수정
 app.patch('/api/info/edit/:uid', async (req, res) => {
   const { uid } = req.params;
-  const { height } = req.body;//이건 왜 params랑 body랑 나눔? 
-
+  const { field, value } = req.body;
+  console.log('alal',field)
   try {
     const info = await Info.findOne({uid:uid});
     if (info) {
-      info.height = height;
+      info[field] = value;
+      console.log('뫄뫄', info[field])
       const updatedInfo = await info.save();
       res.status(200).json(updatedInfo);
     } else {

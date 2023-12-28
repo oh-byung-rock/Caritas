@@ -31,8 +31,12 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   const [checkedheight, setCheckedheight] = useState('1');
   const [checkedweight, setCheckedweight] = useState('2');
 
+  // height 와 weight 편집모드
   const [isEditingHeight, setIsEditingHeight] = useState(false);
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
+  // 변경된 height 와 weight 
   const [newHeight, setNewHeight] = useState('');
+  const [newWeight, setNewWeight] = useState('');
 
   const [isEditingBenchPressWeight, setIsEditingBenchPressWeight] = useState(false);
   const [isEditingBenchPressTimes, setIsEditingBenchPressTimes] = useState(false);
@@ -164,34 +168,38 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   // → 그러면 사용자 인증 값 (ex) 세션)이 바뀌면 어떻게 감지할까 → []가 비어있음에도 onAuthStateChanged함수 기본 기능 중 하나인 사용자 인증 관련 변화를 감지가 작동되서 그때 useeffect 작동
   // → 결론적으로 unsubscribe(); 가 아닌 return () => unsubscribe(); 를 쓴 이유가 된다.
 
-  useEffect(() => {
+  const fetchF5 = async () => {
     let uid = '';
     if(currentUser){
-    if (currentUser.platform) {
-      if (currentUser.platform == 'naver') {
-        uid = currentUser.id;
+      if (currentUser.platform) {
+        if (currentUser.platform == 'naver') {
+          uid = currentUser.id;
+        }
+      } else {
+        uid = currentUser._id;
       }
-    } else {
-      uid = currentUser._id;
-    }} else { console.log('거울임') }
+    } else { 
+      console.log('거울임'); 
+
+    }
   
-    // uid를 서버에 보내고 응답을 받습니다.
-    fetch(`/checkinfo/${uid}`)
-    .then(response => {
+    try {
+      const response = await fetch(`/checkinfo/${uid}`);
       if (!response.ok) {
         throw new Error('서버 응답 오류');
       }
-      return response.json();
-    })
-    .then(data => {
+      const data = await response.json();
       const { checkedweight, checkedheight } = data;
       setCheckedweight(checkedweight);
       setCheckedheight(checkedheight);
       console.log('weight:', checkedweight, 'height:', checkedheight);
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('사용자 정보를 가져오는데 실패했습니다:', error);
-    });
+    }
+  };
+  
+  useEffect(() => {
+    fetchF5();  // 사용자 정보를 갱신합니다.
   }, [currentUser]);
   
 
@@ -345,10 +353,15 @@ function CustomerPage({ currentUser, setCurrentUser }) {
                           height={height} 
                           weight={weight} 
                           isEditingHeight={isEditingHeight} 
+                          isEditingWeight={isEditingWeight}
                           newHeight={newHeight}
-                          setIsEditingHeight={setIsEditingHeight} 
-                          // handleSubmitHeight={handleSubmitHeight} 
+                          newWeight={newWeight}
                           setNewHeight = {setNewHeight}
+                          setNewWeight = {setNewWeight}
+                          setIsEditingHeight={setIsEditingHeight} 
+                          setIsEditingWeight={setIsEditingWeight}
+                          // handleSubmitHeight={handleSubmitHeight} 
+                          fetchF5={fetchF5}
                           currentUser={currentUser}
                           checkedheight={checkedheight}
                           checkedweight={checkedweight}
