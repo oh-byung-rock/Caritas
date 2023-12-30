@@ -16,18 +16,7 @@ app.use(cors());
 const mongoose = require('mongoose');
 const { Int32 } = require('mongodb');
 
-// ▼ 문자열 타입의 id 와 pw 라는 필드를 갖는 문서구조를 정의 = 스키마 선언 , 그리고 이걸 Post라는 모델로 사용해서 링크
-const postSchema = new mongoose.Schema(
-  {
-    id: String,
-    pw: String,
-  },
-  { collection: 'login' },
-);
-
-const Post = mongoose.model('Post', postSchema);
-
-// ▼ 위와 동일
+// 원하는 collection과 연동된 몽고구스 모델 선언
 const infoSchema = new mongoose.Schema(
   {
     uid: String,
@@ -43,6 +32,22 @@ const infoSchema = new mongoose.Schema(
 );
 
 const Info = mongoose.model('Info', infoSchema);
+
+// 원하는 collection과 연동된 몽고구스 모델 선언
+const healthSchema = new mongoose.Schema(
+  {
+    uid: String,
+    benchweight: Number,
+    benchcount: Number,
+    squatweight: Number,
+    squatcount: Number,
+    deadweight: Number,
+    deadcount: Number
+  },
+  { collection: 'health' },
+);
+
+const Health = mongoose.model('Health', healthSchema);
 
 // // ▼ 위와 동일
 // const infonaver = new mongoose.Schema(
@@ -460,3 +465,62 @@ app.patch('/api/info/edit/:uid', async (req, res) => {
     res.status(500).json({ message: 'Error updating info', error: error });
   }
 });
+
+// ▼ 1RM 값 수정
+app.post('/addhealth', async (req, res) => {
+  const { uid, benchweight, benchcount, squatweight, squatcount, deadweight, deadcount } = req.body;
+
+  try {
+    // uid를 기준으로 해당 사용자의 데이터 조회
+    const existingData = await Health.findOne({ uid });
+
+    if (existingData) {
+      // 이미 데이터가 존재하는 경우 업데이트
+      existingData.uid = uid;
+      existingData.benchweight = benchweight;
+      existingData.benchcount = benchcount;
+      existingData.squatweight = squatweight;
+      existingData.squatcount = squatcount;
+      existingData.deadweight = deadweight;
+      existingData.deadcount = deadcount;
+
+      await existingData.save();
+      res.status(200).json({ message: '데이터가 업데이트되었습니다.' });
+    } else {
+      // 데이터가 없는 경우 새로 생성
+      const newHealthData = new Health({
+        uid,
+        benchweight,
+        benchcount,
+        squatweight,
+        squatcount,
+        deadweight,
+        deadcount
+      });
+
+      await newHealthData.save();
+      res.status(200).json({ message: '데이터가 추가되었습니다.' });
+    }
+  } catch (error) {
+    console.log('데이터 추가 또는 업데이트 중 오류가 발생했습니다.', error);
+    res.status(500).json({ message: '데이터 처리 중 오류가 발생했습니다.' });
+  }
+});
+
+// ▼ health 컬렉션 읽어오기
+app.get('/gethealth/:uid', async (req, res) => {
+  const uid = req.params.uid;
+
+  try {
+    const healthData = await Health.findOne({ uid: uid });
+    if (healthData) {
+      res.status(200).json(healthData);
+    } else {
+      res.status(200).json({});
+    }
+  } catch (error) {
+    console.log('데이터 조회 중 오류가 발생했습니다.', error);
+    res.status(500).json({ message: '데이터 조회 중 오류가 발생했습니다.' });
+  }
+});
+

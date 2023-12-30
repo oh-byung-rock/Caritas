@@ -16,6 +16,7 @@ import searchimg from '../assets/searchimg.png';
 import noncheck from '../assets/noncheck.png';
 import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
+import close from '../assets/close.png';
 
 function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
@@ -308,7 +309,10 @@ const handleTitleClick = async (post) => {
       {selectedPost ? ( // 선택된 게시글이 있으면 선택된 게시글의 내용을 출력합니다.
         <div className="board" style={{ width: '70%'}}>
           {/* 제목 */}
-          <h2 className="font6" style={{fontSize: '36px', padding: '30px 0',borderTop: '2px solid #434343', borderBottom: '2px solid lightgray'}} >{selectedPost.qtitle}</h2>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '30px 0',borderTop: '2px solid #434343', borderBottom: '2px solid lightgray'}}>
+            <h2 className="font6" style={{ fontSize: '28px' }} >{selectedPost.qtitle}</h2>
+            <h2 style={{ fontSize: '18px' }} >{selectedPost.created}</h2>
+          </div>
         {isEditing ? (
           <div>
             <TextField
@@ -330,8 +334,7 @@ const handleTitleClick = async (post) => {
         ) : (
           <div>
             {/* 내용 */}
-            <h3 style={{  marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }} >{selectedPost.qcontent}</h3>
-            
+            <h3 style={{paddingLeft:'20px' ,paddingTop:'20px',fontSize: '22px', height:'20rem', borderBottom: '2px solid lightgray' }} >{selectedPost.qcontent}</h3>
             {
             currentUser.state == '1' ? (
               selectedPost.comment ? (
@@ -340,7 +343,7 @@ const handleTitleClick = async (post) => {
                     {selectedPost.comment}
                   </h3>
                   <Button style={{ background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginBottom:'20px', marginTop: '15px'}}>
-                    댓글고치기
+                    댓글수정
                   </Button>
                 </div>
               ) : (
@@ -361,7 +364,7 @@ const handleTitleClick = async (post) => {
               )
             ) : (
               selectedPost.comment ? (
-                <h3 style={{ marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }}>
+                <h3 style={{ paddingLeft:'20px',background:'#F3F3F3',paddingTop:'20px', fontSize: '22px', height:'20rem', borderBottom: '2px solid lightgray' , marginTop:'-10px' }}>
                   {selectedPost.comment}
                 </h3>
               ) : (
@@ -380,9 +383,9 @@ const handleTitleClick = async (post) => {
                   setIsEditing(true);
                   setEditedContent(selectedPost.qcontent);
               }}>수정</Button>  
-              <Button 
-                style={{  background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginTop: '15px'}}
-                onClick={handleBackClick}>뒤로가기</Button>
+              <Button
+                style={{marginTop: '15px'}} 
+                onClick={handleBackClick}><img src={close} alt="뒤로가기" className="searchimg"/></Button>
             </div>
           </div>
         )}
@@ -392,10 +395,10 @@ const handleTitleClick = async (post) => {
       <div className="board" style={{width:'70%'}}>
         <div className="top">
           <div className="num"  style={{width:'8.75%'}}>번호</div>
-          <div className="title"  style={{width:'52.8%'}} >제목</div>
+          <div className="title"  style={{width:'52.5%'}} >제목</div>
           <div className="writer" style={{width:'17.5%'}} >글쓴이</div>
           <div className="date" style={{width:'17.5%'}} > 등록일 </div>
-          <div className="comment" style={{width:'17.5%'}} > 답변 </div>
+          <div className="comment" style={{width:'8.75%'}} > 답변 </div>
         </div>
         <div className="content">
           {/* index만큼 post로 배열을 구분한다. 즉 배열 하나하나를 post로 나눈다. */}
@@ -414,12 +417,12 @@ const handleTitleClick = async (post) => {
             // // 출력 형식에 맞게 문자열 생성
             // const dateString = `${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분`;
 
-           <div key={index} className="list">
+           <div key={index} className="list" >
             <div className="num" style={{width:'8.75%'}}>{(page - 1) * 5 + index + 1}</div>
             <div className="title" style={{width:'52.5%'}} onClick={() => handleTitleClick(post)}>{post.qtitle}</div>
             <div className="writer" style={{width:'17.5%'}} >{post.writer}</div>
             <div className="date" style={{width:'17.5%'}}>{post.created}</div>
-            <div className="comment" style={{width:'17.5%'}}>
+            <div className="comment" style={{width:'8.75%'}}>
             {post.commentstate == 1 ? <img src={oncheck}  className="searchimg"/> : <img src={noncheck}  className="searchimg"/>}
           </div>
 

@@ -518,15 +518,3 @@ ul.pagination li a.active {
   color: #242D34;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-}
-
-.col2 {
-  width: 20%;
-}
-
-.content {
-  width: 80%;
-}

@@ -323,6 +323,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   // const handleSubmitBenchPressWeight = () => {
   //   handleSubmitField("벤치프레스중량", newBenchPressWeight, setBenchPressWeight, setIsEditingBenchPressWeight);
   // };
+
   // const handleSubmitSquatWeight = () => {
   //   handleSubmitField("스쿼트중량", newSquatWeight, setSquatWeight, setIsEditingSquatWeight);
   // };
@@ -377,6 +378,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
           <div>
         {currentUser ? (
           <Item11Customer
+          currentUser = {currentUser}
           isEditingBenchPressWeight={isEditingBenchPressWeight}
           BenchPressWeight={BenchPressWeight}
           newBenchPressWeight={newBenchPressWeight}
@@ -392,19 +394,19 @@ function CustomerPage({ currentUser, setCurrentUser }) {
           exp1rm={exp1rm}
 
            // 스쿼트 관련 프롭
-          isEditingSquatWeight={isEditingSquatWeight}
-          SquatWeight={SquatWeight}
-          newSquatWeight={newSquatWeight}
-          isEditingSquatTimes={isEditingSquatTimes}
-          newSquatTimes={newSquatTimes}
-          setIsEditingSquatWeight={setIsEditingSquatWeight}
-          setIsEditingSquatTimes={setIsEditingSquatTimes}
+          // isEditingSquatWeight={isEditingSquatWeight}
+          // SquatWeight={SquatWeight}
+          // newSquatWeight={newSquatWeight}
+          // isEditingSquatTimes={isEditingSquatTimes}
+          // newSquatTimes={newSquatTimes}
+          // setIsEditingSquatWeight={setIsEditingSquatWeight}
+          // setIsEditingSquatTimes={setIsEditingSquatTimes}
           // handleSubmitSquatWeight={handleSubmitSquatWeight}
           // handleSubmitSquatTimes={handleSubmitSquatTimes}
-          SquatTimes={SquatTimes}
-          squatExp1rm={squatExp1rm}
-          setNewSquatWeight={setNewSquatWeight}
-          setNewSquatTimes={setNewSquatTimes}
+          // SquatTimes={SquatTimes}
+          // squatExp1rm={squatExp1rm}
+          // setNewSquatWeight={setNewSquatWeight}
+          // setNewSquatTimes={setNewSquatTimes}
                         />
                     ) : (
           <Item11NonCustomer/>
