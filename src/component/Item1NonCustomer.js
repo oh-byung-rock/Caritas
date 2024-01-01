@@ -13,7 +13,9 @@ import six6 from "../assets/b6.jpg";
 import bravoimg from "../assets/bravoimg.webp";
 
 function Item1NonCustomer() {
+  // ▼ h1Ref : hello minsu
   const h1Ref = useRef(null); 
+  // ▼ buttonRef : '자세히보기' 버튼
   const buttonRef = useRef(null);
   const button1Ref = useRef(null);
   const button2Ref = useRef(null);

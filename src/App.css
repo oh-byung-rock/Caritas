@@ -419,27 +419,6 @@ class gray-background{
   opacity: 0;
 }
 
-@keyframes slide-up {
-  from {
-    transform: translateY(150px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-left {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
 .bravoimg{
   width: 456px;
@@ -518,3 +497,51 @@ ul.pagination li a.active {
   color: #242D34;
 }
 
+.rmsixs {
+  /* background-color: rgba(255, 255, 255, 0); */
+  width: 324px;
+  height: 250px;
+  border: none;
+  position: relative;
+  opacity: 0;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(250px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.movesixs {
+  width: 250px;
+  height: 300px;
+  border: none;
+  position: relative;
+  opacity: 0;
+  background-color: transparent;
+}
+
+.timeimg{
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  border: none;
+  position: relative;
+  background-color: transparent;
+}

@@ -1,8 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/1rm.webp";
-import rmtwo from "../assets/1rm2.webp";
+import rmone from "../assets/rmone.jpg";
+import rmtwo from "../assets/rmtwo.jpg";
+import six1 from "../assets/b1.jpg";
+import six2 from "../assets/b2.jpg";
+import six3 from "../assets/b3.jpg";
+import rm2six1 from "../assets/c1.jpg";
+import rm2six2 from "../assets/c2.jpg";
+import rm2six3 from "../assets/c3.jpg";
+import rm2six4 from "../assets/c4.jpg";
+import rm2six5 from "../assets/c5.jpg";
 
 function Item11Customer({
     // 벤치프레스
@@ -40,6 +48,54 @@ function Item11Customer({
     setNewSquatWeight,
     setNewSquatTimes
 }) {
+  // ▼ 버튼 scroll 관련
+
+  const rmbutton1Ref = useRef(null);
+  const rmbutton2Ref = useRef(null);
+  const rmbutton3Ref = useRef(null);
+
+  // ▼ rm2 관련 버튼 5개
+  const rm2button1Ref = useRef(null);
+  const rm2button2Ref = useRef(null);
+  const rm2button3Ref = useRef(null);
+  const rm2button4Ref = useRef(null);
+  const rm2button5Ref = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+  
+    const buttonObserver = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = "slide-up 1s ease-out forwards";
+        } else {
+          entry.target.style.animation = "none";
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(buttonObserver, options);
+
+    observer.observe(rmbutton1Ref.current);
+    observer.observe(rmbutton2Ref.current);
+    observer.observe(rmbutton3Ref.current);
+
+  // ▼ rm2 관련 버튼 5개
+    observer.observe(rm2button1Ref.current);
+    observer.observe(rm2button2Ref.current);
+    observer.observe(rm2button3Ref.current);
+    observer.observe(rm2button4Ref.current);
+    observer.observe(rm2button5Ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  // ▲ 버튼 scroll 관련
 
   const [svbpwt, setSvbpwt] = useState("");
 
@@ -53,6 +109,7 @@ function Item11Customer({
       uid = currentUser._id;
     }
   
+    console.log('잘받아옴2', currentUser)
     const fetchData = async () => {
       try {
         const response = await fetch(`/gethealth/${uid}`, {
@@ -173,14 +230,47 @@ function Item11Customer({
       <div>
         <div
           style={{
-            width: "100%",
-            height: "950px",
+            width: '1920px',
+            height: '886px',
             backgroundImage: `url('${rmone}')`,
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            borderBottom: '1px solid #E0E0E0'
           }}
-        /> 
+        >
+          <button
+            ref={rmbutton1Ref}
+            className="rmsixs"
+            style={{
+              left: "-5.4%",
+              cursor:'default',
+              top: "56%",
+              backgroundImage: `url('${six1}')`,
+            }}
+          />
+          <button
+            ref={rmbutton2Ref}
+            className="rmsixs"
+            style={{
+              left: "-0.4%",
+              cursor:'default',
+              top: "56%",
+              backgroundImage: `url('${six2}')`,
+            }}
+          />
+
+          <button
+          ref={rmbutton3Ref}
+            className="rmsixs"
+            style={{
+              left: "4.6%",
+              cursor:'default',
+              top: "56%",
+              backgroundImage: `url('${six3}')`,
+            }}
+          />
+        </div> 
         <div
           style={{
             width: "100%",
@@ -190,7 +280,63 @@ function Item11Customer({
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
-        /> 
+        > 
+          <button
+            ref={rm2button1Ref}
+              className="movesixs"
+              style={{
+                left: "-4%",
+                cursor:'default',
+                top: "56%",
+                backgroundImage: `url('${rm2six1}')`,
+              }}
+            />
+
+          <button
+            ref={rm2button2Ref}
+              className="movesixs"
+              style={{
+                left: "-2%",
+                cursor:'default',
+                top: "56%",
+                backgroundImage: `url('${rm2six2}')`,
+              }}
+            />
+
+          <button
+            ref={rm2button3Ref}
+              className="movesixs"
+              style={{
+                left: "0%",
+                cursor:'default',
+                top: "56%",
+                backgroundImage: `url('${rm2six3}')`,
+              }}
+            />
+
+          <button
+            alt='4번째 세트'
+            ref={rm2button4Ref}
+              className="movesixs"
+              style={{
+                left: "2%",
+                cursor:'default',
+                top: "56%",
+                backgroundImage: `url('${rm2six4}')`,
+              }}
+            />
+
+          <button
+            ref={rm2button5Ref}
+              className="movesixs"
+              style={{
+                left: "4%",
+                cursor:'default',
+                top: "56%",
+                backgroundImage: `url('${rm2six5}')`,
+              }}
+            />
+        </div>
       <div className="board_wrap" style={{ width: "1000px" }}>
         <div className="board_title">
         <h2 className="font6" style={{ fontSize: '36px' }}>
