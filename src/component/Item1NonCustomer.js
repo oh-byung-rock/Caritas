@@ -3,13 +3,13 @@ import "../App.css";
 import bg_test1 from "../assets/content1.webp";
 import bg_test2 from "../assets/content2.png";
 import bg_test3 from "../assets/content3.webp";
-import six from "../assets/six.jpg";
-import six1 from "../assets/six1.jpg";
-import six2 from "../assets/six2.jpg";
-import six3 from "../assets/six3.jpg";
-import six4 from "../assets/six4.jpg";
-import six5 from "../assets/six5.jpg";
-import six6 from "../assets/six6.jpg";
+import six from "../assets/newsix.webp";
+import six1 from "../assets/b1.jpg";
+import six2 from "../assets/b2.jpg";
+import six3 from "../assets/b3.jpg";
+import six4 from "../assets/b4.jpg";
+import six5 from "../assets/b5.jpg";
+import six6 from "../assets/b6.jpg";
 import bravoimg from "../assets/bravoimg.webp";
 
 function Item1NonCustomer() {
@@ -88,6 +88,9 @@ function Item1NonCustomer() {
     };
   }, []);
 
+
+
+
   return (
     <div
       className="board_wrap"
@@ -121,8 +124,8 @@ function Item1NonCustomer() {
       <div
       className="six"
         style={{
-          width: '100%',
-          height: '80vh',
+          width: '1920px',
+          height: '885.6px',
           backgroundImage: `url('${six}')`,
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
@@ -135,9 +138,9 @@ function Item1NonCustomer() {
           ref={button1Ref}
           className="sixs"
           style={{
-            left: "238px",
+            left: "19.7%",
             cursor:'default',
-            top: "174px",
+            top: "207px",
             backgroundImage: `url('${six1}')`,
           }}
         />
@@ -145,9 +148,9 @@ function Item1NonCustomer() {
           ref={button2Ref}
           className="sixs"
           style={{
-            left: "308px",
+            left: "24.7%",
             cursor:'default',
-            top: "174px",
+            top: "207px",
             backgroundImage: `url('${six2}')`,
           }}
         />
@@ -156,9 +159,9 @@ function Item1NonCustomer() {
          ref={button3Ref}
           className="sixs"
           style={{
-            left: "378px",
+            left: "29.7%",
             cursor:'default',
-            top: "174px",
+            top: "207px",
             backgroundImage: `url('${six3}')`,
           }}
         />
@@ -169,8 +172,8 @@ function Item1NonCustomer() {
           ref={button4Ref}
           className="sixs"
           style={{
-            left: "238px",
-            top: "174px",
+            left: "19.7%",
+            top: "207px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six4}')`,
@@ -181,8 +184,8 @@ function Item1NonCustomer() {
           ref={button5Ref}
           className="sixs"
           style={{
-            left: "308px",
-            top: "174px",
+            left: "24.7%",
+            top: "207px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six5}')`,
@@ -193,8 +196,8 @@ function Item1NonCustomer() {
           ref={button6Ref}
           className="sixs"
           style={{
-            left: "378px",
-            top: "174px",
+            left: "29.7%",
+            top: "207px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six6}')`,

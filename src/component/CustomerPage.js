@@ -37,13 +37,17 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   // 변경된 height 와 weight 
   const [newHeight, setNewHeight] = useState('');
   const [newWeight, setNewWeight] = useState('');
-
+  // ▼ 벤치프레스 1RM 관련 isEdit
   const [isEditingBenchPressWeight, setIsEditingBenchPressWeight] = useState(false);
   const [isEditingBenchPressTimes, setIsEditingBenchPressTimes] = useState(false);
+  const [isEditingBenchPressreal1rm, setIsEditingBenchPressreal1rm] = useState(false);
+
   const [BenchPressWeight, setBenchPressWeight] = useState("0");
   const [BenchPressTimes, setBenchPressTimes] = useState("0");
   const [newBenchPressWeight, setNewBenchPressWeight] = useState(BenchPressWeight);
   const [newBenchPressTimes, setNewBenchPressTimes] = useState(BenchPressTimes);
+  const [newBenchPressreal1rm, setNewBenchPressreal1rm] = useState(BenchPressTimes);
+  
   const [exp1rm, setexp1rm] = useState(0);
 
 
@@ -314,7 +318,25 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     }*/
   };
 
-
+  const benchpressCoefficients = [1, 1.035, 1.08, 1.115, 1.15, 1.18, 1.22, 1.255, 1.29, 1.325];
+  const squatCoefficients = [1, 1.0475, 1.13, 1.1575, 1.2, 1.242, 1.284, 1.326, 1.368, 1.41];
+  const deadCoefficients = [1, 1.065, 1.13, 1.147, 1.164, 1.181, 1.198, 1.22, 1.232, 1.24];
+  
+  const indirectbench = (platform, bpct, bpwt) => {
+    let multiplier;
+    
+    if (platform === '벤치') {
+      multiplier = benchpressCoefficients[bpct - 1];
+    } else if (platform === '스쿼트') {
+      multiplier = squatCoefficients[bpct - 1];
+    } else if (platform === '데드'){
+      multiplier = deadCoefficients[bpct - 1];
+    }
+  
+    const indirectresult = bpwt * multiplier;
+    return indirectresult;
+  }
+  
 
   // const handleSubmitHeight = () => {
   //   handleSubmitField("신장", newHeight, setHeight, setIsEditingHeight);
@@ -379,20 +401,27 @@ function CustomerPage({ currentUser, setCurrentUser }) {
         {currentUser ? (
           <Item11Customer
           currentUser = {currentUser}
-          isEditingBenchPressWeight={isEditingBenchPressWeight}
           BenchPressWeight={BenchPressWeight}
-          newBenchPressWeight={newBenchPressWeight}
-          setIsEditingBenchPressWeight={setIsEditingBenchPressWeight}
+          BenchPressTimes={BenchPressTimes}
+          
           // handleSubmitBenchPressWeight={handleSubmitBenchPressWeight}
           isEditingBenchPressTimes={isEditingBenchPressTimes}
-          BenchPressTimes={BenchPressTimes}
-          newBenchPressTimes={newBenchPressTimes}
+          isEditingBenchPressreal1rm={isEditingBenchPressreal1rm}
+          isEditingBenchPressWeight={isEditingBenchPressWeight}
           setIsEditingBenchPressTimes={setIsEditingBenchPressTimes}
+          setIsEditingBenchPressWeight={setIsEditingBenchPressWeight}
+          setIsEditingBenchPressreal1rm={setIsEditingBenchPressreal1rm}
           // handleSubmitBenchPressTimes={handleSubmitBenchPressTimes}
+
+          newBenchPressTimes={newBenchPressTimes}
+          newBenchPressreal1rm={newBenchPressreal1rm}
+          newBenchPressWeight={newBenchPressWeight}
           setNewBenchPressTimes = {setNewBenchPressTimes}
           setNewBenchPressWeight = {setNewBenchPressWeight}
-          exp1rm={exp1rm}
+          setNewBenchPressreal1rm={setNewBenchPressreal1rm}
 
+          exp1rm={exp1rm}
+          indirectbench = {indirectbench}
            // 스쿼트 관련 프롭
           // isEditingSquatWeight={isEditingSquatWeight}
           // SquatWeight={SquatWeight}

@@ -8,18 +8,23 @@ function Item11Customer({
     // 벤치프레스
     isEditingBenchPressWeight,
     isEditingBenchPressTimes,
+    isEditingBenchPressreal1rm,
     BenchPressWeight,
     newBenchPressWeight,
     newBenchPressTimes,
+    newBenchPressreal1rm,
     setIsEditingBenchPressWeight,
     setIsEditingBenchPressTimes,
+    setIsEditingBenchPressreal1rm,
     handleSubmitBenchPressWeight,
     handleSubmitBenchPressTimes,
     BenchPressTimes,
     exp1rm,
     setNewBenchPressWeight,
     setNewBenchPressTimes,
+    setNewBenchPressreal1rm,
     currentUser,
+    indirectbench,
     // 스쿼트
     isEditingSquatWeight,
     isEditingSquatTimes,
@@ -65,8 +70,20 @@ function Item11Customer({
     fetchData();
   }, []);
   
+  const [indirectbp, setIndirectbp] = useState("");
 
-  const benchsubmit = async(inputType, inputValue) => {
+  useEffect(() => {
+    const indirectresult = indirectbench(svbpwt.platform, svbpwt.benchcount, svbpwt.benchweight);
+    setIndirectbp(indirectresult);
+  }, [svbpwt]);
+
+  const benchsubmit = async(inputType, inputValue, inputPlatform) => {
+
+    if (inputType === '횟수' && inputValue >= 11) {
+      alert('10 이하의 숫자만 입력하실 수 있습니다.');
+      return;
+    }
+
     var uid=''
 
     if(currentUser.platform){
@@ -84,7 +101,9 @@ function Item11Customer({
       squatweight: 0,
       squatcount: 0,
       deadweight: 0,
-      deadcount: 0
+      deadcount: 0,
+      platform : inputPlatform,
+      real1rm : inputType === '직접' ? Number(inputValue) : svbpwt.real1rm
     };
   
     try {
@@ -108,7 +127,7 @@ function Item11Customer({
     }
   }
 
-  const CommonButton = ({ isEditing, inputType, inputValue, setInputValue, setIsEditing }) => {
+  const CommonButton = ({ isEditing, inputType, inputValue, setInputValue, setIsEditing, inputPlatform }) => {
     const inputRef = useRef();
 
     useEffect(() => {
@@ -122,7 +141,7 @@ function Item11Customer({
     };
   
     const handleSaveClick = () => {
-      benchsubmit(inputType, inputValue);
+      benchsubmit(inputType, inputValue, inputPlatform);
     };
   
     return isEditing ? (
@@ -149,7 +168,7 @@ function Item11Customer({
       </button>
     );
   };  
-  
+
   return (
       <div>
         <div
@@ -184,13 +203,15 @@ function Item11Customer({
             <div className='column-1' style={{ width: '20%' }}>
               <div style={{borderTop:'1px solid #242D34'}}><strong>중량</strong></div>
               <div><strong>횟수</strong></div>
-              <div><strong>예상 1RM</strong></div>
+              <div><strong>간접 1RM</strong></div>
+              <div><strong>직접 1RM</strong></div>
               <div><strong>나의 등급</strong></div>
             </div>
             <div className='column-2' style={{ width: '20%' }}> 
               <div style={{borderTop:'1px solid #242D34'}}>{svbpwt.benchweight ? svbpwt.benchweight : <>&nbsp;</>}</div>
-              <div>{BenchPressTimes ? BenchPressTimes : <>&nbsp;</>}</div>
-              <div>{exp1rm ? exp1rm : <>&nbsp;</>}</div>
+              <div>{svbpwt.benchcount ? svbpwt.benchcount : <>&nbsp;</>}</div>
+              <div>{indirectbp ? indirectbp : <>&nbsp;</>}</div>
+              <div>{svbpwt.real1rm ? svbpwt.real1rm : <>&nbsp;</>}</div>
               <div>&nbsp;</div>
             </div>
             <div className='column-3' style={{ width: '60%'}}>
@@ -201,6 +222,7 @@ function Item11Customer({
                   setInputValue={setNewBenchPressWeight}
                   setIsEditing={setIsEditingBenchPressWeight}
                   inputType={'중량'}
+                  inputPlatform={'벤치'}
                 />
               </div>
               <div>
@@ -210,9 +232,20 @@ function Item11Customer({
                   setInputValue={setNewBenchPressTimes}
                   setIsEditing={setIsEditingBenchPressTimes}
                   inputType={'횟수'}
+                  inputPlatform={'벤치'}
                 />
               </div>
               <div>&nbsp;</div>
+              <div>
+                <CommonButton
+                  isEditing={isEditingBenchPressreal1rm}
+                  inputValue={newBenchPressreal1rm}
+                  setInputValue={setNewBenchPressreal1rm}
+                  setIsEditing={setIsEditingBenchPressreal1rm}
+                  inputType={'직접'}
+                  inputPlatform={'벤치'}
+                />
+              </div>
               <div>&nbsp;</div>
             </div>
           </div>

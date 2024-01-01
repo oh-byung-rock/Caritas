@@ -111,7 +111,7 @@ function Inquiry() {
           <Button
             href="#"
             style={{
-              background: '#242D34',
+              background: '#162242',
               color: '#E0E0E0',
               fontFamily: '노토5',
               fontSize: '1.2rem',
