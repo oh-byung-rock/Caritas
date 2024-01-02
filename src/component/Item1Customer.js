@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
 import editPencil from '../assets/Edit.png';
 import Button from '@mui/material/Button';
+import { GradeContext } from '../App';
+import React, { useContext, useState, useEffect } from 'react';
 
 function Item1Customer({
   name,
@@ -30,8 +31,8 @@ function Item1Customer({
       }
     } else {
       uid = currentUser._id;}
-      console.log('fsdfsd',uid)
-        
+      console.log('fsdfsd',uid)       
+
 // ▼ 신장(height)값 수정
     const handleChangeneight = async (field, value) => {
       try {
@@ -56,8 +57,6 @@ function Item1Customer({
         console.log(error)
       }
     };
-
-
 
   const createdtime = new Date().getTime();
   const mydate = new Date(createdtime);

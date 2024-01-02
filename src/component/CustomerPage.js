@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
@@ -16,7 +16,8 @@ import Servertest from './servertest';
 import Col2 from './Col2';
 import Navbar from './Navbar';
 import Paging from './Paging';
-
+import { GradeContext } from '../App';
+import React, { useContext, useState, useEffect } from 'react';
 
 function CustomerPage({ currentUser, setCurrentUser }) {
   
@@ -337,6 +338,22 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     return indirectresult;
   }
   
+  // ▼ React.createContext()  
+    const { publicAge, setPublicAge, publicGender, setPublicGender } = useContext(GradeContext);
+
+    const createdtime = new Date().getTime();
+    const mydate = new Date(createdtime);
+    const year = mydate.getFullYear();
+
+    useEffect(() => {
+      if(currentUser){
+      if (currentUser.platform && currentUser.platform === 'naver') {
+        setPublicAge(year - currentUser.birthyear);
+        setPublicGender(currentUser.gender === 'F' ? '여성' : '남성');
+      }}else{}
+      console.log('createcontext', publicAge, publicGender);
+    }, [currentUser]);
+  // ▲ React.createContext()  
 
   // const handleSubmitHeight = () => {
   //   handleSubmitField("신장", newHeight, setHeight, setIsEditingHeight);

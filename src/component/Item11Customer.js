@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
 import rmone from "../assets/rmone.jpg";
@@ -6,11 +6,13 @@ import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
 import six3 from "../assets/b3.jpg";
-import rm2six1 from "../assets/c1.jpg";
-import rm2six2 from "../assets/c2.jpg";
-import rm2six3 from "../assets/c3.jpg";
-import rm2six4 from "../assets/c4.jpg";
-import rm2six5 from "../assets/c5.jpg";
+import rm2six1 from "../assets/r1.webp";
+import rm2six2 from "../assets/r2.webp";
+import rm2six3 from "../assets/r3.webp";
+import rm2six4 from "../assets/r4.webp";
+import rm2six5 from "../assets/r5.webp";
+import { getGrade } from './Getgrade';
+import { GradeContext } from '../App';
 
 function Item11Customer({
     // 벤치프레스
@@ -60,6 +62,11 @@ function Item11Customer({
   const rm2button3Ref = useRef(null);
   const rm2button4Ref = useRef(null);
   const rm2button5Ref = useRef(null);
+
+  // ▼ 1RM 등급 관련
+  const [grade, setGrade] = useState('');
+
+  const { publicGender } = useContext(GradeContext);
 
   useEffect(() => {
     const options = {
@@ -127,6 +134,12 @@ function Item11Customer({
     fetchData();
   }, []);
   
+  // ▼ 1RM 등급 관련
+  useEffect(() => {
+    // const result = getGrade('female', 25, 60, 0, 40); 
+    // setGrade(result);
+  }, []);
+
   const [indirectbp, setIndirectbp] = useState("");
 
   useEffect(() => {
@@ -241,7 +254,7 @@ function Item11Customer({
         >
           <button
             ref={rmbutton1Ref}
-            className="rmsixs"
+            className="sixs"
             style={{
               left: "-5.4%",
               cursor:'default',
@@ -251,7 +264,7 @@ function Item11Customer({
           />
           <button
             ref={rmbutton2Ref}
-            className="rmsixs"
+            className="sixs"
             style={{
               left: "-0.4%",
               cursor:'default',
@@ -262,7 +275,7 @@ function Item11Customer({
 
           <button
           ref={rmbutton3Ref}
-            className="rmsixs"
+            className="sixs"
             style={{
               left: "4.6%",
               cursor:'default',
@@ -279,65 +292,67 @@ function Item11Customer({
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            borderBottom: '1px solid #E0E0E0'
           }}
-        > 
+        >
           <button
             ref={rm2button1Ref}
-              className="movesixs"
+              className="sixs"
               style={{
                 left: "-4%",
                 cursor:'default',
-                top: "56%",
+                top: "400px",
                 backgroundImage: `url('${rm2six1}')`,
               }}
             />
 
           <button
             ref={rm2button2Ref}
-              className="movesixs"
+              className="sixs"
               style={{
                 left: "-2%",
                 cursor:'default',
-                top: "56%",
+                top: "400px",
                 backgroundImage: `url('${rm2six2}')`,
               }}
             />
 
           <button
             ref={rm2button3Ref}
-              className="movesixs"
+              className="sixs"
               style={{
                 left: "0%",
                 cursor:'default',
-                top: "56%",
+                top: "400px",
                 backgroundImage: `url('${rm2six3}')`,
               }}
             />
-
+          <div>
           <button
             alt='4번째 세트'
             ref={rm2button4Ref}
-              className="movesixs"
+              className="sixs"
               style={{
                 left: "2%",
                 cursor:'default',
-                top: "56%",
+                top: "400px",
                 backgroundImage: `url('${rm2six4}')`,
               }}
             />
 
           <button
             ref={rm2button5Ref}
-              className="movesixs"
+              className="sixs"
               style={{
                 left: "4%",
                 cursor:'default',
-                top: "56%",
+                top: "400px",
                 backgroundImage: `url('${rm2six5}')`,
               }}
             />
+          </div> 
         </div>
-      <div className="board_wrap" style={{ width: "1000px" }}>
+      <div className="board_wrap" style={{ width: "1000px", marginTop: "3.6vh" , marginLeft:"13.2%"}}>
         <div className="board_title">
         <h2 className="font6" style={{ fontSize: '36px' }}>
           벤치프레스
@@ -358,7 +373,7 @@ function Item11Customer({
               <div>{svbpwt.benchcount ? svbpwt.benchcount : <>&nbsp;</>}</div>
               <div>{indirectbp ? indirectbp : <>&nbsp;</>}</div>
               <div>{svbpwt.real1rm ? svbpwt.real1rm : <>&nbsp;</>}</div>
-              <div>&nbsp;</div>
+              <div>{publicGender}</div>
             </div>
             <div className='column-3' style={{ width: '60%'}}>
               <div>

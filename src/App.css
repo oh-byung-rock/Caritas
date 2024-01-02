@@ -528,15 +528,6 @@ ul.pagination li a.active {
   }
 }
 
-.movesixs {
-  width: 250px;
-  height: 300px;
-  border: none;
-  position: relative;
-  opacity: 0;
-  background-color: transparent;
-}
-
 .timeimg{
   width: 80px;
   height: 80px;
