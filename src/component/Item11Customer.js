@@ -64,9 +64,7 @@ function Item11Customer({
   const rm2button5Ref = useRef(null);
 
   // ▼ 1RM 등급 관련
-  const [grade, setGrade] = useState('');
-
-  const { publicGender } = useContext(GradeContext);
+  const [resultgrade, setResultgrade] = useState('');
 
   useEffect(() => {
     const options = {
@@ -126,13 +124,14 @@ function Item11Customer({
         const healthData = await response.json();
         console.log('잘받아옴', healthData); // 받아온 데이터 확인
         setSvbpwt(healthData);
+        setPublicDirectweight(healthData.real1rm)
       } catch (error) {
         console.error('에러1', error);
       }
     };
   
     fetchData();
-  }, []);
+  }, [currentUser]);
   
   // ▼ 1RM 등급 관련
   useEffect(() => {
@@ -239,6 +238,17 @@ function Item11Customer({
     );
   };  
 
+  const { setPublicDirectweight , publicGender,publicAge,publicBodyweight,publicDirectweight,publicIndirectweight } = useContext(GradeContext);
+  
+  // ▼ 비동기라서 한꺼번에 값이 전달되지않아, 모든 값을 받은뒤에 getGrade가 실행되게끔
+  useEffect(() => {
+    if (publicGender && publicAge && publicBodyweight && publicDirectweight) {
+      const resultgrade = getGrade(publicGender, publicAge, publicBodyweight, publicDirectweight);
+      setResultgrade(resultgrade);
+    }
+  }, [publicGender, publicAge, publicBodyweight, publicDirectweight]);
+  
+
   return (
       <div>
         <div
@@ -287,7 +297,7 @@ function Item11Customer({
         <div
           style={{
             width: "100%",
-            height: "950px",
+            height: "1080px",
             backgroundImage: `url('${rmtwo}')`,
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
@@ -299,9 +309,9 @@ function Item11Customer({
             ref={rm2button1Ref}
               className="sixs"
               style={{
-                left: "-4%",
+                left: "-95px",
                 cursor:'default',
-                top: "400px",
+                top: "482px",
                 backgroundImage: `url('${rm2six1}')`,
               }}
             />
@@ -310,9 +320,9 @@ function Item11Customer({
             ref={rm2button2Ref}
               className="sixs"
               style={{
-                left: "-2%",
+                left: "0px",
                 cursor:'default',
-                top: "400px",
+                top: "482px",
                 backgroundImage: `url('${rm2six2}')`,
               }}
             />
@@ -321,9 +331,9 @@ function Item11Customer({
             ref={rm2button3Ref}
               className="sixs"
               style={{
-                left: "0%",
+                left: "95px",
                 cursor:'default',
-                top: "400px",
+                top: "482px",
                 backgroundImage: `url('${rm2six3}')`,
               }}
             />
@@ -333,9 +343,9 @@ function Item11Customer({
             ref={rm2button4Ref}
               className="sixs"
               style={{
-                left: "2%",
+                left: "-47.5px",
                 cursor:'default',
-                top: "400px",
+                top: "526px",
                 backgroundImage: `url('${rm2six4}')`,
               }}
             />
@@ -344,9 +354,9 @@ function Item11Customer({
             ref={rm2button5Ref}
               className="sixs"
               style={{
-                left: "4%",
+                left: "47.5px",
                 cursor:'default',
-                top: "400px",
+                top: "526px",
                 backgroundImage: `url('${rm2six5}')`,
               }}
             />
@@ -373,7 +383,7 @@ function Item11Customer({
               <div>{svbpwt.benchcount ? svbpwt.benchcount : <>&nbsp;</>}</div>
               <div>{indirectbp ? indirectbp : <>&nbsp;</>}</div>
               <div>{svbpwt.real1rm ? svbpwt.real1rm : <>&nbsp;</>}</div>
-              <div>{publicGender}</div>
+              <div>{resultgrade}</div>
             </div>
             <div className='column-3' style={{ width: '60%'}}>
               <div>

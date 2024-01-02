@@ -1,5 +1,5 @@
 const weightData = {
-    male: [
+    '남성': [
     // ▼ 0 ~ 19세
       { age: [0, 19], grade: { 
           elite: [1.76, Infinity], 
@@ -67,7 +67,7 @@ const weightData = {
     },
     ],
 
-    female: [
+    '여성': [
         // ▼ ~ 19세
       { age: [0, 19], grade: { 
           elite: [0.88, Infinity], 
@@ -135,11 +135,18 @@ const weightData = {
     ],
   };
   
-  export function getGrade(gender, age, bodyWeight, directWeight, indirectWeight) {
-    const weight = directWeight || indirectWeight;
+  export function getGrade(gender, age, bodyWeight, directWeight) {
+    console.log('gender1', gender);
+    console.log('gender2', age);
+    console.log('gender3', bodyWeight);
+    console.log('gender4', directWeight);
+
+    const weight = directWeight;
     const ratio = Number((weight / bodyWeight).toFixed(2)); // 소수셋째자리 반올림
-  
+    console.log('gender5', weight);
+    console.log('gender6', ratio);
     const targetData = weightData[gender].find(data => data.age[0] <= age && age <= data.age[1]);
+    console.log('gender7', targetData)
     
     let grade = '';
     if (ratio >= targetData.grade.elite[0] && ratio < targetData.grade.elite[1]) grade = '엘리트';

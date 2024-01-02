@@ -16,6 +16,7 @@ import Servertest from './servertest';
 import Col2 from './Col2';
 import Navbar from './Navbar';
 import Paging from './Paging';
+// ▼ GradeContext 준비물1
 import { GradeContext } from '../App';
 import React, { useContext, useState, useEffect } from 'react';
 
@@ -197,6 +198,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
         const { checkedweight, checkedheight } = data;
         setCheckedweight(checkedweight);
         setCheckedheight(checkedheight);
+        setPublicBodyweight(checkedweight);
         console.log('weight:', checkedweight, 'height:', checkedheight);
       } catch (error) {
         console.error('사용자 정보를 가져오는데 실패했습니다:', error);
@@ -323,6 +325,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   const squatCoefficients = [1, 1.0475, 1.13, 1.1575, 1.2, 1.242, 1.284, 1.326, 1.368, 1.41];
   const deadCoefficients = [1, 1.065, 1.13, 1.147, 1.164, 1.181, 1.198, 1.22, 1.232, 1.24];
   
+  const { setPublicIndirectweight } = useContext(GradeContext);
   const indirectbench = (platform, bpct, bpwt) => {
     let multiplier;
     
@@ -335,11 +338,13 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     }
   
     const indirectresult = bpwt * multiplier;
+    setPublicIndirectweight(indirectresult);
+    console.log('dduu',indirectresult)
     return indirectresult;
   }
   
-  // ▼ React.createContext()  
-    const { publicAge, setPublicAge, publicGender, setPublicGender } = useContext(GradeContext);
+  // ▼ GradeContext 준비물2
+    const { publicAge, setPublicAge, publicGender, setPublicGender, publicBodyweight , setPublicBodyweight } = useContext(GradeContext);
 
     const createdtime = new Date().getTime();
     const mydate = new Date(createdtime);
@@ -351,7 +356,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
         setPublicAge(year - currentUser.birthyear);
         setPublicGender(currentUser.gender === 'F' ? '여성' : '남성');
       }}else{}
-      console.log('createcontext', publicAge, publicGender);
+      console.log('createcontext');
     }, [currentUser]);
   // ▲ React.createContext()  
 

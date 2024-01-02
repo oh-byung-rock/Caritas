@@ -13,9 +13,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [publicAge, setPublicAge] = useState(null);
   const [publicGender, setPublicGender] = useState(null);
-  
+  const [publicBodyweight, setPublicBodyweight] = useState(null);
+  const [publicDirectweight, setPublicDirectweight] = useState(null);
+  const [publicIndirectweight, setPublicIndirectweight] = useState(null);
+
   return (
-    <GradeContext.Provider value={{ publicAge, setPublicAge, publicGender, setPublicGender }}>
+    <GradeContext.Provider value={{ publicAge, setPublicAge, publicGender, setPublicGender 
+    , publicBodyweight , setPublicBodyweight, publicDirectweight, setPublicDirectweight, publicIndirectweight, setPublicIndirectweight }}>
       <Router>
         <div className="App">
           <Routes>
