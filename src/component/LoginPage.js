@@ -354,14 +354,14 @@ const resetFields = () => {
                   onChange={(e) => setGender(e.target.value)}
                 >
                   <FormControlLabel
-                    value="남자"
+                    value="남성"
                     control={<Radio color="primary" />}
-                    label="남자"
+                    label="남성"
                   />
                   <FormControlLabel
-                    value="여자"
+                    value="여성"
                     control={<Radio color="primary" />}
-                    label="여자"
+                    label="여성"
                   />
                 </RadioGroup>
               </FormControl>

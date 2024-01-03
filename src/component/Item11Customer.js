@@ -11,6 +11,7 @@ import rm2six2 from "../assets/r2.webp";
 import rm2six3 from "../assets/r3.webp";
 import rm2six4 from "../assets/r4.webp";
 import rm2six5 from "../assets/r5.webp";
+import sbzero from "../assets/sbzero.jpg";
 import { getGrade } from './Getgrade';
 import { GradeContext } from '../App';
 
@@ -48,7 +49,18 @@ function Item11Customer({
     SquatTimes,
     squatExp1rm,
     setNewSquatWeight,
-    setNewSquatTimes
+    setNewSquatTimes,
+    //데드
+    isEditingDeadWeight,
+    setIsEditingDeadWeight, 
+    isEditingDeadTimes,
+    setIsEditingDeadTimes,
+    newDeadWeight,
+    setNewDeadWeight,
+    newDeadTimes,
+    setNewDeadTimes,
+    DeadWeight,
+    DeadTimes
 }) {
   // ▼ 버튼 scroll 관련
 
@@ -115,6 +127,7 @@ function Item11Customer({
     }
   
     console.log('잘받아옴2', currentUser)
+
     const fetchData = async () => {
       try {
         const response = await fetch(`/gethealth/${uid}`, {
@@ -140,13 +153,28 @@ function Item11Customer({
   }, []);
 
   const [indirectbp, setIndirectbp] = useState("");
+  const [indirectbp1, setIndirectbp1] = useState("");
+  const [indirectbp2, setIndirectbp2] = useState("");
 
   useEffect(() => {
-    const indirectresult = indirectbench(svbpwt.platform, svbpwt.benchcount, svbpwt.benchweight);
-    setIndirectbp(indirectresult);
+    const hardname1 = '벤치'
+    const hardname2 = '스쿼트'
+    const hardname3 = '데드'
+    if (svbpwt.benchcount !== undefined && svbpwt.benchweight !== undefined) {
+      const indirectresult = indirectbench(hardname1, svbpwt.benchcount, svbpwt.benchweight);
+      setIndirectbp(indirectresult);
+    }
+    if (svbpwt.squatcount !== undefined && svbpwt.squatweight !== undefined) {
+      const indirectresult1 = indirectbench(hardname2, svbpwt.squatcount, svbpwt.squatweight);
+      setIndirectbp1(indirectresult1);
+    }
+    if (svbpwt.deadcount !== undefined && svbpwt.deadweight !== undefined) {
+      const indirectresult2 = indirectbench(hardname3, svbpwt.deadcount, svbpwt.deadweight);
+      setIndirectbp2(indirectresult2);
+    }
   }, [svbpwt]);
 
-  const benchsubmit = async(inputType, inputValue, inputPlatform) => {
+  const benchsubmit = async(inputType, inputValue) => {
 
     if (inputType === '횟수' && inputValue >= 11) {
       alert('10 이하의 숫자만 입력하실 수 있습니다.');
@@ -167,11 +195,10 @@ function Item11Customer({
       uid: uid,
       benchweight: inputType === '중량' ? Number(inputValue) : svbpwt.benchweight,
       benchcount: inputType === '횟수' ? Number(inputValue) : svbpwt.benchcount,
-      squatweight: 0,
-      squatcount: 0,
-      deadweight: 0,
-      deadcount: 0,
-      platform : inputPlatform,
+      squatweight: inputType === '중량1' ? Number(inputValue) : svbpwt.squatweight,
+      squatcount: inputType === '횟수1' ? Number(inputValue) : svbpwt.squatheight,
+      deadweight: inputType === '중량2' ? Number(inputValue) : svbpwt.deadweight,
+      deadcount: inputType === '횟수2' ? Number(inputValue) : svbpwt.deadheight,
       real1rm : inputType === '직접' ? Number(inputValue) : svbpwt.real1rm
     };
   
@@ -196,7 +223,7 @@ function Item11Customer({
     }
   }
 
-  const CommonButton = ({ isEditing, inputType, inputValue, setInputValue, setIsEditing, inputPlatform }) => {
+  const CommonButton = ({ isEditing, inputType, inputValue, setInputValue, setIsEditing }) => {
     const inputRef = useRef();
 
     useEffect(() => {
@@ -207,10 +234,11 @@ function Item11Customer({
   
     const handleChange = (e) => {
       setInputValue(e.target.value);
+
     };
   
     const handleSaveClick = () => {
-      benchsubmit(inputType, inputValue, inputPlatform);
+      benchsubmit(inputType, inputValue);
     };
   
     return isEditing ? (
@@ -242,15 +270,28 @@ function Item11Customer({
   
   // ▼ 비동기라서 한꺼번에 값이 전달되지않아, 모든 값을 받은뒤에 getGrade가 실행되게끔
   useEffect(() => {
+    console.log('gender11', publicGender);
+    console.log('gender22', publicAge);
     if (publicGender && publicAge && publicBodyweight && publicDirectweight) {
       const resultgrade = getGrade(publicGender, publicAge, publicBodyweight, publicDirectweight);
       setResultgrade(resultgrade);
+      console.log('결과창', resultgrade)
     }
-  }, [publicGender, publicAge, publicBodyweight, publicDirectweight]);
+  }, [publicGender, publicAge, publicBodyweight, publicDirectweight, currentUser]);
   
 
   return (
       <div>
+        <div
+          style={{
+            width: '1920px',
+            height: '680px',
+            backgroundImage: `url('${sbzero}')`,
+            backgroundSize: "100% 100%",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
         <div
           style={{
             width: '1920px',
@@ -383,17 +424,16 @@ function Item11Customer({
               <div>{svbpwt.benchcount ? svbpwt.benchcount : <>&nbsp;</>}</div>
               <div>{indirectbp ? indirectbp : <>&nbsp;</>}</div>
               <div>{svbpwt.real1rm ? svbpwt.real1rm : <>&nbsp;</>}</div>
-              <div>{resultgrade}</div>
+              <div>{resultgrade ? resultgrade : <>&nbsp;</>}</div>
             </div>
             <div className='column-3' style={{ width: '60%'}}>
               <div>
                 <CommonButton
                   isEditing={isEditingBenchPressWeight}
+                  setIsEditing={setIsEditingBenchPressWeight}
                   inputValue={newBenchPressWeight}
                   setInputValue={setNewBenchPressWeight}
-                  setIsEditing={setIsEditingBenchPressWeight}
                   inputType={'중량'}
-                  inputPlatform={'벤치'}
                 />
               </div>
               <div>
@@ -403,7 +443,7 @@ function Item11Customer({
                   setInputValue={setNewBenchPressTimes}
                   setIsEditing={setIsEditingBenchPressTimes}
                   inputType={'횟수'}
-                  inputPlatform={'벤치'}
+
                 />
               </div>
               <div>&nbsp;</div>
@@ -414,90 +454,108 @@ function Item11Customer({
                   setInputValue={setNewBenchPressreal1rm}
                   setIsEditing={setIsEditingBenchPressreal1rm}
                   inputType={'직접'}
-                  inputPlatform={'벤치'}
+
                 />
               </div>
               <div>&nbsp;</div>
             </div>
           </div>
-        {/* 벤치프레스 표 내용 */}
-        {/* <div className="board_title" style={{paddingTop:'30px'}}>
+
+      <div className="board_title" style={{paddingTop:'30px'}}>
         <h2 className="font6" style={{ fontSize: '36px' }}>
           스쿼트
         </h2>
         <h2 style={{ marginTop: '5px', fontSize: '24px' }}>스쿼트 1RM을 가늠할수있습니다.</h2>
         </div>
-        {/* 스쿼트 표 내용 */}
-        {/* <div className="board_all font5" style={{ display: "flex" }}>
+
+        <div className="board_all font5" style={{ display: "flex" }}>
             <div className="column-1" style={{ width: "20%" }}>
                 <div style={{ borderTop: "1px solid #242D34" }}><strong>중량</strong></div>
                 <div><strong>횟수</strong></div>
-                <div><strong>예상 1RM</strong></div>
+                <div><strong>간접 1RM</strong></div>
+                <div><strong>직접 1RM</strong></div>
                 <div><strong>나의 등급</strong></div>
             </div>
             <div className="column-2" style={{ width: "20%" }}> 
-                <div style={{ borderTop: "1px solid #242D34" }}>{SquatWeight ? SquatWeight : <>&nbsp;</>}</div>
-                <div>{SquatTimes ? SquatTimes : <>&nbsp;</>}</div>
-                <div>{squatExp1rm ? squatExp1rm : <>&nbsp;</>}</div>
+                <div style={{ borderTop: "1px solid #242D34" }}>{svbpwt.squatweight ? svbpwt.squatweight : <>&nbsp;</>}</div>
+                <div>{svbpwt.squatcount ? svbpwt.squatcount : <>&nbsp;</>}</div>
+                <div>{indirectbp1 ? indirectbp1 : <>&nbsp;</>}</div>
+                <div>&nbsp;</div>
                 <div>&nbsp;</div>
             </div>
             <div className="column-3" style={{ width: "60%" }}>
                 <div>
                     <CommonButton
-                        isEditing={isEditingSquatWeight}
-                        value={newSquatWeight}
-                        setValue={setNewSquatWeight}
-                        setIsEditing={setIsEditingSquatWeight}
-                        handleSubmit={handleSubmitSquatWeight}
+                        isEditing={isEditingSquatWeight }
+                        setIsEditing={setIsEditingSquatWeight }
+                        inputValue={newSquatWeight}
+                        setInputValue={setNewSquatWeight}
+                        inputType={'중량1'}
+
                     />
                 </div>
                 <div>
                     <CommonButton
-                        isEditing={isEditingSquatTimes}
-                        value={newSquatTimes}
-                        setValue={setNewSquatTimes}
-                        setIsEditing={setIsEditingSquatTimes}
-                        handleSubmit={handleSubmitSquatTimes}
+                        isEditing={isEditingSquatTimes }
+                        setIsEditing={setIsEditingSquatTimes }
+                        inputValue={newSquatTimes}
+                        setInputValue={setNewSquatTimes}
+                        inputType={'횟수1'}
+ 
                     />
                 </div>
                 <div>&nbsp;</div>
                 <div>&nbsp;</div>
             </div>
         </div>
-        {/* 스쿼트 표 내용 */}
 
-        {/* <div className="board_title" style={{paddingTop:'30px'}}>
+
+        <div className="board_title" style={{paddingTop:'30px'}}>
         <h2 className="font6" style={{ fontSize: '36px' }}>
           데드리프트
         </h2>
         <h2 style={{ marginTop: '5px', fontSize: '24px' }}>데드리프트 1RM을 가늠할수있습니다.</h2>
         </div>
-        {/* 데드리프트 표 내용 */}
-        {/* <div className='board_all font5' style={{ display: 'flex' ,paddingBottom:'150px'}}>
+        <div className='board_all font5' style={{ display: 'flex' ,paddingBottom:'150px'}}>
             <div className='column-1' style={{ width: '20%' }}>
               <div style={{borderTop:'1px solid #242D34'}}><strong>중량</strong></div>
               <div><strong>횟수</strong></div>
-              <div><strong>예상 1RM</strong></div>
+              <div><strong>간접 1RM</strong></div>
+              <div><strong>직접 1RM</strong></div>
               <div><strong>나의 등급</strong></div>
             </div>
             <div className='column-2' style={{ width: '20%' }}> 
-              <div style={{borderTop:'1px solid #242D34'}}>{BenchPressWeight ? BenchPressWeight : <>&nbsp;</>}</div>
-              <div>{BenchPressTimes ? BenchPressTimes : <>&nbsp;</>}</div>
-              <div>{exp1rm ? exp1rm : <>&nbsp;</>}</div>
+              <div style={{borderTop:'1px solid #242D34'}}>{svbpwt.deadweight ? svbpwt.deadweight : <>&nbsp;</>}</div>
+              <div>{svbpwt.deadcount ? svbpwt.deadcount : <>&nbsp;</>}</div>
+              <div>{indirectbp2 ? indirectbp2 : <>&nbsp;</>}</div>
+              <div>&nbsp;</div>
               <div>&nbsp;</div>
             </div>
             <div className='column-3' style={{ width: '60%'}}>
-              <div>
-              &nbsp;
-              </div>
-              <div>
-              &nbsp;
-              </div>
-              <div>&nbsp;</div>
-              <div>&nbsp;</div>
+            <div>
+                    <CommonButton
+                        isEditing={isEditingDeadWeight  }
+                        setIsEditing={setIsEditingDeadWeight  }
+                        inputValue={newDeadWeight}
+                        setInputValue={setNewDeadWeight}
+                        inputType={'중량1'}
+
+                    />
+                </div>
+                <div>
+                    <CommonButton
+                        isEditing={isEditingDeadTimes  }
+                        setIsEditing={setIsEditingDeadTimes  }
+                        inputValue={newDeadTimes}
+                        setInputValue={setNewDeadTimes}
+                        inputType={'횟수2'}
+
+                    />
+                </div>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
             </div>
-          </div>  */}
-        {/* 데드리프트 표 내용 */}
+          </div>
       </div>
       </div>
   );  

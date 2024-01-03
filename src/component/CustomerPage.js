@@ -46,22 +46,33 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
   const [BenchPressWeight, setBenchPressWeight] = useState("0");
   const [BenchPressTimes, setBenchPressTimes] = useState("0");
+
   const [newBenchPressWeight, setNewBenchPressWeight] = useState(BenchPressWeight);
   const [newBenchPressTimes, setNewBenchPressTimes] = useState(BenchPressTimes);
   const [newBenchPressreal1rm, setNewBenchPressreal1rm] = useState(BenchPressTimes);
   
   const [exp1rm, setexp1rm] = useState(0);
 
-
-  // 스쿼트 관련 상태변수
-  const [isEditingSquatWeight, setIsEditingSquatWeight] = useState(false);
-  const [isEditingSquatTimes, setIsEditingSquatTimes] = useState(false);
+  // ▼ 스쿼트 1RM 중량,횟수 초기값
   const [SquatWeight, setSquatWeight] = useState("0");
   const [SquatTimes, setSquatTimes] = useState("0");
+  // ▼ 스쿼트 1RM 관련 isEdit
+  const [isEditingSquatWeight, setIsEditingSquatWeight] = useState(false);
+  const [isEditingSquatTimes, setIsEditingSquatTimes] = useState(false);
+  // ▼ 스쿼트 1RM 관련 value
   const [newSquatWeight, setNewSquatWeight] = useState(SquatWeight);
   const [newSquatTimes, setNewSquatTimes] = useState(SquatTimes);
   const [squatExp1rm, setSquatExp1] = useState(0);
-  // 스쿼트 관련 상태변수
+
+  // ▼ 데드 1RM 중량,횟수 초기값
+  const [DeadWeight, setDeadWeight] = useState("0");
+  const [DeadTimes, setDeadTimes] = useState("0");
+  // ▼ 데드 1RM 관련 isEdit
+  const [isEditingDeadWeight, setIsEditingDeadWeight] = useState(false);
+  const [isEditingDeadTimes, setIsEditingDeadTimes] = useState(false);
+  // ▼ 데드 1RM 관련 value
+  const [newDeadWeight, setNewDeadWeight] = useState(DeadWeight);
+  const [newDeadTimes, setNewDeadTimes] = useState(DeadTimes);
 
   // 반응형 메뉴바 상태변수
   const [showSidebar, setShowSidebar] = useState(false); 
@@ -117,10 +128,10 @@ function CustomerPage({ currentUser, setCurrentUser }) {
       alert('로그아웃 실패');
       console.log('로그아웃 에러:', error);
     }
-    window.addEventListener('beforeunload', handleLogout);
-    return () => {
-        window.removeEventListener('beforeunload', handleLogout);
-    };
+    // window.addEventListener('beforeunload', handleLogout);
+    // return () => {
+    //     window.removeEventListener('beforeunload', handleLogout);
+    // };
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -210,32 +221,29 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   
   
 
-  useEffect(() => {
-    const calculateExp1rm = () => {
-      // Baenchle Formula 적용 
-      const newExp1rm = parseFloat((BenchPressWeight * (1 + 0.0333 * BenchPressTimes)).toFixed(3));
-      setexp1rm(newExp1rm);
-    };
-    calculateExp1rm();
-  }, [BenchPressWeight, BenchPressTimes]);
+  // useEffect(() => {
+  //   const calculateExp1rm = () => {
+  //     // Baenchle Formula 적용 
+  //     const newExp1rm = parseFloat((BenchPressWeight * (1 + 0.0333 * BenchPressTimes)).toFixed(3));
+  //     setexp1rm(newExp1rm);
+  //   };
+  //   calculateExp1rm();
+  // }, [BenchPressWeight, BenchPressTimes]);
 
-  useEffect(() => {
-    const calculateSquatExp1rm = () => {
-      const newSquatExp1rm = parseFloat((SquatWeight * (1 + 0.0333 * SquatTimes)).toFixed(3));
-      setSquatExp1(newSquatExp1rm);
-    };
-    calculateSquatExp1rm();
-  }, [SquatWeight, SquatTimes]);
+  // useEffect(() => {
+  //   const calculateSquatExp1rm = () => {
+  //     const newSquatExp1rm = parseFloat((SquatWeight * (1 + 0.0333 * SquatTimes)).toFixed(3));
+  //     setSquatExp1(newSquatExp1rm);
+  //   };
+  //   calculateSquatExp1rm();
+  // }, [SquatWeight, SquatTimes]);
 
 /* 새로고침시 로그아웃 안되게 시작 */
   const unloadHandler = (e) => {
     e.preventDefault();
 };
-
-
   useEffect(() => {
   // beforeunload : 페이지이탈(or 새로고침)시 이벤트
-
   window.addEventListener('beforeunload', unloadHandler);
   return () => {
   window.removeEventListener('beforeunload', unloadHandler);
@@ -246,42 +254,42 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
 
   /* 고객정보 가져오기 */
-  const fetchUserInfo = async (user) => {
-    console.log('user')
-    console.log(user)
-    const firestore = getFirestore();
-    const customerDocRef = doc(firestore, 'customer', user.uid);
-    const customerDoc = await getDoc(customerDocRef);
+  // const fetchUserInfo = async (user) => {
+  //   console.log('user')
+  //   console.log(user)
+  //   const firestore = getFirestore();
+  //   const customerDocRef = doc(firestore, 'customer', user.uid);
+  //   const customerDoc = await getDoc(customerDocRef);
 
-    if (customerDoc.exists()) {
-      const userInfo = customerDoc.data();
-      setName(userInfo.이름);
-      setGender(userInfo.성별);
-      setAge(userInfo.나이);
-      setHeight(userInfo.신장);
-      setWeight(userInfo.체중);
-      setBenchPressWeight(userInfo.벤치프레스중량);
-      setBenchPressTimes(userInfo.벤치프레스횟수);
-      setSquatWeight(userInfo.스쿼트중량);
-      setSquatTimes(userInfo.스쿼트횟수);
+  //   if (customerDoc.exists()) {
+  //     const userInfo = customerDoc.data();
+  //     setName(userInfo.이름);
+  //     setGender(userInfo.성별);
+  //     setAge(userInfo.나이);
+  //     setHeight(userInfo.신장);
+  //     setWeight(userInfo.체중);
+  //     setBenchPressWeight(userInfo.벤치프레스중량);
+  //     setBenchPressTimes(userInfo.벤치프레스횟수);
+  //     setSquatWeight(userInfo.스쿼트중량);
+  //     setSquatTimes(userInfo.스쿼트횟수);
 
-      const storage = getStorage();
-      const imagePath = `images/${user.uid}`;
-      const imageRef = ref(storage, imagePath);
+  //     const storage = getStorage();
+  //     const imagePath = `images/${user.uid}`;
+  //     const imageRef = ref(storage, imagePath);
       
-      try {
-        const imageURL = await getDownloadURL(imageRef);
-        setPhotoURL(imageURL);
-        console.log("a2")
-        console.log(imageURL)
-      } catch (error) {
-        console.log('이미지를 가져오는데 실패하였습니다.', error);
-        setPhotoURL(anany); 
-      }
-    } else {
-      console.log('No such document!');
-    }
-  };
+  //     try {
+  //       const imageURL = await getDownloadURL(imageRef);
+  //       setPhotoURL(imageURL);
+  //       console.log("a2")
+  //       console.log(imageURL)
+  //     } catch (error) {
+  //       console.log('이미지를 가져오는데 실패하였습니다.', error);
+  //       setPhotoURL(anany); 
+  //     }
+  //   } else {
+  //     console.log('No such document!');
+  //   }
+  // };
 
   const fetchUserInfo_mongo = async (user) => {
     console.log('현재 일반로그인 user 정보 : ', user)
@@ -339,7 +347,6 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   
     const indirectresult = bpwt * multiplier;
     setPublicIndirectweight(indirectresult);
-    console.log('dduu',indirectresult)
     return indirectresult;
   }
   
@@ -355,7 +362,13 @@ function CustomerPage({ currentUser, setCurrentUser }) {
       if (currentUser.platform && currentUser.platform === 'naver') {
         setPublicAge(year - currentUser.birthyear);
         setPublicGender(currentUser.gender === 'F' ? '여성' : '남성');
-      }}else{}
+      } else {
+        setPublicAge(currentUser.age);
+        setPublicGender(currentUser.gender);
+      }
+      }else{
+        console.log('가다')
+      }
       console.log('createcontext');
     }, [currentUser]);
   // ▲ React.createContext()  
@@ -444,20 +457,40 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
           exp1rm={exp1rm}
           indirectbench = {indirectbench}
-           // 스쿼트 관련 프롭
-          // isEditingSquatWeight={isEditingSquatWeight}
-          // SquatWeight={SquatWeight}
+          // 스쿼트 1RM 무게, 횟수 edit
+          SquatWeight={SquatWeight}
+          SquatTimes={SquatTimes}
+          isEditingSquatWeight = {isEditingSquatWeight}
+          setIsEditingSquatWeight = {setIsEditingSquatWeight}
+          newSquatWeight={newSquatWeight}
+          setNewSquatWeight={setNewSquatWeight}
+          newSquatTimes={newSquatTimes}
+          setNewSquatTimes={setNewSquatTimes}
+
+          isEditingSquatTimes = {isEditingSquatTimes}
+          setIsEditingSquatTimes = {setIsEditingSquatTimes}
           // newSquatWeight={newSquatWeight}
           // isEditingSquatTimes={isEditingSquatTimes}
           // newSquatTimes={newSquatTimes}
-          // setIsEditingSquatWeight={setIsEditingSquatWeight}
+
           // setIsEditingSquatTimes={setIsEditingSquatTimes}
           // handleSubmitSquatWeight={handleSubmitSquatWeight}
           // handleSubmitSquatTimes={handleSubmitSquatTimes}
-          // SquatTimes={SquatTimes}
           // squatExp1rm={squatExp1rm}
           // setNewSquatWeight={setNewSquatWeight}
           // setNewSquatTimes={setNewSquatTimes}
+
+          // 데드 1RM 무게, 횟수 edit
+          DeadWeight={DeadWeight}
+          DeadTimes={DeadTimes}
+          isEditingDeadWeight = {isEditingDeadWeight}
+          setIsEditingDeadWeight = {setIsEditingDeadWeight}
+          isEditingDeadTimes = {isEditingDeadTimes}
+          setIsEditingDeadTimes = {setIsEditingDeadTimes}
+          newDeadWeight={newDeadWeight}
+          setNewDeadWeight={setNewDeadWeight}
+          newDeadTimes={newDeadTimes}
+          setNewDeadTimes={setNewDeadTimes}
                         />
                     ) : (
           <Item11NonCustomer/>

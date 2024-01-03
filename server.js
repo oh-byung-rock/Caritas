@@ -470,7 +470,7 @@ app.patch('/api/info/edit/:uid', async (req, res) => {
 
 // ▼ 1RM 값 수정
 app.post('/addhealth', async (req, res) => {
-  const { uid, benchweight, benchcount, squatweight, squatcount, deadweight, deadcount, platform, real1rm } = req.body;
+  const { uid, benchweight, benchcount, squatweight, squatcount, deadweight, deadcount, real1rm } = req.body;
 
   try {
     // uid를 기준으로 해당 사용자의 데이터 조회
@@ -485,7 +485,6 @@ app.post('/addhealth', async (req, res) => {
       existingData.squatcount = squatcount;
       existingData.deadweight = deadweight;
       existingData.deadcount = deadcount;
-      existingData.platform = platform;
       existingData.real1rm = real1rm;
 
       await existingData.save();
@@ -500,7 +499,6 @@ app.post('/addhealth', async (req, res) => {
         squatcount,
         deadweight,
         deadcount,
-        platform,
         real1rm
       });
 
