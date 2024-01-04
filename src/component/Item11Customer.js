@@ -179,6 +179,12 @@ function Item11Customer({
     if (inputType === '횟수' && inputValue >= 11) {
       alert('10 이하의 숫자만 입력하실 수 있습니다.');
       return;
+    } else if ((inputType === '횟수1' && inputValue >= 11)){
+      alert('10 이하의 숫자만 입력하실 수 있습니다.');
+      return;
+    } else if ((inputType === '횟수2' && inputValue >= 11)){
+      alert('10 이하의 숫자만 입력하실 수 있습니다.');
+      return;
     }
 
     var uid=''
@@ -196,12 +202,12 @@ function Item11Customer({
       benchweight: inputType === '중량' ? Number(inputValue) : svbpwt.benchweight,
       benchcount: inputType === '횟수' ? Number(inputValue) : svbpwt.benchcount,
       squatweight: inputType === '중량1' ? Number(inputValue) : svbpwt.squatweight,
-      squatcount: inputType === '횟수1' ? Number(inputValue) : svbpwt.squatheight,
+      squatcount: inputType === '횟수1' ? Number(inputValue) : svbpwt.squatcount,
       deadweight: inputType === '중량2' ? Number(inputValue) : svbpwt.deadweight,
-      deadcount: inputType === '횟수2' ? Number(inputValue) : svbpwt.deadheight,
+      deadcount: inputType === '횟수2' ? Number(inputValue) : svbpwt.deadcount,
       real1rm : inputType === '직접' ? Number(inputValue) : svbpwt.real1rm
     };
-  
+    console.log(data)
     try {
       // 서버에 데이터 전송
       const response = await fetch('/addhealth', {
@@ -538,7 +544,7 @@ function Item11Customer({
                         setIsEditing={setIsEditingDeadWeight  }
                         inputValue={newDeadWeight}
                         setInputValue={setNewDeadWeight}
-                        inputType={'중량1'}
+                        inputType={'중량2'}
 
                     />
                 </div>

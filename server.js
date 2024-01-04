@@ -43,7 +43,6 @@ const healthSchema = new mongoose.Schema(
     squatcount: Number,
     deadweight: Number,
     deadcount: Number,
-    platform : String,
     real1rm : Number
   },
   { collection: 'health' },

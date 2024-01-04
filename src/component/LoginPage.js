@@ -104,6 +104,8 @@ function LoginPage({ currentUser, setCurrentUser }) {
         console.log('사용자 uid',responseData.response.id);
         console.log('사용자 이름',responseData.response.name);
         responseData.response.platform='naver'
+        
+      window.sessionStorage.setItem("currentUser",JSON.stringify(responseData.response));//$$$$세션스토리지에 유저 데이터 정보 저장
         setCurrentUser(responseData.response);
       })
       .catch(error => {

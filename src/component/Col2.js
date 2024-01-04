@@ -78,7 +78,9 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
                   <h2
                     className={`wordmenu2 ${selectedItem === "item-1-1" ? "selected-item" : ""}`}
                     href="#item-1-1"
-                    onClick={() => setSelectedItem("item-1-1")}
+                    onClick={() => {setSelectedItem("item-1-1")
+                     //window.history.pushState("", '나의 운동 레벨', '/c')
+                    }}
                   >
                     나의 운동 레벨
                   </h2>

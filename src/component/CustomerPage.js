@@ -113,6 +113,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
       const auth = getAuth();
       await signOut(auth);
       // 로그아웃 세트
+      window.sessionStorage.setItem("currentUser",null);
       setCurrentUser(null);
       setName('사용자 이름');
       setPhotoURL(anany); 
@@ -240,7 +241,8 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
 /* 새로고침시 로그아웃 안되게 시작 */
   const unloadHandler = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
+    //e.returnValue = '';
 };
   useEffect(() => {
   // beforeunload : 페이지이탈(or 새로고침)시 이벤트
