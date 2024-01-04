@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState }  from "react";
 import "../App.css";
 import bg_test1 from "../assets/content1.webp";
-import bg_test2 from "../assets/content2.png";
+// import bg_test2 from "../assets/content2.png";
 import bg_test3 from "../assets/content3.webp";
-import six from "../assets/newsix.webp";
+import six from "../assets/phtest2.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
 import six3 from "../assets/b3.jpg";
@@ -106,7 +106,7 @@ function Item1NonCustomer() {
       <div
         style={{
           width: '100%',
-          height: '59vh',
+          height: '562.27px',
           backgroundImage: `url('${bg_test3}')`,
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
@@ -127,7 +127,7 @@ function Item1NonCustomer() {
       className="six"
         style={{
           width: '1920px',
-          height: '885.6px',
+          height: '4000px',
           backgroundImage: `url('${six}')`,
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
@@ -142,7 +142,7 @@ function Item1NonCustomer() {
           style={{
             left: "19.7%",
             cursor:'default',
-            top: "207px",
+            top: "2007px",
             backgroundImage: `url('${six1}')`,
           }}
         />
@@ -152,7 +152,7 @@ function Item1NonCustomer() {
           style={{
             left: "24.7%",
             cursor:'default',
-            top: "207px",
+            top: "2007px",
             backgroundImage: `url('${six2}')`,
           }}
         />
@@ -163,7 +163,7 @@ function Item1NonCustomer() {
           style={{
             left: "29.7%",
             cursor:'default',
-            top: "207px",
+            top: "2007px",
             backgroundImage: `url('${six3}')`,
           }}
         />
@@ -175,7 +175,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "19.7%",
-            top: "207px",
+            top: "2007px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six4}')`,
@@ -187,7 +187,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "24.7%",
-            top: "207px",
+            top: "2007px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six5}')`,
@@ -199,7 +199,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "29.7%",
-            top: "207px",
+            top: "2007px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six6}')`,
@@ -222,7 +222,7 @@ function Item1NonCustomer() {
       >
         <button ref={bravoimgRef} className="bravoimg" style={{backgroundImage: `url('${bravoimg}')`}}/>
       </div>
-    <div
+    {/* <div
       className={'bg_test2'}
       style={{
         width: "100%",
@@ -232,7 +232,7 @@ function Item1NonCustomer() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-    /> 
+    />  */}
     </div>
   );
 }

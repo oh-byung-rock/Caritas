@@ -477,15 +477,22 @@ app.post('/addhealth', async (req, res) => {
 
     if (existingData) {
       // 이미 데이터가 존재하는 경우 업데이트
-      existingData.uid = uid;
+     /* existingData.uid = uid;
       existingData.benchweight = benchweight;
       existingData.benchcount = benchcount;
       existingData.squatweight = squatweight;
       existingData.squatcount = squatcount;
       existingData.deadweight = deadweight;
       existingData.deadcount = deadcount;
-      existingData.real1rm = real1rm;
-
+      existingData.real1rm = real1rm;*/
+      if(existingData.uid != uid){existingData.uid = uid; console.log('1');} else{      console.log('2');}
+      if(existingData.benchweight != benchweight){existingData.benchweight = benchweight; console.log('1');} else{      console.log('2');}
+      if(existingData.benchcount != benchcount){existingData.benchcount = benchcount; console.log('1');} else{      console.log('2');}
+      if(existingData.squatweight != squatweight){existingData.squatweight = squatweight; console.log('1');} else{      console.log('2');}
+      if(existingData.squatcount != squatcount){existingData.squatcount = squatcount; console.log('1');} else{      console.log('2');}
+      if(existingData.deadweight != deadweight){existingData.deadweight = deadweight; console.log('1');} else{      console.log('2');}
+      if(existingData.deadcount != deadcount){existingData.deadcount = deadcount; console.log('1');} else{      console.log('2');}
+      if(existingData.real1rm != real1rm){existingData.real1rm = real1rm; console.log('1');} else{      console.log('2');}
       await existingData.save();
       res.status(200).json({ message: '데이터가 업데이트되었습니다.' });
     } else {
