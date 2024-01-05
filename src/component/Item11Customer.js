@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/rmone.jpg";
+import rmone from "../assets/bgm4.jpg";
 import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -11,7 +11,6 @@ import rm2six2 from "../assets/r2.webp";
 import rm2six3 from "../assets/r3.webp";
 import rm2six4 from "../assets/r4.webp";
 import rm2six5 from "../assets/r5.webp";
-import sbzero from "../assets/sbzero.jpg";
 import { getGrade } from './Getgrade';
 import { GradeContext } from '../App';
 
@@ -287,8 +286,8 @@ function Item11Customer({
   
 
   return (
-      <div>
-        <div
+      <div style={{marginTop: '-3.73vh'}}>
+        {/* <div
           style={{
             width: '1920px',
             height: '680px',
@@ -297,16 +296,15 @@ function Item11Customer({
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
-        />
+        /> */}
         <div
           style={{
             width: '1920px',
-            height: '886px',
+            height: '4000px',
             backgroundImage: `url('${rmone}')`,
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            borderBottom: '1px solid #E0E0E0'
           }}
         >
           <button
@@ -315,7 +313,7 @@ function Item11Customer({
             style={{
               left: "-5.4%",
               cursor:'default',
-              top: "56%",
+              top: "29.3%",
               backgroundImage: `url('${six1}')`,
             }}
           />
@@ -325,7 +323,7 @@ function Item11Customer({
             style={{
               left: "-0.4%",
               cursor:'default',
-              top: "56%",
+              top: "29.3%",
               backgroundImage: `url('${six2}')`,
             }}
           />
@@ -336,21 +334,21 @@ function Item11Customer({
             style={{
               left: "4.6%",
               cursor:'default',
-              top: "56%",
+              top: "29.3%",
               backgroundImage: `url('${six3}')`,
             }}
           />
         </div> 
         <div
-          style={{
-            width: "100%",
-            height: "1080px",
-            backgroundImage: `url('${rmtwo}')`,
-            backgroundSize: "100% 100%",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            borderBottom: '1px solid #E0E0E0'
-          }}
+          // style={{
+          //   width: "100%",
+          //   height: "1080px",
+          //   backgroundImage: `url('${rmtwo}')`,
+          //   backgroundSize: "100% 100%",
+          //   backgroundPosition: "center",
+          //   backgroundRepeat: "no-repeat",
+          //   borderBottom: '1px solid #E0E0E0'
+          // }}
         >
           <button
             ref={rm2button1Ref}
@@ -358,7 +356,7 @@ function Item11Customer({
               style={{
                 left: "-95px",
                 cursor:'default',
-                top: "482px",
+                top: "-1730px",
                 backgroundImage: `url('${rm2six1}')`,
               }}
             />
@@ -369,7 +367,7 @@ function Item11Customer({
               style={{
                 left: "0px",
                 cursor:'default',
-                top: "482px",
+                top: "-1730px",
                 backgroundImage: `url('${rm2six2}')`,
               }}
             />
@@ -380,7 +378,7 @@ function Item11Customer({
               style={{
                 left: "95px",
                 cursor:'default',
-                top: "482px",
+                top: "-1730px",
                 backgroundImage: `url('${rm2six3}')`,
               }}
             />
@@ -392,7 +390,7 @@ function Item11Customer({
               style={{
                 left: "-47.5px",
                 cursor:'default',
-                top: "526px",
+                top: "-1656px",
                 backgroundImage: `url('${rm2six4}')`,
               }}
             />
@@ -403,7 +401,7 @@ function Item11Customer({
               style={{
                 left: "47.5px",
                 cursor:'default',
-                top: "526px",
+                top: "-1656px",
                 backgroundImage: `url('${rm2six5}')`,
               }}
             />
