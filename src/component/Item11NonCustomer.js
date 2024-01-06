@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import phtest from "../assets/phtest2.jpg";
+// import phtest from "../assets/bggm.jpg";
 
 function Item11NonCustomer() {
   const [benchPressWeight, setBenchPressWeight] = useState('0');
@@ -25,7 +25,7 @@ function Item11NonCustomer() {
     style={{
       width: '1920px',
       height: '4000px',
-      backgroundImage: `url('${phtest}')`,
+      // backgroundImage: `url('${phtest}')`,
       backgroundSize: "100% 100%",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",

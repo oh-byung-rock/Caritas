@@ -3,13 +3,14 @@ import "../App.css";
 import bg_test1 from "../assets/content1.webp";
 // import bg_test2 from "../assets/content2.png";
 import bg_test3 from "../assets/content3.webp";
-import six from "../assets/phtest2.jpg";
+import six from "../assets/tele2.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
 import six3 from "../assets/b3.jpg";
 import six4 from "../assets/b4.jpg";
 import six5 from "../assets/b5.jpg";
 import six6 from "../assets/b6.jpg";
+import move from "../assets/move.png";
 import bravoimg from "../assets/bravoimg.webp";
 
 function Item1NonCustomer() {
@@ -90,8 +91,15 @@ function Item1NonCustomer() {
     };
   }, []);
 
+  const moveing = async () => {
+    const value = 2452; // 이동하려는 높이
+    window.scrollTo({ top: value, behavior: 'smooth' });
+};
 
-
+  const moveing2 = async () => {
+    const value = 935; // 이동하려는 높이
+    window.scrollTo({ top: value, behavior: 'smooth' });
+  };
 
   return (
     <div
@@ -126,6 +134,7 @@ function Item1NonCustomer() {
       <div
       className="six"
         style={{
+          marginTop:'-0.3px',
           width: '1920px',
           height: '4000px',
           backgroundImage: `url('${six}')`,
@@ -135,6 +144,36 @@ function Item1NonCustomer() {
           borderBottom: '1px solid #E0E0E0',
         }}
       >
+      <div> 
+        <img
+          style={{
+            width:'30px',
+            height:'30px',
+            top:'1600px',
+            left:'50%',
+            position:'relative'
+          }}
+          onClick={() => {
+            moveing()
+          }}       
+            src={move}
+        />
+        <button
+          style={{
+            width:'150px',
+            height:'150px',
+            top:'140px',
+            left:'44%',
+            position:'relative',
+            background: 'transparent', // 배경색 없음
+            border: 'none', //
+          }}     
+          onClick={() => {
+            moveing2()
+          }} 
+        />
+      </div>
+
       <div>
         <button
           ref={button1Ref}
@@ -142,7 +181,7 @@ function Item1NonCustomer() {
           style={{
             left: "19.7%",
             cursor:'default',
-            top: "2007px",
+            top: "1807px",
             backgroundImage: `url('${six1}')`,
           }}
         />
@@ -152,7 +191,7 @@ function Item1NonCustomer() {
           style={{
             left: "24.7%",
             cursor:'default',
-            top: "2007px",
+            top: "1807px",
             backgroundImage: `url('${six2}')`,
           }}
         />
@@ -163,7 +202,7 @@ function Item1NonCustomer() {
           style={{
             left: "29.7%",
             cursor:'default',
-            top: "2007px",
+            top: "1807px",
             backgroundImage: `url('${six3}')`,
           }}
         />
@@ -175,7 +214,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "19.7%",
-            top: "2007px",
+            top: "1807px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six4}')`,
@@ -187,7 +226,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "24.7%",
-            top: "2007px",
+            top: "1807px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six5}')`,
@@ -199,7 +238,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "29.7%",
-            top: "2007px",
+            top: "1807px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six6}')`,

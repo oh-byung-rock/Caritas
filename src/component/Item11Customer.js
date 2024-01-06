@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/bgm4.jpg";
+import rmone from "../assets/tele4.jpg";
 import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -300,7 +300,7 @@ function Item11Customer({
         <div
           style={{
             width: '1920px',
-            height: '4000px',
+            height: '3535px',
             backgroundImage: `url('${rmone}')`,
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
@@ -313,7 +313,7 @@ function Item11Customer({
             style={{
               left: "-5.4%",
               cursor:'default',
-              top: "29.3%",
+              top: "34.3%",
               backgroundImage: `url('${six1}')`,
             }}
           />
@@ -323,7 +323,7 @@ function Item11Customer({
             style={{
               left: "-0.4%",
               cursor:'default',
-              top: "29.3%",
+              top: "34.3%",
               backgroundImage: `url('${six2}')`,
             }}
           />
@@ -334,7 +334,7 @@ function Item11Customer({
             style={{
               left: "4.6%",
               cursor:'default',
-              top: "29.3%",
+              top: "34.3%",
               backgroundImage: `url('${six3}')`,
             }}
           />
@@ -356,7 +356,7 @@ function Item11Customer({
               style={{
                 left: "-95px",
                 cursor:'default',
-                top: "-1730px",
+                top: "-1200px",
                 backgroundImage: `url('${rm2six1}')`,
               }}
             />
@@ -367,7 +367,7 @@ function Item11Customer({
               style={{
                 left: "0px",
                 cursor:'default',
-                top: "-1730px",
+                top: "-1200px",
                 backgroundImage: `url('${rm2six2}')`,
               }}
             />
@@ -378,7 +378,7 @@ function Item11Customer({
               style={{
                 left: "95px",
                 cursor:'default',
-                top: "-1730px",
+                top: "-1200px",
                 backgroundImage: `url('${rm2six3}')`,
               }}
             />
@@ -390,7 +390,7 @@ function Item11Customer({
               style={{
                 left: "-47.5px",
                 cursor:'default',
-                top: "-1656px",
+                top: "-1126px",
                 backgroundImage: `url('${rm2six4}')`,
               }}
             />
@@ -401,13 +401,13 @@ function Item11Customer({
               style={{
                 left: "47.5px",
                 cursor:'default',
-                top: "-1656px",
+                top: "-1126px",
                 backgroundImage: `url('${rm2six5}')`,
               }}
             />
           </div> 
         </div>
-      <div className="board_wrap" style={{ width: "1000px", marginTop: "3.6vh" , marginLeft:"13.2%"}}>
+      <div className="board_wrap" style={{ width: "1000px", marginTop: "-450px" , marginLeft:"13.2%"}}>
         <div className="board_title">
         <h2 className="font6" style={{ fontSize: '36px' }}>
           벤치프레스

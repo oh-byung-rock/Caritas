@@ -148,6 +148,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
     if (windowWidth >= 1400) {
       setShowSidebar(false);
     }
+  
   }, [windowWidth]);
 
   useEffect(() => {

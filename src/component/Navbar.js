@@ -18,7 +18,7 @@ function Navbar({windowWidth, setSelectedItem}) {
       id="navbar-example2 "
       className="navbar"
       style={{
-        borderBottom: '1px solid #E0E0E0'
+        borderBottom: '1px solid #E0E0E0',
       }}>
       {/* 최상위 : zIndex // zIndex의 숫자가 클수록 맨위로 올라가진다.*/}
       <div style={{ position: 'relative', zIndex: 1 ,paddingLeft: '30vh' }}> 
