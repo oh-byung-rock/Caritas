@@ -19,8 +19,9 @@ import Paging from './Paging';
 // ▼ GradeContext 준비물1
 import { GradeContext } from '../App';
 import React, { useContext, useState, useEffect } from 'react';
+import AlertBox from './Alertbox2';
 
-function CustomerPage({ currentUser, setCurrentUser }) {
+function CustomerPage({ currentUser, setCurrentUser,message  }) {
   
   const [selectedItem, setSelectedItem] = useState('item-0');
   const [name, setName] = useState('이름없음');
@@ -296,6 +297,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
 
   const fetchUserInfo_mongo = async (user) => {
     console.log('현재 일반로그인 user 정보 : ', user)
+    window.sessionStorage.setItem("currentUser",JSON.stringify(user));
     if(user){
       setName(user.name);
       setGender(user.gender);
@@ -396,6 +398,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
   // };
 
   const displayContent = () => {
+
     switch (selectedItem) {
       case 'item-0':
         return (
@@ -427,6 +430,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
                           checkedweight={checkedweight}
                           setCheckedheight={setCheckedheight}
                           setCheckedweight={setCheckedweight}
+                          message={message}
                         />
                     ) : (
                     <Item1NonCustomer/ >
@@ -494,6 +498,7 @@ function CustomerPage({ currentUser, setCurrentUser }) {
           setNewDeadWeight={setNewDeadWeight}
           newDeadTimes={newDeadTimes}
           setNewDeadTimes={setNewDeadTimes}
+          message={message}
                         />
                     ) : (
           <Item11NonCustomer/>

@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser'); // req 데이터 (body) 해석을 도와준다.
 const port = process.env.PORT || 7576;
+const wsPort = process.env.WSPORT || 7577;
 const path = require('path')
+// 웹소켓 알람
+const http = require('http');
+const WebSocket = require('ws');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // 전송받은 json데이터를 js형태로 변환
@@ -343,6 +347,11 @@ app.patch('/api/question/edit/:uid', async (req, res) => {
   }
 });
 
+// 웹소켓서버는 express서버와 다르게 내장http모듈이 없어 따로 http모듈을 사용해야한다.
+const server = http.createServer(app);
+// 최종적으로 ws모듈과 http모듈을 통해 웹소켓 서버 생성
+const wss = new WebSocket.Server({ server });
+
 // ▼ 댓글 추가
 app.post('/api/question/comment/:uid', async (req, res) => {
   const { uid } = req.params;
@@ -355,6 +364,20 @@ app.post('/api/question/comment/:uid', async (req, res) => {
       post.comment = comment; 
       post.commentstate = commentstate; 
       const updatedPost = await post.save();
+      
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({
+            event: 'commentAdded',
+            data: {
+              postId: uid,
+              comment: comment,
+              commentState: commentstate
+            }
+          }));
+        }
+      });
+      console.log(`Server started on port ${server.address().port}`);
       res.status(200).json(updatedPost);
     } else {
       res.status(404).json({ message: 'No such post found' });
@@ -364,6 +387,21 @@ app.post('/api/question/comment/:uid', async (req, res) => {
   }
 });
 
+server.listen(wsPort, () => {
+  console.log(`Server is running on port ${wsPort}`);
+});
+
+const socket = new WebSocket('ws://localhost:7577');
+
+// 메시지 수신 이벤트 핸들러
+socket.onmessage = function(event) {
+  const message = JSON.parse(event.data);
+
+  // 'commentAdded' 이벤트를 수신하면 처리
+  if (message.event === 'commentAdded') {
+    console.log('답변이 완료되었습니다:', message.data);
+  }
+};
 
 // ▼ 문의사항 삭제 기능
 app.delete('/api/question/delete/:uid', async (req, res) => {
@@ -375,6 +413,28 @@ app.delete('/api/question/delete/:uid', async (req, res) => {
 
     if (post) {
       await post.deleteOne();
+      console.log('1');
+      res.status(200).json({ message: 'Server to Post deleted' });
+    } else {
+      console.log('2');
+      res.status(404).json({ message: 'No such post found' });
+    }
+  } catch (error) {
+    console.log('3',error);
+    res.status(500).json({ message: 'Error deleting post', error: error });
+  }
+});
+
+// ▼ 관리자 댓글 삭제
+app.delete('/api/question/delete2/:uid', async (req, res) => {
+  const { uid } = req.params;
+  console.log('delete params',uid)
+
+  try {
+    const post = await AddQ.findById(uid);
+
+    if (post) {
+      await AddQ.updateOne({ _id: uid }, { $unset: { comment: 1 , commentstate : 2} });
       console.log('1');
       res.status(200).json({ message: 'Server to Post deleted' });
     } else {

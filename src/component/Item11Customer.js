@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/tele4.jpg";
+import rmone from "../assets/ditto2.jpg";
 import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -13,6 +13,7 @@ import rm2six4 from "../assets/r4.webp";
 import rm2six5 from "../assets/r5.webp";
 import { getGrade } from './Getgrade';
 import { GradeContext } from '../App';
+import bravoimg from "../assets/bravoimg2.png";
 
 function Item11Customer({
     // 벤치프레스
@@ -59,7 +60,7 @@ function Item11Customer({
     newDeadTimes,
     setNewDeadTimes,
     DeadWeight,
-    DeadTimes
+    DeadTimes,
 }) {
   // ▼ 버튼 scroll 관련
 
@@ -73,6 +74,8 @@ function Item11Customer({
   const rm2button3Ref = useRef(null);
   const rm2button4Ref = useRef(null);
   const rm2button5Ref = useRef(null);
+
+  const bravoimgRef = useRef(null);
 
   // ▼ 1RM 등급 관련
   const [resultgrade, setResultgrade] = useState('');
@@ -94,7 +97,19 @@ function Item11Customer({
       });
     };
 
+    const bravoObserver = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // 원하는 scrollY 값에 도달했을 때 확인되도록 정의하고 그 값을 버튼이 움직이는 상태로 지정
+          entry.target.style.animation = "slide-left 1s ease-out forwards";
+        } else {
+          entry.target.style.animation = "none";
+        }
+      });
+    };
+
     const observer = new IntersectionObserver(buttonObserver, options);
+    const observer2 = new IntersectionObserver(bravoObserver, options);
 
     observer.observe(rmbutton1Ref.current);
     observer.observe(rmbutton2Ref.current);
@@ -106,9 +121,11 @@ function Item11Customer({
     observer.observe(rm2button3Ref.current);
     observer.observe(rm2button4Ref.current);
     observer.observe(rm2button5Ref.current);
+    observer2.observe(bravoimgRef.current);
 
     return () => {
       observer.disconnect();
+      observer2.disconnect();
     };
   }, []);
   // ▲ 버튼 scroll 관련
@@ -407,6 +424,10 @@ function Item11Customer({
             />
           </div> 
         </div>
+        <button ref={bravoimgRef} className="bravoimg" style={{
+            left: "360px",
+            top: "-828px",
+            backgroundImage: `url('${bravoimg}')`}}/>
       <div className="board_wrap" style={{ width: "1000px", marginTop: "-450px" , marginLeft:"13.2%"}}>
         <div className="board_title">
         <h2 className="font6" style={{ fontSize: '36px' }}>

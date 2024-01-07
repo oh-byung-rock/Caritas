@@ -3,7 +3,7 @@ import "../App.css";
 import bg_test1 from "../assets/content1.webp";
 // import bg_test2 from "../assets/content2.png";
 import bg_test3 from "../assets/content3.webp";
-import six from "../assets/tele2.jpg";
+import six from "../assets/ditto.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
 import six3 from "../assets/b3.jpg";
@@ -11,7 +11,7 @@ import six4 from "../assets/b4.jpg";
 import six5 from "../assets/b5.jpg";
 import six6 from "../assets/b6.jpg";
 import move from "../assets/move.png";
-import bravoimg from "../assets/bravoimg.webp";
+import bravoimg from "../assets/bravoimg2.png";
 
 function Item1NonCustomer() {
   // ▼ h1Ref : hello minsu

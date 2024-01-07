@@ -537,3 +537,9 @@ ul.pagination li a.active {
   position: relative;
   background-color: transparent;
 }
+
+.alert-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

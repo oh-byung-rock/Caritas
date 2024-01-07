@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import '../Inquiry.css';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -17,6 +17,7 @@ import noncheck from '../assets/noncheck.png';
 import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
 import close from '../assets/close.png';
+import { GradeContext } from '../App';
 
 function Question({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
@@ -40,6 +41,8 @@ function Question({ currentUser }) {
   const [totaldbcount, setTotaldbcount] = useState("");
 // ▼ 댓글
   const [comment, setComment] = useState("");
+// ▼ 관리자 댓글 달 시 웹소켓
+const { publicmessage, setPublicmessage } = useContext(GradeContext);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -260,6 +263,27 @@ const handleTitleClick = async (post) => {
     }
   };
   
+  // ▼ 관리자 댓글 삭제
+  const commendelte = async () => {
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      try {
+        const response = await fetch(`/api/question/delete2/${selectedPost._id}`, {
+          method: 'DELETE',
+        });
+    
+        if (response.ok) {
+          console.log('Post deleted',response);
+          setSelectedPost(null);
+        } else {
+          console.error('Failed to delete the post');
+          console.log('deleted1',error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
+
 
   // ▼ 검색 기능
   const searchNew = async () => {
@@ -289,6 +313,7 @@ const handleTitleClick = async (post) => {
   
       if (response.ok) {
         console.log('Comment added', response);
+        setPublicmessage(comment);
       } else {
         console.error('Failed to add the comment');
       }
@@ -342,8 +367,10 @@ const handleTitleClick = async (post) => {
                   <h3 style={{ marginTop: '10px', fontSize: '24px', height:'20rem', borderBottom: '2px solid lightgray' }}>
                     {selectedPost.comment}
                   </h3>
-                  <Button style={{ background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginBottom:'20px', marginTop: '15px'}}>
-                    댓글수정
+                  <Button 
+                    style={{ background: '#242D34', color: '#E0E0E0', border: "none", fontFamily: "노토6" , fontSize: 16, marginBottom:'20px', marginTop: '15px'}}
+                    onClick={commendelte}>
+                    댓글삭제
                   </Button>
                 </div>
               ) : (

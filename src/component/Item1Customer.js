@@ -2,6 +2,7 @@ import editPencil from '../assets/Edit.png';
 import Button from '@mui/material/Button';
 import { GradeContext } from '../App';
 import React, { useContext, useState, useEffect } from 'react';
+import AlertBox from './Alertbox2';
 
 function Item1Customer({
   name,
@@ -21,7 +22,7 @@ function Item1Customer({
   checkedweight,
   checkedheight,
   setCheckedheight,
-  setCheckedweight
+  setCheckedweight,
 }) 
 {
   let uid = '';
