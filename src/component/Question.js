@@ -313,7 +313,7 @@ const handleTitleClick = async (post) => {
   
       if (response.ok) {
         console.log('Comment added', response);
-        setPublicmessage(comment);
+        setSelectedPost(null);
       } else {
         console.error('Failed to add the comment');
       }

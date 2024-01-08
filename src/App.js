@@ -7,7 +7,7 @@ import Servertest from './component/servertest';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Question from './component/Question';
 import AlertBox from './component/Alertbox2';
-
+const socket = new WebSocket('ws://localhost:7577');
 const GradeContext = React.createContext();
 
 function App() {
@@ -24,26 +24,59 @@ function App() {
   const [publicIndirectweight, setPublicIndirectweight] = useState(null);
   const [publicmessage, setPublicmessage] = useState(null);
   const [message, setMessage] = useState(null);
+  const [change, setChange] = useState(0);
+  const [aa, setaa] = useState(null);
 
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if(data){
+      if (data.event === 'commentAdded' && data.postId === currentUser.uid) {
+        console.log('11');
+        setChange(change+1)
+        setMessage('답변이 완료되었습니다!');
+        // 현재 시간의 타임스탬프를 aa의 값으로 설정
+        setaa(new Date().getTime());
+      } else {        
+        console.log('22');
+        // null 대신 랜덤 값을 aa의 값으로 설정
+        setaa(Math.random());
+      }
+    }
+  };
+  /*
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:7577');
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.event === 'commentAdded' && data.postId === currentUser.uid) {
-        setMessage('답변이 완료되었습니다!');
+      console.log('cex')
+      if(data){
+        console.log(data)
+        if (data.event === 'commentAdded' && data.postId === currentUser.uid) {
+          console.log('11');
+          setMessage('답변이 완료되었습니다!');
+          // 현재 시간의 타임스탬프를 aa의 값으로 설정
+          setaa(new Date().getTime());
+        } else {        
+          console.log('22');
+          // null 대신 랜덤 값을 aa의 값으로 설정
+          setaa(Math.random());
+        }
       }
     };
-    return () => {
-      socket.close();
-    };
-  }, [setPublicmessage]);
+    //버려
+   return () => {
+     // console.log("end")
+     // socket.close();
+   }
+    
+  }, [aa]);*/
+  
 
   return (
     <GradeContext.Provider value={{ publicAge, setPublicAge, publicGender, setPublicGender 
     , publicBodyweight , setPublicBodyweight, publicDirectweight, setPublicDirectweight, publicIndirectweight, setPublicIndirectweight, publicmessage, setPublicmessage }}>
       <Router>
         <div className="App">
-          <AlertBox message={message}/>
+          <AlertBox message={message} change={change}/>
           <Routes>
             <Route path="/" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>} exact />
             <Route path="/login" element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />

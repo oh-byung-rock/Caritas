@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-function AlertBox2({ message, duration = 5000 }) {
+function AlertBox2({ message,change, duration = 5000 }) {
   const [show, setShow] = useState(false);
-
   useEffect(() => {
     if (message) {
       setShow(true);
       setTimeout(() => setShow(false), duration);
     }
-  }, [message, duration]);
+  }, [message, duration,change]);
 
   if (!show) return null;
 

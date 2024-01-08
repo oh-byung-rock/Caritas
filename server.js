@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser'); // req 데이터 (body) 해석을 도와준다.
@@ -113,6 +114,7 @@ app.post('/add', async (req, res) => {
 
 // ▼ 회원가입
 const bcrypt = require('bcrypt');
+const { log } = require('console');
 const saltRounds = 10;
 
 app.post('/add2', async (req, res) => {
@@ -367,6 +369,7 @@ app.post('/api/question/comment/:uid', async (req, res) => {
       
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
+          console.log('cex '+client.id)
           client.send(JSON.stringify({
             event: 'commentAdded',
             data: {
@@ -377,6 +380,7 @@ app.post('/api/question/comment/:uid', async (req, res) => {
           }));
         }
       });
+      
       console.log(`Server started on port ${server.address().port}`);
       res.status(200).json(updatedPost);
     } else {
