@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/ditto2.jpg";
+import rmone from "../assets/subpage.jpg";
 import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -13,7 +13,7 @@ import rm2six4 from "../assets/r4.webp";
 import rm2six5 from "../assets/r5.webp";
 import { getGrade } from './Getgrade';
 import { GradeContext } from '../App';
-import bravoimg from "../assets/bravoimg2.png";
+import bravoimg from "../assets/surprise.png";
 
 function Item11Customer({
     // 벤치프레스

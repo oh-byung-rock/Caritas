@@ -14,7 +14,7 @@ import six6 from "../assets/b6.jpg";
 import move from "../assets/move.png";
 import movetext from "../assets/movetext.png";
 import movegit from "../assets/gitgit.gif";
-import bravoimg from "../assets/bravoimg2.png";
+import bravoimg from "../assets/surprise.png";
 
 function Item1NonCustomer() {
   // ▼ h1Ref : hello minsu

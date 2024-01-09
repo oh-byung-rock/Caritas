@@ -17,6 +17,7 @@ import noncheck from '../assets/noncheck.png';
 import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
 import close from '../assets/close.png';
+import quepage from '../assets/quepage.jpg';
 import { GradeContext } from '../App';
 
 function Question({ currentUser }) {
@@ -324,7 +325,15 @@ const handleTitleClick = async (post) => {
   
 
   return (  
-    <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
+    <div className="board_wrap font5" 
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0',
+      width: '1920px',
+      height: '760px',
+      backgroundImage: `url('${quepage}')`,
+      backgroundSize: "100% 100%",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      }}>
       <div className="board_title" style={{width:'70%'}}>
         <h2 className="font6" style={{ fontSize: '36px' }}>
           문의사항
