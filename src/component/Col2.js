@@ -9,7 +9,7 @@ import close from '../assets/close.png';
 function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setSelectedItem, handleLogout, name , setColWidth, setLeftMargin  }) {
   const [openProfileChange, setOpenProfileChange] = useState(false);
   const [collapsed, setCollapsed] = useState(true); 
-  const [pic, setPic] = useState(openwhite);
+  const [pic, setPic] = useState(openblack);
 
   const handleProfileChangeDialog = () => {
     setOpenProfileChange(true);
@@ -27,7 +27,7 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
     if (value > 508.2) {
       setPic(openblack);
     } else {
-      setPic(openwhite);
+      setPic(openblack);
     }
   }; 
 

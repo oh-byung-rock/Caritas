@@ -394,21 +394,32 @@ class gray-background{
   position: relative;
   margin-top:40px;
   background-color: rgba(255, 255, 255, 0);
-  color: #F4F4F4;
+  color: #162243;
   width: 180px;
   font-size: 1.5rem;
-  border-color: #F4F4F4;
   border-radius: 15px;
   outline: 0;
   padding: 10px 20px; /* 위아래 10px, 좌우 20px 패딩 */
   border-radius: 5px; /* border-radius 추가 */
-  border: 2px solid #F4F4F4;
+  border: 2px solid #162243;
 }
 
+@keyframes slide-left {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
 .seedetail:hover{
-  background-color: #F4F4F4;
-  border-color: #242D34;
-  color: #242D34;
+  background-color: #162243;
+  border-color: #162243;
+  color: #F4F4F4;
 }
 
 .sixs {
@@ -518,17 +529,6 @@ ul.pagination li a.active {
   }
 }
 
-@keyframes slide-left {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .timeimg{
   width: 80px;
   height: 80px;
@@ -542,4 +542,27 @@ ul.pagination li a.active {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  background-color: #ffffff;
+  border: 1px solid #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  height: 120px; /* 높이를 100px로 설정 */
+  width: 300px; /* 너비를 200px로 설정 */
+  display: flex; /* 제목과 내용을 가로 배치하기 위해 flex를 사용 */
+  flex-direction: column; /* 제목과 내용을 세로로 배치 */
+}
+
+.alert-box .title {
+  display: flex; /* 제목과 벨 아이콘을 가로 배치하기 위해 flex를 사용 */
+  align-items: center; /* 제목과 벨 아이콘을 수직 중앙에 배치 */
+  height: 50px; /* 제목 부분의 높이를 50px로 설정 */
+  font-family: '노토6';
+  border-bottom: 1px solid #F4F4F4;
+}
+
+.alert-box .content {
+  height: 70px; /* 내용 부분의 높이를 50px로 설정 */
+  font-family: '노토2';
+  text-align: left;
+  margin: 20px;
 }

@@ -2,8 +2,9 @@ import React, { useRef, useEffect, useState }  from "react";
 import "../App.css";
 import bg_test1 from "../assets/content1.webp";
 // import bg_test2 from "../assets/content2.png";
-import bg_test3 from "../assets/content3.webp";
-import six from "../assets/ditto.jpg";
+// import bg_test3 from "../assets/content3.webp";
+import bg_test3 from "../assets/titi.png";
+import six from "../assets/mainpage.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
 import six3 from "../assets/b3.jpg";
@@ -11,6 +12,8 @@ import six4 from "../assets/b4.jpg";
 import six5 from "../assets/b5.jpg";
 import six6 from "../assets/b6.jpg";
 import move from "../assets/move.png";
+import movetext from "../assets/movetext.png";
+import movegit from "../assets/gitgit.gif";
 import bravoimg from "../assets/bravoimg2.png";
 
 function Item1NonCustomer() {
@@ -113,23 +116,26 @@ function Item1NonCustomer() {
     >
       <div
         style={{
-          width: '100%',
-          height: '562.27px',
+          width: '1920px',
+          height: '562px',
           backgroundImage: `url('${bg_test3}')`,
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          borderBottom: '1px solid #E0E0E0',
-          backgroundAttachment: "fixed", // 배경은 고정 요소들만 움직이게
+          // backgroundAttachment: "fixed", // 배경은 고정 요소들만 움직이게
         }}
         >
-        <h1
-        ref={h1Ref}
-        className='font7'
-        style={{fontSize:'6em', width:'258px',color:'#F4F4F4',position:'relative',left:'400px',top:'80px',animation:'slide 1s ease-out'}}>
-        hello minsoo
-        </h1>
-        <button ref={buttonRef} className="font7 seedetail" style={{animation:'slide 1s ease-out'}} >자세히 보기</button>
+        {/* hello */}
+        <div>
+          <img 
+            ref={h1Ref}
+            className='font7'
+            src={movetext}
+            style={{width:'520px', height:'200px',position:'relative', left:'400px', top:'80px', animation:'slide 1s ease-out', marginLeft:'-231px', marginTop:'-8px'}}
+            alt="movetext"
+          />
+        </div>
+        <button ref={buttonRef} className="font7 seedetail" style={{animation:'slide 1s ease-out', marginLeft:'-206px'}} >자세히 보기</button>
       </div> 
       <div
       className="six"
@@ -149,7 +155,7 @@ function Item1NonCustomer() {
           style={{
             width:'30px',
             height:'30px',
-            top:'1600px',
+            top:'1690px',
             left:'50%',
             position:'relative'
           }}
@@ -158,19 +164,18 @@ function Item1NonCustomer() {
           }}       
             src={move}
         />
-        <button
+         <img
           style={{
-            width:'150px',
-            height:'150px',
+            width:'62.5px',
+            height:'125px',
             top:'140px',
-            left:'44%',
-            position:'relative',
-            background: 'transparent', // 배경색 없음
-            border: 'none', //
-          }}     
+            left:'46%',
+            position:'relative'
+          }}
           onClick={() => {
             moveing2()
-          }} 
+          }}       
+          src={movegit}
         />
       </div>
 
@@ -181,7 +186,7 @@ function Item1NonCustomer() {
           style={{
             left: "19.7%",
             cursor:'default',
-            top: "1807px",
+            top: "1847px",
             backgroundImage: `url('${six1}')`,
           }}
         />
@@ -191,7 +196,7 @@ function Item1NonCustomer() {
           style={{
             left: "24.7%",
             cursor:'default',
-            top: "1807px",
+            top: "1847px",
             backgroundImage: `url('${six2}')`,
           }}
         />
@@ -202,7 +207,7 @@ function Item1NonCustomer() {
           style={{
             left: "29.7%",
             cursor:'default',
-            top: "1807px",
+            top: "1847px",
             backgroundImage: `url('${six3}')`,
           }}
         />
@@ -214,7 +219,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "19.7%",
-            top: "1807px",
+            top: "1847px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six4}')`,
@@ -226,7 +231,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "24.7%",
-            top: "1807px",
+            top: "1847px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six5}')`,
@@ -238,7 +243,7 @@ function Item1NonCustomer() {
           className="sixs"
           style={{
             left: "29.7%",
-            top: "1807px",
+            top: "1847px",
             cursor:'default',
             marginTop: "36px",
             backgroundImage: `url('${six6}')`,
