@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import uploadFile from './Awss3'; // awss3.js에서 export한 함수 import
+import { uploadFile } from './Awss3'; 
 import { Buffer } from 'buffer';
 
-const ProfileChange = ({ userId, setOpenProfileChange, openProfileChange, setPhotoURL }) => {
+const ProfileChange = ({ userId, setOpenProfileChange, openProfileChange, setPhotoURL,currentUser }) => {
     const [selectedFile, setSelectedFile] = useState(null);
+
 
     const handleClose = () => {
         setOpenProfileChange(false);
@@ -14,8 +15,15 @@ const ProfileChange = ({ userId, setOpenProfileChange, openProfileChange, setPho
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        const fileExt = file.name.split('.').pop();
         if (file && file.type.startsWith("image/")) {
+            if(file.type !== 'image/jpeg' || fileExt !=='jpg'){
+                alert('jpg 파일만 Upload 가능합니다.');
+                setSelectedFile(null);
+                return;
+              } else {
             setSelectedFile(file);
+              }
         } else {
             alert("이미지 파일만 선택해주세요");
             setSelectedFile(null);
@@ -27,21 +35,19 @@ const ProfileChange = ({ userId, setOpenProfileChange, openProfileChange, setPho
             alert("이미지 파일을 선택해주세요");
             return;
         }
-        console.log('사진', selectedFile)
         try {
             // File 객체는 브라우저의 메모리에서 직접 접근할 수 없으므로 Buffer 형태로 변환
             const fileContent = Buffer.from(await selectedFile.arrayBuffer());
-
             // AWS S3에 업로드
             await uploadFile(`images/${userId}`, fileContent);
-
+            console.log('아이스크림', userId)
             alert("프로필 사진이 업로드되었습니다.");
             setPhotoURL(URL.createObjectURL(selectedFile)); // 프로필'만' 새로고침 
             setSelectedFile(null);
             setOpenProfileChange(false);
         } catch (error) {
             alert("업로드 중 문제가 발생했습니다.");
-            console.error(error);
+            console.log(error);
         }
     };
 

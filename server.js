@@ -1,4 +1,5 @@
-
+// 1월11일
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser'); // req 데이터 (body) 해석을 도와준다.
@@ -8,6 +9,7 @@ const path = require('path')
 // 웹소켓 알람
 const http = require('http');
 const WebSocket = require('ws');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // 전송받은 json데이터를 js형태로 변환
@@ -200,6 +202,7 @@ app.use(express.static(__dirname + '/src'));
 // });
 // ---------------- session 관련 ----------------------
 
+// 네이버 로그인
 app.get('/api/naver/userinfo', (req, res) => {
   const token = req.headers.authorization;
   const weight = req.query.weight;
@@ -239,7 +242,7 @@ app.get('/api/naver/userinfo', (req, res) => {
   });
 });
 
-
+// 일반 로그인
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

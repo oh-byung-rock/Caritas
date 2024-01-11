@@ -5,11 +5,30 @@ import ProfileChange from "./ProfileChange";
 import openwhite from '../assets/openwhite.png';
 import openblack from '../assets/openblack.png';
 import close from '../assets/close.png';
+import { getFile } from './Awss3'; 
 
 function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setSelectedItem, handleLogout, name , setColWidth, setLeftMargin  }) {
   const [openProfileChange, setOpenProfileChange] = useState(false);
   const [collapsed, setCollapsed] = useState(true); 
   const [pic, setPic] = useState(openblack);
+  const [uid, setUid] = useState('');
+  
+  useEffect(() => {
+  let uid = '';
+  if(currentUser){
+    if (currentUser.platform) {
+      if (currentUser.platform == 'naver') {
+        uid = currentUser.id;
+      }
+    } else {
+      uid = currentUser._id;
+    }
+  } else { 
+    console.log('거울임33'); 
+  }
+  setUid(uid);
+  getFile(uid, setPhotoURL);
+  }, [currentUser]); 
 
   const handleProfileChangeDialog = () => {
     setOpenProfileChange(true);
@@ -122,7 +141,7 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
       )}
 
         { openProfileChange ? ( <ProfileChange
-          userId={currentUser.uid}
+          userId={uid}
           setOpenProfileChange={setOpenProfileChange}
           openProfileChange={openProfileChange}
           setPhotoURL={setPhotoURL}
