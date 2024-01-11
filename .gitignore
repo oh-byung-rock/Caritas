@@ -24,4 +24,4 @@ yarn-error.log*
 
 # Environment variables
 .env
-.FireBase
+src/component/FireBase.js
