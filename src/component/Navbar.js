@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reallogo from '../assets/reallogo.png';
-import logo from '../assets/logo.png';
+import logo from '../assets/healthlogo.png';
 import menuimg from '../assets/navmenu.png'
 import backimg from '../assets/backimg.png'
 
@@ -21,7 +21,7 @@ function Navbar({windowWidth, setSelectedItem}) {
         borderBottom: '1px solid #E0E0E0',
       }}>
       {/* 최상위 : zIndex // zIndex의 숫자가 클수록 맨위로 올라가진다.*/}
-      <div style={{ position: 'relative', zIndex: 1 ,paddingLeft: '30vh' }}> 
+      <div style={{ position: 'relative', zIndex: 1 ,paddingLeft: '66px' }}> 
         <button className="transparent-button" onClick={() => window.location.reload()}>
           <img src={logo} style={{ height: '68px' }}/>
         </button>

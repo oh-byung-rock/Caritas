@@ -3,7 +3,7 @@ import "../App.css";
 import bg_test1 from "../assets/content1.webp";
 // import bg_test2 from "../assets/content2.png";
 // import bg_test3 from "../assets/content3.webp";
-import bg_test3 from "../assets/titi.png";
+import bg_test3 from "../assets/healthmain.png";
 import six from "../assets/mainpage.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -12,7 +12,7 @@ import six4 from "../assets/b4.jpg";
 import six5 from "../assets/b5.jpg";
 import six6 from "../assets/b6.jpg";
 import move from "../assets/move.png";
-import movetext from "../assets/movetext.png";
+import movetext from "../assets/healthmainsub.png";
 import movegit from "../assets/gitgit.gif";
 import bravoimg from "../assets/surprise.png";
 
@@ -131,11 +131,11 @@ function Item1NonCustomer() {
             ref={h1Ref}
             className='font7'
             src={movetext}
-            style={{width:'520px', height:'200px',position:'relative', left:'400px', top:'80px', animation:'slide 1s ease-out', marginLeft:'-231px', marginTop:'-8px'}}
+            style={{width:'468px', height:'252px',position:'relative', left:'400px', top:'80px', animation:'slide 1s ease-out', marginLeft:'-131px', marginTop:'-8px'}}
             alt="movetext"
           />
         </div>
-        <button ref={buttonRef} className="font7 seedetail" style={{animation:'slide 1s ease-out', marginLeft:'-206px'}} >자세히 보기</button>
+        <button ref={buttonRef} className="font7 seedetail" style={{animation:'slide 1s ease-out', marginLeft:'-116px', marginTop:'5px'}} >자세히 보기</button>
       </div> 
       <div
       className="six"
@@ -168,7 +168,7 @@ function Item1NonCustomer() {
           style={{
             width:'62.5px',
             height:'125px',
-            top:'140px',
+            top:'55px',
             left:'46%',
             position:'relative'
           }}
