@@ -27,7 +27,6 @@ function Item1NonCustomer() {
   const button4Ref = useRef(null);
   const button5Ref = useRef(null);
   const button6Ref = useRef(null);
-  const bravoimgRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,19 +77,17 @@ function Item1NonCustomer() {
     };
   
     const observer = new IntersectionObserver(buttonObserver, options);
-    const observer2 = new IntersectionObserver(bravoObserver, options);
-  
+
     observer.observe(button1Ref.current);
     observer.observe(button2Ref.current);
     observer.observe(button3Ref.current);
     observer.observe(button4Ref.current);
     observer.observe(button5Ref.current);
     observer.observe(button6Ref.current);
-    observer2.observe(bravoimgRef.current);
   
     return () => {
       observer.disconnect();
-      observer2.disconnect();
+
     };
   }, []);
 
@@ -252,20 +249,7 @@ function Item1NonCustomer() {
 
       </div>
       </div>
-      <div
-        className={'bg_test1'}
-        style={{
-          width: "100%",
-          height: "59vh",
-          backgroundImage: `url('${bg_test1}')`,
-          backgroundSize: "100% 100%",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          borderBottom: "1px solid #E0E0E0",
-        }}
-      >
-        <button ref={bravoimgRef} className="bravoimg" style={{backgroundImage: `url('${bravoimg}')`}}/>
-      </div>
+
     {/* <div
       className={'bg_test2'}
       style={{

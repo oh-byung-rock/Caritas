@@ -87,6 +87,17 @@ class gray-background{
   background-color: #F4F4F4;
 }
 
+.logo-container img {
+  position: relative;
+  top: -28px; /* 이미지를 위로 20px만큼 이동 */
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form-container {
   width: 350px;
   height: 500px;
@@ -128,7 +139,6 @@ class gray-background{
   font-family: '노토7';
   font-weight: 900;
 }
-
 
 .nav-container {
   transition: width 1s ease-in-out;
@@ -433,8 +443,8 @@ class gray-background{
 
 
 .bravoimg{
-  width: 456px;
-  height: 305px;
+  width: 400px;
+  height: 400px;
   background-color: rgba(255, 255, 255, 0);
   left: 1160px;
   border:none;

@@ -17,7 +17,7 @@ import noncheck from '../assets/noncheck.png';
 import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
 import close from '../assets/close.png';
-import quepage from '../assets/quepage.jpg';
+import quepage from '../assets/questionpage.png';
 import { GradeContext } from '../App';
 
 function Question({ currentUser }) {

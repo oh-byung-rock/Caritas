@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import editPencil from '../assets/Edit.png';
-import rmone from "../assets/subpage.jpg";
+import rmone from "../assets/subpage.png";
 import rmtwo from "../assets/rmtwo.jpg";
 import six1 from "../assets/b1.jpg";
 import six2 from "../assets/b2.jpg";
@@ -14,6 +14,7 @@ import rm2six5 from "../assets/r5.webp";
 import { getGrade } from './Getgrade';
 import { GradeContext } from '../App';
 import bravoimg from "../assets/surprise.png";
+import readyservice from "../assets/readyservice.png";
 
 function Item11Customer({
     // 벤치프레스
@@ -426,9 +427,12 @@ function Item11Customer({
         </div>
         <button ref={bravoimgRef} className="bravoimg" style={{
             left: "360px",
-            top: "-828px",
+            top: "-925px",
+
             backgroundImage: `url('${bravoimg}')`}}/>
-      <div className="board_wrap" style={{ width: "1000px", marginTop: "-450px" , marginLeft:"13.2%"}}>
+
+      {/* '한눈으로 보는 1RM' 이후 이미지       */}
+      <div className="board_wrap" style={{ width: "1000px", marginTop: "-880px" , marginLeft:"13.2%"}}>
         <div className="board_title">
         <h2 className="font6" style={{ fontSize: '36px' }}>
           벤치프레스
@@ -534,6 +538,15 @@ function Item11Customer({
             </div>
         </div>
 
+        <div style={{
+          position: 'absolute',
+          top: '4410px',
+          left: '720px',
+          width: '765px',
+          height: '120px',
+        }}>
+          <img src={readyservice} alt="설명" style={{ width: '100%', height: '100%' }} />
+        </div>
 
         <div className="board_title" style={{paddingTop:'30px'}}>
         <h2 className="font6" style={{ fontSize: '36px' }}>

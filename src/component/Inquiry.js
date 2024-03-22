@@ -30,6 +30,23 @@ function Inquiry() {
   //   window.location.reload();
   // };
 
+  const getData = async () => {
+    const firestore = getFirestore();
+    const q = query(collection(firestore, 'notice')); // 'notice' 컬렉션 가져오는 쿼리
+  
+    const querySnapshot = await getDocs(q);
+    let allPosts = [];
+    querySnapshot.forEach((doc) => {
+      allPosts.push(doc.data());
+    });
+    setPosts(allPosts);
+  };
+  
+  // useEffect를 사용하여 컴포넌트가 마운트될 때 데이터를 가져오는 로직을 실행합니다.
+  useEffect(() => {
+    getData();
+  }, []); // 의존성 배열을 비워두면 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다.
+  
   const handleAddPost = async (title, writer, content, count) => {
     const firestore = getFirestore();
     const noticeDocRef = doc(firestore, "notice", title);
@@ -42,6 +59,7 @@ function Inquiry() {
       content: content
     });
   
+    await getData(); // 여기에서 getData를 호출합니다.
     handleClose();
   };
 
@@ -61,23 +79,6 @@ function Inquiry() {
 
     handleTitleClick(post);
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      const firestore = getFirestore();
-      const q = query(collection(firestore, 'notice')); // 'notice' 컬렉션 가져오는 쿼리
-  
-      const querySnapshot = await getDocs(q);
-      let allPosts = [];
-      querySnapshot.forEach((doc) => {
-        allPosts.push(doc.data());
-      });
-      setPosts(allPosts);
-    };
-  
-    getData();
-  }, []);
-  /* []안에 요소가 변경될때마다 실행, []안이 공란이면 한번만 실행 */
 
   return (    
     <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
@@ -151,9 +152,8 @@ function Inquiry() {
 
         {selectedPost && (
           <Dialog open={titleopen} onClose={handleClose}>
-            <DialogTitle>여기는 제목</DialogTitle>
+            <DialogTitle><h2>{selectedPost.title}</h2></DialogTitle>
             <DialogContent>
-              <h2>{selectedPost.title}</h2>
               <p>{selectedPost.content}</p>
             </DialogContent>
             <Button onClick={handleClose}>취소</Button>

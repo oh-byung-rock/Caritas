@@ -9,8 +9,8 @@ function Navbar({windowWidth, setSelectedItem}) {
   const [showSidebar, setShowSidebar] = useState(false);
   const menuItems = [
     { id: 'item-1-3', label: '공지사항', href: '#scrollspyHeading3' },
-    { id: 'item-1-4', label: '문의하기', href: '#scrollspyHeading4' },
-    { id: 'item-1-5', label: '서버테스트', href: '#scrollspyHeading5' }
+    { id: 'item-1-4', label: '문의하기', href: '#scrollspyHeading4' }
+    
   ];
   
   return (
@@ -40,7 +40,7 @@ function Navbar({windowWidth, setSelectedItem}) {
               role="button"
               style={{ fontSize: '17px', color: '#242D34', paddingRight: '4rem' }}
             >
-              커뮤니티
+              게시판
             </h2>
             <div className="dropdown-menu">
               {menuItems.map((item) => (
@@ -62,7 +62,7 @@ function Navbar({windowWidth, setSelectedItem}) {
           </div>
         )}
 
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <h2
             className="dropdown-toggle"
             data-bs-toggle="dropdown"
@@ -83,7 +83,7 @@ function Navbar({windowWidth, setSelectedItem}) {
               세번째 목록
             </a>
           </div>
-        </div>
+        </div> */}
 
         {showSidebar && windowWidth < 1400 && (
           <div className={`sidebar ${showSidebar ? 'show' : ''}`}>

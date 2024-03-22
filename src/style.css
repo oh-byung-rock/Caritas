@@ -61,12 +61,13 @@
     justify-content: center;
   }
 
+
   .dialog {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     width: 100%;
-    max-width: 300px;
+    height: 100%;
   }
   
   .close-button {

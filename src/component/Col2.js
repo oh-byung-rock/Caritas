@@ -55,7 +55,7 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
       setColWidth('100%');
       setLeftMargin('0');
     } else {
-      setColWidth('85%');
+      setColWidth('100%');
       setLeftMargin('15%');
     }
   }, [collapsed]);
@@ -63,9 +63,9 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
   return (
     <div className="col-2 nav-container" style={{minWidth:'330px'}}>
       {collapsed ? <button className="small-thumbnail" style={{ bottom:'83%', left:'12%', backgroundImage: `url('${pic}')` }} onClick={() => setCollapsed(false)}/> : (
-          <div id="navbar-example3" className="h-100 flex-column align-items-stretch pe-4 border-end basebackground">
-            <div className="nav nav-pills nav-left flex-column font6">
-              
+          <div id="navbar-example3" className="h-100 flex-column align-items-stretch pe-4 border-end basebackground " >
+            <div className="nav nav-pills nav-left flex-column font6 ">
+
               <div className="thumbnail" style={{ backgroundImage: `url('${photoURL}')` }}></div>
               <div><button className="small-thumbnail" style={{ bottom:'83%', left:'72%', backgroundImage: `url('${close}')` }} onClick={() => setCollapsed(true)} /></div>
               {currentUser ? (
@@ -103,21 +103,21 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
                   >
                     나의 운동 레벨
                   </h2>
-                  <h2
+                  {/* <h2
                     className={`wordmenu2 ${selectedItem === "item-1-2" ? "selected-item" : ""}`}
                     href="#item-1-2"
                     onClick={() => setSelectedItem("item-1-2")}
                   >
                     RM 전환하기
-                  </h2>
+                  </h2> */}
                   <h2 className="wordmenu1" style={{ marginTop: "20px" ,borderTop: "1px solid #E0E0E0" ,paddingTop: "20px"}} onClick={handleLogout}>로그아웃</h2>
                 </>
               ) : (
                 <>  
                   <h2 className='wordmenu1'
                   style={{marginTop: "50px"}}
-                  >마이페이지</h2>
-                  <h2
+                  >로그인 후 이용가능</h2>
+                  {/* <h2
                     className={`wordmenu2 ${selectedItem === "item-1-1" ? "selected-item" : ""}`}
                     href="#item-1-1"
                     onClick={() => setSelectedItem("item-1-1")}
@@ -131,7 +131,7 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
                     onClick={() => setSelectedItem("item-1-2")}
                   >
                     RM 전환하기
-                  </h2>
+                  </h2> */}
                  
                 </>
               )}

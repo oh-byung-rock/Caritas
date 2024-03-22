@@ -70,22 +70,23 @@ function Item1Customer({
     console.log('일반로그인임')
   }
   return (
-    <div className='board_wrap font6' style={{ width: '100%', display: 'flex', flexDirection: 'column', margin: '10% 0 0 0'}}>
-      <div className="board_title" style={{width:'80%'}}>
+    <div className='board_wrap font6' style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '10% auto'}}>
+      <div className="board_title" style={{width:'80%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <h2 className="font6" style={{ fontSize: '36px', paddingLeft: '50px' }}>
           사용자 정보 수정
         </h2>
         {/* <h2 style={{ marginTop: '5px', fontSize: '24px',paddingLeft: '50px' }}>고객님의 최근정보입니다.</h2> */}
       </div>
-      <div className='board_all font5' style={{ display: 'flex', width:'100%' }}>
-        <div className='column-1' style={{ width: '20%' }}>
+      <div style={{ display: 'flex', width: '100%', flexDirection: 'column', alignItems: 'center', marginLeft:'1080px' }}>
+      <div className='board_all font5' style={{ width:'100%', display: 'flex' }}>
+        <div className='column-1' style={{ width: '10%' }}>
           <div style={{borderTop:'1px solid #242D34'}} ><strong>이름</strong></div>
           <div><strong>성별</strong></div>
           <div><strong>나이</strong></div>
           <div><strong>신장</strong></div>
           <div><strong>체중</strong></div>
         </div>
-        <div className='column-2' style={{ width: '80%' }}>
+        <div className='column-2' style={{ width: '30%' }}>
           <div style={{borderTop:'1px solid #242D34',textAlign: 'left', paddingLeft: '20px'}}>
             {currentUser.platform && currentUser.platform === 'naver' 
               ? currentUser.name
@@ -169,6 +170,7 @@ function Item1Customer({
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-import logo from '../assets/reallogo.png';
+import logo from '../assets/healthlogo.png';
 import Item1Customer from './Item1Customer';
 import Item1NonCustomer from './Item1NonCustomer';
 
@@ -264,7 +264,11 @@ const resetFields = () => {
     <div className="background">
     {/* <div className="login-container"> */}
     <div className="form-container font5">
-    <img src={logo} style={{ marginTop: '-50px' }} width="180" height="90" />
+
+    <div className="logo-container">
+      <img src={logo} width="293px" height="91px"/>
+    </div>
+
     <input
       className="item"
       type="text"
@@ -309,8 +313,8 @@ const resetFields = () => {
     </div>
 
         <Dialog open={open} onClose={handleClose} className="dialog-overlay">
-        <DialogTitle><img src={logo} style={{ marginLeft: '30px' }} width="180" height="90" /></DialogTitle>
-        <DialogContent className="dialog" >
+        <DialogTitle ><img src={logo} style={{ marginLeft: '30px' ,width:"293px" ,height:"91px", marginBottom:'-10px'}} /></DialogTitle>
+        <DialogContent className="dialog" style={{ display:'flex', flexDirection:'column', alignItems:'center'}} >
         
         {/* <FormControl>
         <Input
@@ -327,7 +331,7 @@ const resetFields = () => {
             label="아이디"
             type="text"
             name="id"
-            style={{ fontFamily: "노토5", marginBottom:'10px'}}
+            style={{ fontFamily: "노토5", marginBottom:'-10px', display:'flex', flexDirection:'column', alignItems:'center'}}
             value={email}
             onChange={(e) => setEmail(e.target.value)} />
           <br/>
@@ -374,7 +378,7 @@ const resetFields = () => {
               label="나이"
               type="text"
               value={age}
-              style={{ fontFamily: "노토5", marginBottom:'10px'}}
+              style={{ fontFamily: "노토5", marginBottom:'-10px'}}
               onChange={(e) => setAge(e.target.value)}
             />
             <br/>
@@ -383,7 +387,7 @@ const resetFields = () => {
             <TextField
               label="체중"
               type="text"
-              style={{ fontFamily: "노토5", marginBottom:'10px'}}
+              style={{ fontFamily: "노토5", marginBottom:'-10px'}}
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
             />
