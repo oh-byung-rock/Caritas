@@ -372,7 +372,7 @@ app.post('/api/question/comment/:uid', async (req, res) => {
       
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-          console.log('cex '+client.id)
+          console.log('ex '+client.uid)
           client.send(JSON.stringify({
             event: 'commentAdded',
             data: {
@@ -591,7 +591,8 @@ app.get('/gethealth/:uid', async (req, res) => {
   try {
     const healthData = await Health.findOne({ uid: uid });
     if (healthData) {
-      res.status(200).json(healthData);
+      const updatedHealth = await healthData.save();
+      res.status(200).json(updatedHealth);
     } else {
       res.status(200).json({});
     }

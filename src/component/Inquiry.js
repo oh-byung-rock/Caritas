@@ -42,10 +42,10 @@ function Inquiry() {
     setPosts(allPosts);
   };
   
-  // useEffect를 사용하여 컴포넌트가 마운트될 때 데이터를 가져오는 로직을 실행합니다.
+  // useEffect를 사용하여 컴포넌트가 마운트될 때 데이터를 가져오는 로직을 실행
   useEffect(() => {
     getData();
-  }, []); // 의존성 배열을 비워두면 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다.
+  }, []); // 의존성 배열을 비워두면 컴포넌트가 처음 렌더링될 때 한 번만 실행
   
   const handleAddPost = async (title, writer, content, count) => {
     const firestore = getFirestore();

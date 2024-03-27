@@ -234,10 +234,16 @@ function Item11Customer({
         },
         body: JSON.stringify(data)
       });
-  
+      const day0328 = await response.json();
+      const indirectResult = indirectbench('벤치', data.benchcount, data.benchweight);
       // 응답 확인
       if (response.ok) {
-        console.log('데이터가 성공적으로 추가되었습니다.');
+        console.log('day0328', day0328);
+        console.log('day03282', indirectResult);
+        setIsEditingBenchPressTimes(false);
+        svbpwt.benchcount = data.benchcount
+        setIndirectbp(indirectResult)
+        
       } else {
         console.log('데이터 추가에 실패했습니다.');
       }
