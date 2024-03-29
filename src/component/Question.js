@@ -17,7 +17,7 @@ import noncheck from '../assets/noncheck.png';
 import oncheck from '../assets/oncheck.png';
 import Paging from './Paging';
 import close from '../assets/close.png';
-import quepage from '../assets/questionpage.png';
+import quepage from '../assets/inquirypage.png';
 import { GradeContext } from '../App';
 
 function Question({ currentUser }) {
@@ -43,20 +43,22 @@ function Question({ currentUser }) {
 // ▼ 댓글
   const [comment, setComment] = useState("");
 // ▼ 관리자 댓글 달 시 웹소켓
-const { publicmessage, setPublicmessage } = useContext(GradeContext);
+  const { publicmessage, setPublicmessage } = useContext(GradeContext);
 
+  const fetchQuestions = async () => {
+    try {
+      // ▼ /api/questions 에 쿼리파라미터로 page와 perpage 를 보내기
+      const response = await fetch(`/api/questions?page=${page}&perPage=5`);
+      const data = await response.json();
+      setQuestions(data.questions);
+      setTotaldbcount(data.totaldbcount);
+    } catch (error) {
+      console.error('Failed to fetch questions:', error);
+    }
+  };
+
+  // 문의하기 들어갔을때 자동으로 목록 불러오기기능
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        // ▼ /api/questions 에 쿼리파라미터로 page와 perpage 를 보내기
-        const response = await fetch(`/api/questions?page=${page}&perPage=5`);
-        const data = await response.json();
-        setQuestions(data.questions);
-        setTotaldbcount(data.totaldbcount);
-      } catch (error) {
-        console.error('Failed to fetch questions:', error);
-      }
-    };
     fetchQuestions();
   }, [page, selectedPost]);
 
@@ -148,13 +150,13 @@ const { publicmessage, setPublicmessage } = useContext(GradeContext);
         qcontent: content,
         writer: currentUser.name,
         created: dateString,
-        uid: uid//여긴 추가로
+        uid: currentUser.uid//여긴 추가로
       })
     })
     .then(response => response.json())
     .then(data => {
       console.log(`Response from server: ${JSON.stringify(data)}`);
-      
+      fetchQuestions();
       handleClose();
     })
     .catch(error => {
@@ -193,6 +195,7 @@ const handleTitleClick = async (post) => {
       setSelectedPost(data.post);
     } else {
       console.log('권한이 없습니다.', response);
+      alert("권한이 없습니다!!");
     }
   } catch (error) {
     console.error('Error:', error);
@@ -299,7 +302,7 @@ const handleTitleClick = async (post) => {
 
   // ▼ 댓글달기
   const commentadd = async () => {
-    console.log('댓글내용', comment)
+    console.log('0330', selectedPost)
     try {
       const response = await fetch(`/api/question/comment/${selectedPost._id}`, {
         method: 'POST', // 메소드를 'POST'로 변경
@@ -307,6 +310,7 @@ const handleTitleClick = async (post) => {
           'Content-Type': 'application/json' // 데이터 형식을 JSON으로 명시
         },
         body: JSON.stringify({ // 서버에게 전송할 데이터
+          // postId:selectedPost.uid,
           comment: comment,
           commentstate: 1
         })
@@ -326,9 +330,9 @@ const handleTitleClick = async (post) => {
 
   return (  
     <div className="board_wrap font5" 
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0',
-      width: '1920px',
-      height: '760px',
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 0 0 0',
+      width: '1730px',
+      height: '654px',
       backgroundImage: `url('${quepage}')`,
       backgroundSize: "100% 100%",
       backgroundPosition: "center",

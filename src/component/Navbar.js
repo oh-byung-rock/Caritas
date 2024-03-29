@@ -88,7 +88,7 @@ function Navbar({windowWidth, setSelectedItem}) {
         {showSidebar && windowWidth < 1400 && (
           <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
             <h2 className="font6" style={{ fontSize: '20px', color: '#242D34', textAlign: 'left' }}>
-              안녕
+              게시판
             </h2>
             {menuItems.map((item) => (
               <button

@@ -518,7 +518,9 @@ function CustomerPage({ currentUser, setCurrentUser,message  }) {
       case 'item-1-3' :
         return(
           <div>
-          <Inquiry/>
+          <Inquiry
+          currentUser={currentUser}
+          />
           </div>
         );
         

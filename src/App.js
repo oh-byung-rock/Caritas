@@ -7,6 +7,7 @@ import Servertest from './component/servertest';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Question from './component/Question';
 import AlertBox from './component/Alertbox2';
+import Inquiry from './component/Inquiry';
 const socket = new WebSocket('ws://localhost:7577');
 const GradeContext = React.createContext();
 
@@ -53,10 +54,13 @@ function App() {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if(data){
-        console.log(data)
-        if (data.event === 'commentAdded' && data.postId === currentUser.uid) {
+        console.log("여길봐0",data)
+        console.log("여길봐1",data.data.postId)
+        console.log("여길봐2",currentUser.uid)
+        console.log("여길봐3",data.event)
+        if (data.event === 'commentAdded' && data.data.postId === currentUser.uid) {
           // ▼ [] 일때 와 [change]일때 둘다 console.log('11'); 가 작동한다.
-          console.log('11');
+          console.log('119119');
           setChange(change+1)
           setMessage('답변이 완료되었습니다!');
         } else {        
@@ -77,6 +81,7 @@ function App() {
             <Route path="/" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>} exact />
             <Route path="/login" element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
             <Route path="/question" element={<Question currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+            <Route path="/inquiry" element={<Inquiry currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
             {/* <Route path="/c" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser} ab={'item-1-1'}/>} /> */}
             <Route path="/test" element={<Servertest />} />
           </Routes>

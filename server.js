@@ -70,7 +70,7 @@ const Health = mongoose.model('Health', healthSchema);
 
 mongoose
   .connect(
-    'mongodb+srv://withcaritas0911:aldksfo384@healthgem.sylpzld.mongodb.net/?retryWrites=true&w=majority',
+    `mongodb+srv://${process.env.REACT_APP_MONGO_ID}:${process.env.REACT_APP_MONGO_PW}@healthgem.sylpzld.mongodb.net/?retryWrites=true&w=majority`,
     { dbName: 'todoweb' },
   )
   .then(async () => {
@@ -364,19 +364,19 @@ app.post('/api/question/comment/:uid', async (req, res) => {
 
   try {
     const post = await AddQ.findById(uid);
-
+    console.log('포포',post);
     if (post) {
       post.comment = comment; 
-      post.commentstate = commentstate; 
+      post.commentstate = commentstate;
       const updatedPost = await post.save();
       
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-          console.log('ex '+client.uid)
+
           client.send(JSON.stringify({
             event: 'commentAdded',
             data: {
-              postId: uid,
+              postId: post.uid,
               comment: comment,
               commentState: commentstate
             }

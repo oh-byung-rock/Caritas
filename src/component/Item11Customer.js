@@ -241,7 +241,11 @@ function Item11Customer({
         console.log('day0328', day0328);
         console.log('day03282', indirectResult);
         setIsEditingBenchPressTimes(false);
+        setIsEditingBenchPressWeight(false);
+        setIsEditingBenchPressreal1rm(false);
         svbpwt.benchcount = data.benchcount
+        svbpwt.benchweight = data.benchweight
+        svbpwt.real1rm = data.real1rm
         setIndirectbp(indirectResult)
         
       } else {

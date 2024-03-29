@@ -8,12 +8,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { getFirestore, collection, query, doc, setDoc, getDocs } from "firebase/firestore";
+import inqpage from '../assets/questionpage.png';
 
-function Inquiry() {
+function Inquiry({ currentUser }) {
   const [titleopen, settitleOpen] = useState(false);
   const [postopen, setpostOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
+
+  useEffect(() => {
+    console.log('currentUser in Inquiry:', currentUser);
+  }, [currentUser]);
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -81,7 +86,13 @@ function Inquiry() {
   };
 
   return (    
-    <div className="board_wrap font5" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10% 0 0 0'}}>
+    <div className="board_wrap font5" 
+    style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 0 0 0', width: '1730px',height: '743px',
+    backgroundImage: `url('${inqpage}')`,
+    backgroundSize: "100% 100%",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    }}>
       <div className="board_title" style={{width:'70%'}}>
         <h2 className="font6" style={{ fontSize: '36px' }}>
           공지사항
@@ -109,6 +120,7 @@ function Inquiry() {
           ))}
         </div>
         <div className="upload-button">
+        {currentUser.state === '1' ? (
           <Button
             href="#"
             style={{
@@ -124,11 +136,14 @@ function Inquiry() {
           >
             등록
           </Button>
+        ) : (<>&nbsp;</>) }
         </div>
         <Dialog open={postopen} onClose={handleClose}>
           <DialogTitle>새로운 게시물</DialogTitle>
           <DialogContent>
-            <DialogContentText>제목, 글쓴이, 내용을 입력하세요</DialogContentText>
+          <DialogContentText style={{ color: '#333', marginBottom: '20px' }}> 
+            제목, 글쓴이, 내용을 입력하세요
+          </DialogContentText>
             <TextField autoFocus margin="dense" id="title" label="제목" type="text" fullWidth />
             <TextField margin="dense" id="writer" label="글쓴이" type="text" fullWidth />
             <TextField margin="dense" id="content" label="내용" type="text" fullWidth />
