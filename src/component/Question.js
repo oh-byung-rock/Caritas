@@ -57,10 +57,11 @@ function Question({ currentUser }) {
     }
   };
 
-  // 문의하기 들어갔을때 자동으로 목록 불러오기기능
+  // page : 문의하기 들어갔을때 자동으로 목록 불러오기기능
+  // selectedpost : 삭제했을때 '답변상태' 이런거 업데이트
   useEffect(() => {
     fetchQuestions();
-  }, [page, selectedPost]);
+  }, [page,selectedPost]);
 
   const handlepostOpen = () => {
     setpostOpen(true);
@@ -130,13 +131,13 @@ function Question({ currentUser }) {
   const handleAddPost_mongo = async (title, content) => {
     //여기부터
     var uid=''
-
+    console.log('전체',currentUser);
     if(currentUser.platform){
       if(currentUser.platform=='naver'){
         uid=currentUser.id
       }
     }else{
-      uid=currentUser._id
+      uid=currentUser.uid
     }
 
     //여기까지
@@ -150,7 +151,7 @@ function Question({ currentUser }) {
         qcontent: content,
         writer: currentUser.name,
         created: dateString,
-        uid: currentUser.uid//여긴 추가로
+        uid: uid//여긴 추가로
       })
     })
     .then(response => response.json())
@@ -256,6 +257,7 @@ const handleTitleClick = async (post) => {
     
         if (response.ok) {
           console.log('Post deleted',response);
+          fetchQuestions();
           setSelectedPost(null);
         } else {
           console.error('Failed to delete the post');

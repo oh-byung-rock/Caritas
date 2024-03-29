@@ -54,17 +54,24 @@ function App() {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if(data){
-        console.log("여길봐0",data)
-        console.log("여길봐1",data.data.postId)
-        console.log("여길봐2",currentUser.uid)
-        console.log("여길봐3",data.event)
-        if (data.event === 'commentAdded' && data.data.postId === currentUser.uid) {
-          // ▼ [] 일때 와 [change]일때 둘다 console.log('11'); 가 작동한다.
-          console.log('119119');
-          setChange(change+1)
-          setMessage('답변이 완료되었습니다!');
-        } else {        
-          console.log('22');
+          if (currentUser?.platform) {
+          if (data.event === 'commentAdded' && data.data.postId === currentUser?.id) {
+            // ▼ [] 일때 와 [change]일때 둘다 console.log('11'); 가 작동한다.
+            console.log('119119');
+            setChange(change+1)
+            setMessage('답변이 완료되었습니다!');
+          } else {        
+            console.log('22');
+          }
+        } else {
+          if (data.event === 'commentAdded' && data.data.postId === currentUser?.uid) {
+            // ▼ [] 일때 와 [change]일때 둘다 console.log('11'); 가 작동한다.
+            console.log('119119');
+            setChange(change+1)
+            setMessage('답변이 완료되었습니다!');
+          } else {        
+            console.log('22');
+          }
         }
       }
     };

@@ -461,13 +461,15 @@ app.post('/api/question/see/:id', async (req, res) => {
   console.log('wlwl', userState)
   try {
     const post = await AddQ.findById(id);
-
+    console.log('새벽3',post);
     if (!post) {
       res.status(404).json({ message: 'No such post found' });
       return;
     }
 
     if (userState !== '1' && post.uid !== userId) {
+      console.log('새벽1',post.uid);
+      console.log('새벽2',userId);
       res.status(403).json({ message: '권한이 없습니다.' }); // 사용자 ID가 게시글의 uid와 일치하지 않는 경우 403 오류를 반환합니다
       return;
     }

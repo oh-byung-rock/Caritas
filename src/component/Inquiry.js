@@ -120,7 +120,7 @@ function Inquiry({ currentUser }) {
           ))}
         </div>
         <div className="upload-button">
-        {currentUser.state === '1' ? (
+        {currentUser?.state === '1' ? (
           <Button
             href="#"
             style={{
