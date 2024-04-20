@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Question from './component/Question';
 import AlertBox from './component/Alertbox2';
 import Inquiry from './component/Inquiry';
+import { Provider } from 'react-redux'; // 리덕트 1/2
+import store from './component/store'; // 리덕트 2/2
 const socket = new WebSocket('ws://localhost:7577');
 const GradeContext = React.createContext();
 
@@ -79,22 +81,24 @@ function App() {
 
 
   return (
-    <GradeContext.Provider value={{ publicAge, setPublicAge, publicGender, setPublicGender 
-    , publicBodyweight , setPublicBodyweight, publicDirectweight, setPublicDirectweight, publicIndirectweight, setPublicIndirectweight, publicmessage, setPublicmessage }}>
-      <Router>
-        <div className="App">
-          <AlertBox message={message} change={change}/>
-          <Routes>
-            <Route path="/" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>} exact />
-            <Route path="/login" element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-            <Route path="/question" element={<Question currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-            <Route path="/inquiry" element={<Inquiry currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-            {/* <Route path="/c" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser} ab={'item-1-1'}/>} /> */}
-            <Route path="/test" element={<Servertest />} />
-          </Routes>
-        </div>
-      </Router>
-    </GradeContext.Provider>
+    <Provider store={store}>
+      <GradeContext.Provider value={{ publicAge, setPublicAge, publicGender, setPublicGender 
+      , publicBodyweight , setPublicBodyweight, publicDirectweight, setPublicDirectweight, publicIndirectweight, setPublicIndirectweight, publicmessage, setPublicmessage }}>
+        <Router>
+          <div className="App">
+            <AlertBox message={message} change={change}/>
+            <Routes>
+              <Route path="/" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>} exact />
+              <Route path="/login" element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+              <Route path="/question" element={<Question currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+              <Route path="/inquiry" element={<Inquiry currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+              {/* <Route path="/c" element={<CustomerPage currentUser={currentUser} setCurrentUser={setCurrentUser} ab={'item-1-1'}/>} /> */}
+              <Route path="/test" element={<Servertest />} />
+            </Routes>
+          </div>
+        </Router>
+      </GradeContext.Provider>
+    </Provider>
   );
 }
 

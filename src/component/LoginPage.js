@@ -43,35 +43,45 @@ function LoginPage({ currentUser, setCurrentUser }) {
   // https://loy124.tistory.com/246
 
   // ▼ 로그인 성공시 처리
-  const handleSubmit = (event) => {
-    event.preventDefault();
+const handleSubmit = (event) => {
+  event.preventDefault();
 
-    fetch('/login?weight=0&height=0', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(state)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(`Data from server: ${JSON.stringify(data)}`);
-      
-      if (data.message === '로그인 성공!') {
-        console.log('status 200');
-        alert("Thanks for coming!");
-        handleClose();
-        setCurrentUser(data.user);
-        console.log('이렇게 변함', data.user)
-        navigate("/");
-      } else {
-        console.log('Login failed:', data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  };
+  fetch('/login', {  // 주소 수정: 쿼리 파라미터 제거
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(state)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(`Data from server: ${JSON.stringify(data)}`);
+    
+ if (data.message === '로그인 성공!') {
+      console.log('status 200');
+      alert("로그인에 성공했습니다!"); // 성공 메시지 변경
+      handleClose();
+      setCurrentUser(data.user);
+      console.log('이렇게 변함', data.user)
+      navigate("/");
+    } else if (data.message === '이메일을 찾을 수 없습니다.') {
+      // 이메일을 찾을 수 없을 때
+      console.log('Login failed:', data.message);
+      alert("이메일을 찾을 수 없습니다."); // 이메일 불일치 알림 추가
+    } else if (data.message === '비밀번호가 일치하지 않습니다.') {
+      // 비밀번호가 일치하지 않을 때
+      console.log('Login failed:', data.message);
+      alert("비밀번호가 일치하지 않습니다."); // 비밀번호 불일치 알림 추가
+    } else {
+      // 그 외 오류 메시지 처리
+      alert(data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+};
+
 
   useEffect(() => {
     console.log('currentUser has changed:', currentUser);
@@ -80,8 +90,8 @@ function LoginPage({ currentUser, setCurrentUser }) {
   // ▼ 네이버 로그인 관련 
   useEffect(() => {
     const naverLoginObj = new window.naver.LoginWithNaverId({
-      clientId: "8823YaHRIRRXCm6paIqu",
-      clientSecret : "9zVonIUhEn",
+      clientId: process.env.REACT_APP_NAVER_ID,
+      clientSecret : process.env.REACT_APP_NAVER_SECRET,
       callbackUrl: "http://localhost:3000/login",
       isPopup: false,
       loginButton: {color: "green", type: 2, height: 45}

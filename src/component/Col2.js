@@ -103,13 +103,13 @@ function Col2({ photoURL, setPhotoURL, currentUser, navigate, selectedItem, setS
                   >
                     나의 운동 레벨
                   </h2>
-                  {/* <h2
+                  <h2
                     className={`wordmenu2 ${selectedItem === "item-1-2" ? "selected-item" : ""}`}
                     href="#item-1-2"
                     onClick={() => setSelectedItem("item-1-2")}
                   >
-                    RM 전환하기
-                  </h2> */}
+                    사용자 기록 조회
+                  </h2>
                   <h2 className="wordmenu1" style={{ marginTop: "20px" ,borderTop: "1px solid #E0E0E0" ,paddingTop: "20px"}} onClick={handleLogout}>로그아웃</h2>
                 </>
               ) : (

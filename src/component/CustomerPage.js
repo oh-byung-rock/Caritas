@@ -9,6 +9,7 @@ import anany from '../assets/anany.png'
 import Item1Customer from './Item1Customer';
 import Item1NonCustomer from './Item1NonCustomer';
 import Item11Customer from './Item11Customer';
+import Item12Customer from './Item12Customer';
 import Item11NonCustomer from './Item11NonCustomer';
 import Inquiry from './Inquiry';
 import Question from './Question';
@@ -509,8 +510,7 @@ function CustomerPage({ currentUser, setCurrentUser,message  }) {
       case 'item-1-2':
         return (
           <div className="item">
-          <h4>폰트정리</h4>
-          {/* <Item12Customer/> */}
+          <Item12Customer/>
           {/* <ProfileChange/> */}
           </div>
         );

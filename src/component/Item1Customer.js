@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import { GradeContext } from '../App';
 import React, { useContext, useState, useEffect } from 'react';
 import AlertBox from './Alertbox2';
+import { useDispatch } from 'react-redux'; // 리덕스 1/2
+import { logButtonClick } from './actions'; // 리덕스 2/2
 
 function Item1Customer({
   name,
@@ -25,6 +27,8 @@ function Item1Customer({
   setCheckedweight,
 }) 
 {
+  const dispatch = useDispatch(); // 리덕스 3/
+
   let uid = '';
     if (currentUser.platform) {
       if (currentUser.platform == 'naver') {
@@ -50,6 +54,10 @@ function Item1Customer({
           setIsEditingWeight(false); 
           setCheckedheight(null);
           setCheckedweight(null);
+
+          const currentTime = new Date();
+          const formattedTime = `${currentTime.getFullYear()}-${currentTime.getMonth()+1}-${currentTime.getDate()} ${currentTime.getHours()}:${currentTime.getMinutes()}`;
+          dispatch(logButtonClick(`사용자 지정에서 ${field} 값이 ${formattedTime}에 변경되었습니다.`));
         } else {
           console.error('Failed to update the info');
         }
