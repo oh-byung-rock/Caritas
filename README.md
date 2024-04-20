@@ -17,4 +17,4 @@
 - 게시글 제목 검색 기능 구현
 - `WebSocket`을 활용한 실시간 관리자 응답 표시 ( 관리자 / 회원 구분 )
 
-![Alt Text](동영상/redux_ex.gif)
+![redux_ex](https://github.com/oh-byung-rock/Caritas/assets/136219126/bd644db5-9e0c-4b8c-ad44-839a420deeee)
