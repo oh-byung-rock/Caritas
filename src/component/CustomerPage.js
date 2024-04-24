@@ -10,6 +10,7 @@ import Item1Customer from './Item1Customer';
 import Item1NonCustomer from './Item1NonCustomer';
 import Item11Customer from './Item11Customer';
 import Item12Customer from './Item12Customer';
+import Userrecord from './Userrecord.tsx';
 import Item11NonCustomer from './Item11NonCustomer';
 import Inquiry from './Inquiry';
 import Question from './Question';
@@ -510,7 +511,8 @@ function CustomerPage({ currentUser, setCurrentUser,message  }) {
       case 'item-1-2':
         return (
           <div className="item">
-          <Item12Customer/>
+          {/* <Item12Customer/> */}
+          <Userrecord/>
           {/* <ProfileChange/> */}
           </div>
         );

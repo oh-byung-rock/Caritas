@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "lib": ["dom", "dom.iterable", "esnext", "ES6"],
+      "allowJs": false, // 모든 js 말고 오로지 'ts에대한js' 만 자동 업데이트 가능하도록 
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": false, // 자동 업데이트 허용 ( = noemit : false)
+      "jsx": "react",
+      "outDir": "./dist",
+      "noImplicitAny": true,
+      "strictNullChecks": true
+    },
+    
+    "include": [
+      "src/**/*"
+    ]
+  }
+  

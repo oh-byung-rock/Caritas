@@ -80,6 +80,7 @@
     "path-browserify": "^1.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "typescript": "^5.4.5",
     "url": "^0.11.3"
   },
   "keywords": []
